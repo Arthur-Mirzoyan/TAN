@@ -1,4 +1,7 @@
-package am.tan.core;
+package entities.tank;
+
+import entities.tank.components.TankCannon;
+import entities.tank.components.TankHull;
 
 public class Tank {
     private final String id;
@@ -14,6 +17,18 @@ public class Tank {
         this.price = price;
         this.hull = hull;
         this.cannon = cannon;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPrice() {
+        return price;
     }
 
     public TankHull getHull() {

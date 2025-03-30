@@ -1,4 +1,4 @@
-package am.tan.core;
+package entities.mysteryBox;
 
 public class BonusBox extends MysteryBox {
     void action() {

@@ -1,4 +1,4 @@
-package am.tan.core;
+package entities.tank.components;
 
 public class TankCannon {
     private final String id;

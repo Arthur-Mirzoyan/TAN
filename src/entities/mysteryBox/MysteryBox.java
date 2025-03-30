@@ -1,4 +1,4 @@
-package am.tan.core;
+package entities.mysteryBox;
 
 public abstract class MysteryBox {
     private double x;

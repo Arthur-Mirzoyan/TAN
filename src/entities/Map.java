@@ -1,4 +1,4 @@
-package am.tan.core;
+package entities;
 
 public class Map {
     private final int width;

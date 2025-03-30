@@ -1,4 +1,4 @@
-package am.tan.core;
+package entities.tank.components;
 
 public enum Level {
     PRIVATE,

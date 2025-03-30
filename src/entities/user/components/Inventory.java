@@ -1,6 +1,10 @@
-package am.tan.core;
+package entities.user.components;
 
 import java.util.ArrayList;
+
+import entities.tank.Tank;
+import entities.tank.components.TankCannon;
+import entities.tank.components.TankHull;
 
 public class Inventory {
     private int money;

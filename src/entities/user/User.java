@@ -1,4 +1,6 @@
-package am.tan.core;
+package entities.user;
+
+import entities.user.components.Inventory;
 
 public class User {
     public Inventory inventory;
