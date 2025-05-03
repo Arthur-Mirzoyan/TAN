@@ -1,7 +1,9 @@
 package entities.tank.components;
 
+import utils.Point;
+
 public class TankCannon {
-    private final String id;
+    private final int id;
     private final String name;
     private final int price;
 
@@ -11,7 +13,7 @@ public class TankCannon {
     private byte blankShootRate;
     private Level level;
 
-    public TankCannon(String id, String name, int price, int bulletSpeed, int reloadSpeed, int ammo, byte blankShootRate) {
+    public TankCannon(int id, String name, int price, int bulletSpeed, int reloadSpeed, int ammo, byte blankShootRate) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -22,7 +24,7 @@ public class TankCannon {
         this.level = Level.PRIVATE;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -78,6 +80,10 @@ public class TankCannon {
     }
 
     public void shoot() {
+        if (ammo <= 0) return;
+
+        ammo--;
+        Bullet bullet = new Bullet(new Point(10, 10), 10 ,10);
     }
 
     public void draw() {

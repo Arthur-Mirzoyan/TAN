@@ -1,0 +1,49 @@
+{
+  "cannons": [
+    {
+      "id": 1,
+      "name": "Standard Cannon",
+      "price": 0,
+      "bulletSpeed": 3,
+      "reloadSpeed": 10,
+      "ammo": 3,
+      "blankShootRate": 10
+    },
+    {
+      "id": 2,
+      "name": "Modified Cannon",
+      "price": 1000,
+      "bulletSpeed": 5,
+      "reloadSpeed": 7,
+      "ammo": 6,
+      "blankShootRate": 7
+    },
+    {
+      "id": 3,
+      "name": "Charged Cannon",
+      "price": 1500,
+      "bulletSpeed": 8,
+      "reloadSpeed": 5,
+      "ammo": 10,
+      "blankShootRate": 5
+    },
+    {
+      "id": 4,
+      "name": "Professional Cannon",
+      "price": 2000,
+      "bulletSpeed": 10,
+      "reloadSpeed": 3,
+      "ammo": 12,
+      "blankShootRate": 3
+    },
+    {
+      "id": 5,
+      "name": "Custom Build Cannon",
+      "price": 2500,
+      "bulletSpeed": 13,
+      "reloadSpeed": 2,
+      "ammo": 15,
+      "blankShootRate": 1
+    }
+  ]
+}

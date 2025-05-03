@@ -1,34 +1,49 @@
 package entities.tank;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 import entities.tank.components.TankCannon;
 import entities.tank.components.TankHull;
+import utils.Entity;
+import utils.Dimension;
+import utils.Point;
 
-public class Tank {
-    private final String id;
-    private final String name;
-    private final int price;
-
+public class Tank extends Entity {
     private TankHull hull;
     private TankCannon cannon;
 
-    public Tank(String id, String name, int price, TankHull hull, TankCannon cannon) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
+    private Image image;
+    private BufferedImage rotatedImage;
+    private int angle = 0;
+    private int lastAngle = -1;
+
+    public Tank(Image image, Point position, TankHull hull, TankCannon cannon) {
+        super(position, new Dimension(image.getWidth(null), image.getHeight(null)));
+
+        this.image = image;
         this.hull = hull;
         this.cannon = cannon;
     }
 
-    public String getId() {
-        return id;
+    public void setRotatedImage(BufferedImage image) {
+        this.rotatedImage = image;
     }
 
-    public String getName() {
-        return name;
+    public void setLastAngle(int angle) {
+        this.lastAngle = angle;
     }
 
-    public int getPrice() {
-        return price;
+    public int getAngle() {
+        return angle;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public BufferedImage getRotatedImage() {
+        return rotatedImage;
     }
 
     public TankHull getHull() {
@@ -39,11 +54,8 @@ public class Tank {
         return cannon;
     }
 
-    public void setHull(TankHull hull) {
-        this.hull = hull;
-    }
+    @Override
+    protected void draw() {
 
-    public void setCannon(TankCannon cannon) {
-        this.cannon = cannon;
     }
 }

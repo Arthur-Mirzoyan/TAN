@@ -1,26 +1,28 @@
 package entities.tank.components;
 
 public class TankHull {
-    private final String id;
+    private final int id;
     private final String name;
     private final int price;
 
     private int armorStrength;
-    private int health;
     private int speed;
+
+    private int health;
     private Level level;
 
-    public TankHull(String id, String name, int price, int health, int speed, int armorStrength) {
+    public TankHull(int id, String name, int price, int speed, int armorStrength) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.health = health;
         this.speed = speed;
         this.armorStrength = armorStrength;
+
+        this.health = 100;
         this.level = Level.PRIVATE;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
