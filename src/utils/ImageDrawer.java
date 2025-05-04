@@ -1,8 +1,12 @@
 package utils;
 
-import javax.swing.*;
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
 import java.awt.*;
+import java.io.IOException;
 import java.net.URL;
+import java.util.Iterator;
 
 public class ImageDrawer {
     private Image image;
@@ -13,25 +17,27 @@ public class ImageDrawer {
 
     private void loadImage(String path) {
         try {
-            // Using ClassLoader to get the resource
             URL imageUrl = getClass().getClassLoader().getResource(path);
+
             if (imageUrl == null) {
                 System.err.println("Image not found at: " + path);
                 return;
             }
 
-            // Read the image using Toolkit
-            image = Toolkit.getDefaultToolkit().createImage(imageUrl);
+            try (ImageInputStream input = ImageIO.createImageInputStream(imageUrl.openStream())) {
+                Iterator<ImageReader> readers = ImageIO.getImageReaders(input);
 
-            // Wait for image to load
-            MediaTracker tracker = new MediaTracker(new JPanel());
-            tracker.addImage(image, 0);
-            try {
-                tracker.waitForAll();
-            } catch (InterruptedException e) {
-                System.err.println("Image loading interrupted");
+                if (!readers.hasNext()) {
+                    System.err.println("No ImageReader found for: " + path);
+                    return;
+                }
+
+                ImageReader reader = readers.next();
+                reader.setInput(input);
+                image = reader.read(0);
+                reader.dispose();
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println("Error loading image: " + path);
             e.printStackTrace();
         }

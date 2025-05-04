@@ -7,7 +7,8 @@
       "bulletSpeed": 3,
       "reloadSpeed": 10,
       "ammo": 3,
-      "blankShootRate": 10
+      "blankShootRate": 10,
+      "firingRange": 50
     },
     {
       "id": 2,
@@ -16,7 +17,8 @@
       "bulletSpeed": 5,
       "reloadSpeed": 7,
       "ammo": 6,
-      "blankShootRate": 7
+      "blankShootRate": 7,
+      "firingRange": 70
     },
     {
       "id": 3,
@@ -25,7 +27,8 @@
       "bulletSpeed": 8,
       "reloadSpeed": 5,
       "ammo": 10,
-      "blankShootRate": 5
+      "blankShootRate": 5,
+      "firingRange": 125
     },
     {
       "id": 4,
@@ -34,7 +37,8 @@
       "bulletSpeed": 10,
       "reloadSpeed": 3,
       "ammo": 12,
-      "blankShootRate": 3
+      "blankShootRate": 3,
+      "firingRange": 200
     },
     {
       "id": 5,
@@ -43,7 +47,8 @@
       "bulletSpeed": 13,
       "reloadSpeed": 2,
       "ammo": 15,
-      "blankShootRate": 1
+      "blankShootRate": 1,
+      "firingRange": 300
     }
   ]
 }

@@ -14,6 +14,14 @@ public class Dimension {
         this.height = d.height;
     }
 
+    public void setWidth(double width) {
+        this.width = width;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
     public double getWidth() {
         return width;
     }

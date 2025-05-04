@@ -26,7 +26,8 @@ public class MainWindow implements PanelListener {
 
         window.setTitle("TAN - Terminate Advance Neutralise");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setSize(800, 450);
+        window.setResizable(false);
+//        window.setSize(1200, 800);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 

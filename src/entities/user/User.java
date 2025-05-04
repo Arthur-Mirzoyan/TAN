@@ -1,5 +1,6 @@
 package entities.user;
 
+import entities.tank.Tank;
 import entities.user.components.Inventory;
 
 public class User {
@@ -7,7 +8,7 @@ public class User {
 
     private String username;
     private String password;
-    private String currentTankId;
+    private Tank currentTank;
     private int gamesWon;
     private int gamesPlayed;
 
@@ -24,20 +25,12 @@ public class User {
         this.gamesPlayed = gamesPlayed;
     }
 
-    public void setCurrentTankId(String tankId) {
-        this.currentTankId = tankId;
+    public void setCurrentTank(Tank tank) {
+        this.currentTank = tank;
     }
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
     }
 
     public int getGamesWon() {
@@ -46,6 +39,18 @@ public class User {
 
     public int getGamesPlayed() {
         return gamesPlayed;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public Tank getCurrentTank() {
+            return currentTank;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 
     public static boolean login() {

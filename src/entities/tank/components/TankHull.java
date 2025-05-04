@@ -22,6 +22,16 @@ public class TankHull {
         this.level = Level.PRIVATE;
     }
 
+    public TankHull(TankHull other) {
+        this.id = other.id;
+        this.name = other.name;
+        this.price = other.price;
+        this.speed = other.speed;
+        this.armorStrength = other.armorStrength;
+        this.health = other.getHealth();
+        this.level = other.getLevel();
+    }
+
     public int getId() {
         return id;
     }

@@ -33,7 +33,15 @@ public class Point {
         return y;
     }
 
-    public int getVectorProduct(Point p) {
+    public int getVectorDotProduct(Point p) {
         return x * p.x + y * p.y;
+    }
+
+    @Override
+    public String toString() {
+        return "Point{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
     }
 }
