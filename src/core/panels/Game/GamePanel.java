@@ -2,10 +2,17 @@ package core.panels.Game;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
+import entities.mysteryBox.BonusBox;
+import entities.mysteryBox.MysteryBox;
+import entities.mysteryBox.TrapBox;
 import utils.Map;
+import utils.Point;
 import entities.tank.Tank;
 import entities.user.User;
 import utils.CustomComponents;
@@ -70,6 +77,48 @@ public class GamePanel extends JPanel implements KeyListener {
 
     private void updateGame() {
         // TODO: draw opponents tanks and bullets
+    }
+
+    private void generateMysteryBox(Map map) {
+        byte[][] layout = map.getLayout();
+        int cellSize = map.getCellSize();
+        final boolean[] shouldClear = {false};
+
+        ArrayList<MysteryBox> activeMysteryBoxes = new ArrayList<>();
+
+        ActionListener addBoxes = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!shouldClear[0]) activeMysteryBoxes.clear();
+
+                shouldClear[0] = !shouldClear[0];
+
+                int row = 1;
+                int col = 1;
+
+                do {
+                    row = (int) Math.random() * layout.length;
+                    col = (int) Math.random() * layout[0].length;
+                } while (layout[row][col] != Map.WALL);
+
+                int x = col * cellSize + cellSize / 2;
+                int y = row * cellSize + cellSize / 2;
+                Point point = new Point(x, y);
+                MysteryBox box;
+
+                if (Math.random() >= 0.5) {
+                    box = new BonusBox(point);
+                    map.setLayout(row, col, (byte) BonusBox.BONUS_INDEX);
+                } else {
+                    box = new TrapBox(point);
+                    map.setLayout(row, col, (byte) TrapBox.TRAP_INDEX);
+                }
+
+                activeMysteryBoxes.add(box);
+            }
+        };
+
+        new Timer(10000, addBoxes).start();
     }
 
     @Override

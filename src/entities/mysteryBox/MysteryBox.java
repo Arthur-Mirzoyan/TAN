@@ -1,10 +1,14 @@
 package entities.mysteryBox;
 
+import entities.tank.Tank;
+import utils.Point;
+
 public abstract class MysteryBox {
-    private double x;
-    private double y;
+    Point coordinate;
 
-    abstract void action();
+    public MysteryBox(Point point) {
+        this.coordinate = new Point(point);
+    }
 
-    abstract void draw();
+    abstract void action(Tank tank);
 }

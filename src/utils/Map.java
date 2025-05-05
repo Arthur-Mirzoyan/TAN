@@ -69,6 +69,11 @@ public class Map {
         this(byteLayout);
     }
 
+    public void setLayout(int row, int col, byte value) {
+        if (row >= layout.length || col >= layout[0].length) return;
+        if (layout[row][col] == Map.PATH) layout[row][col] = value;
+    }
+
     public void setTanksToDraw(Tank[] tanks) {
         this.tanksToDraw = tanks;
     }
