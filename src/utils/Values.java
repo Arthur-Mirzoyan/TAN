@@ -17,6 +17,7 @@ public abstract class Values {
         }
     }
 
+    public static final Font EXTRA_LARGE_FONT = CUSTOM_FONT.deriveFont(28f);
     public static final Font LARGE_FONT = CUSTOM_FONT.deriveFont(20f);
     public static final Font MEDIUM_FONT = CUSTOM_FONT.deriveFont(16f);
     public static final Font SMALL_FONT = CUSTOM_FONT.deriveFont(12f);
