@@ -1,32 +1,23 @@
 package entities.user;
 
-import entities.tank.Tank;
 import entities.user.components.Inventory;
 
 public class User {
     public Inventory inventory;
 
+    private int gamesWon;
     private String username;
     private String password;
-    private Tank currentTank;
-    private int gamesWon;
     private int gamesPlayed;
 
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public static boolean login() {
+        // TODO implement login functionality
+
+        return true;
     }
 
-    public void setGamesWon(int gamesWon) {
-        this.gamesWon = gamesWon;
-    }
-
-    public void setGamesPlayed(int gamesPlayed) {
-        this.gamesPlayed = gamesPlayed;
-    }
-
-    public void setCurrentTank(Tank tank) {
-        this.currentTank = tank;
+    public Inventory getInventory() {
+        return inventory;
     }
 
     public void setInventory(Inventory inventory) {
@@ -37,40 +28,31 @@ public class User {
         return gamesWon;
     }
 
-    public int getGamesPlayed() {
-        return gamesPlayed;
+    public void setGamesWon(int gamesWon) {
+        this.gamesWon = gamesWon;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public Tank getCurrentTank() {
-            return currentTank;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public Inventory getInventory() {
-        return inventory;
+    public String getPassword() {
+        return password;
     }
 
-    public static boolean login() {
-        // TODO implement login functionality
-
-        return true;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    @Override
-    public String toString() {
-        return username;
+    public int getGamesPlayed() {
+        return gamesPlayed;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-
-        User user = (User) obj;
-
-        return username.equals(user.username) && password.equals(user.password);
+    public void setGamesPlayed(int gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
     }
 }
