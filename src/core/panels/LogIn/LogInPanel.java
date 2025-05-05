@@ -44,7 +44,6 @@ public class LogInPanel {
     private JPanel generateLoginBox() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
-
         GridBagConstraints gbc = new GridBagConstraints();
 
         JLabel welcomeBackLabel = CustomComponents.label("WELCOME BACK");
@@ -60,7 +59,6 @@ public class LogInPanel {
         logInButton = CustomComponents.button("Log In");
 
         signUpButton = new JButton("Create an account");
-        signUpButton.setForeground(Values.PRIMARY_COLOR);
         signUpButton.setFont(Values.SMALL_FONT);
         signUpButton.setContentAreaFilled(false);
         signUpButton.setBorderPainted(false);
