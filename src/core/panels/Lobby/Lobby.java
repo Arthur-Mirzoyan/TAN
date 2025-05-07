@@ -2,6 +2,7 @@ package core.panels.Lobby;
 
 import network.Server;
 import utils.PanelListener;
+import utils.Panels;
 
 import javax.swing.*;
 
@@ -22,6 +23,8 @@ public class Lobby {
         });
 
         scene.getJoinButton().addActionListener(e -> scene.switchToJoin());
+
+        scene.getJoinWorldButton().addActionListener(e -> listener.goTo(Panels.GAME));
     }
 
     public JPanel getPanel() {

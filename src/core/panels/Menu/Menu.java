@@ -14,7 +14,7 @@ public class Menu {
     public Menu(PanelListener listener) {
         scene = new MenuPanel();
 
-//        scene.getPlayButton().addActionListener(e ->);
+        scene.getPlayButton().addActionListener(e -> listener.goTo(Panels.LOBBY));
         scene.getInventoryButton().addActionListener(e -> listener.goTo(Panels.INVENTORY));
         scene.getShopButton().addActionListener(e -> listener.goTo(Panels.SHOP));
 

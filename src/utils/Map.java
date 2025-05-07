@@ -1,5 +1,8 @@
 package utils;
 
+import entities.mysteryBox.BonusBox;
+import entities.mysteryBox.MysteryBox;
+import entities.mysteryBox.TrapBox;
 import entities.tank.Tank;
 import entities.tank.components.Bullet;
 import org.json.JSONObject;
@@ -36,14 +39,30 @@ public class Map {
                 this.setSize(cellSize * cols, cellSize * rows);
                 updateDimension(cellSize);
 
+                Image mysteryBoxImage = MysteryBox.image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+                int mysteryBoxWidthHalf = mysteryBoxImage.getWidth(null) / 2;
+                int mysteryBoxHeightHalf = mysteryBoxImage.getHeight(null) / 2;
 
                 for (int row = 0; row < rows; row++) {
                     for (int col = 0; col < cols; col++) {
                         int x = col * cellSize;
                         int y = row * cellSize;
 
-                        g.setColor(layout[row][col] == WALL ? Color.BLACK : Color.WHITE);
+                        if (layout[row][col] == WALL)
+                            g.setColor(Color.BLACK);
+                        else if (layout[row][col] == PATH)
+                            g.setColor(Color.WHITE);
+
                         g.fillRect(x, y, cellSize, cellSize);
+                    }
+                }
+
+                for (int row = 0; row < rows; row++) {
+                    for (int col = 0; col < cols; col++) {
+                        if (layout[row][col] == BonusBox.BONUS_INDEX || layout[row][col] == TrapBox.TRAP_INDEX) {
+                            Point position = new Point(col * cellSize, row * cellSize);
+                            g.drawImage(mysteryBoxImage, position.getX(), position.getY(), panel);
+                        }
                     }
                 }
 
@@ -71,7 +90,7 @@ public class Map {
 
     public void setLayout(int row, int col, byte value) {
         if (row >= layout.length || col >= layout[0].length) return;
-        if (layout[row][col] == Map.PATH) layout[row][col] = value;
+        if (layout[row][col] != Map.WALL) layout[row][col] = value;
     }
 
     public void setTanksToDraw(Tank[] tanks) {

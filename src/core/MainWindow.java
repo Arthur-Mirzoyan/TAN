@@ -3,6 +3,8 @@ package core;
 import javax.swing.*;
 import java.awt.*;
 
+import core.panels.Game.Game;
+import core.panels.Lobby.Lobby;
 import core.panels.LogIn.LogIn;
 import core.panels.Menu.Menu;
 import core.panels.SignUp.SignUp;
@@ -53,11 +55,18 @@ public class MainWindow implements PanelListener {
             case Panels.MENU:
                 switchPanel(new Menu(this).getPanel());
                 break;
+            case Panels.LOBBY:
+                switchPanel(new Lobby(this).getPanel());
+                break;
             case Panels.INVENTORY:
                 switchPanel(new Inventory(this).getPanel());
+                break;
             case Panels.SHOP:
                 switchPanel(new Shop(this).getPanel());
-
+                break;
+            case Panels.GAME:
+                switchPanel(new Game(this).getPanel());
+                break;
         }
     }
 

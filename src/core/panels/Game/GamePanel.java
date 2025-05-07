@@ -42,6 +42,8 @@ public class GamePanel extends JPanel implements KeyListener {
             mapPanel.repaint();
         });
         gameLoop.start();
+
+        generateMysteryBox(map);
     }
 
     public JPanel generateUserInfo(User user) {
@@ -81,7 +83,6 @@ public class GamePanel extends JPanel implements KeyListener {
 
     private void generateMysteryBox(Map map) {
         byte[][] layout = map.getLayout();
-        int cellSize = map.getCellSize();
         final boolean[] shouldClear = {false};
 
         ArrayList<MysteryBox> activeMysteryBoxes = new ArrayList<>();
@@ -89,7 +90,33 @@ public class GamePanel extends JPanel implements KeyListener {
         ActionListener addBoxes = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!shouldClear[0]) activeMysteryBoxes.clear();
+                int cellSize = map.getCellSize();
+
+                if (!shouldClear[0]) {
+                    try {
+                        if (activeMysteryBoxes.size() > 3) {
+                            for (MysteryBox box : activeMysteryBoxes) {
+                                Point position = box.getPosition();
+                                int r = position.getY() / cellSize;
+                                int c = position.getX() / cellSize;
+
+                                map.setLayout(r, c, Map.PATH);
+                            }
+
+                            activeMysteryBoxes.clear();
+                        } else {
+                            MysteryBox box = activeMysteryBoxes.getFirst();
+                            Point position = box.getPosition();
+                            int r = position.getY() / cellSize;
+                            int c = position.getX() / cellSize;
+
+                            map.setLayout(r, c, Map.PATH);
+                            activeMysteryBoxes.remove(box);
+                        }
+                    } catch (Exception ex) {
+                        System.out.println(":(");
+                    }
+                }
 
                 shouldClear[0] = !shouldClear[0];
 
@@ -97,9 +124,9 @@ public class GamePanel extends JPanel implements KeyListener {
                 int col = 1;
 
                 do {
-                    row = (int) Math.random() * layout.length;
-                    col = (int) Math.random() * layout[0].length;
-                } while (layout[row][col] != Map.WALL);
+                    row = (int) (Math.random() * layout.length);
+                    col = (int) (Math.random() * layout[0].length);
+                } while (layout[row][col] != Map.PATH);
 
                 int x = col * cellSize + cellSize / 2;
                 int y = row * cellSize + cellSize / 2;
