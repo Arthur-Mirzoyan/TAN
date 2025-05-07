@@ -3,8 +3,7 @@ package core.panels.Shop;
 import entities.tank.components.TankCannon;
 import entities.tank.components.TankHull;
 import utils.CustomComponents;
-import utils.JSONReader;
-import utils.Map;
+import utils.JSONHelper;
 import utils.Values;
 
 import javax.swing.*;
@@ -12,7 +11,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class ShopPanel extends JPanel {
-    private JPanel panel;
     private JButton hullSelectButton;
     private JButton cannonSelectButton;
 
@@ -61,7 +59,7 @@ public class ShopPanel extends JPanel {
         JPanel imagePanel = new JPanel();
         imagePanel.setLayout(new BoxLayout(scrollBox, BoxLayout.X_AXIS));
 
-        ArrayList<TankHull> tankHulls = JSONReader.parseJSON("src/objects/maps.json", "maps", json -> new TankHull(json));
+        ArrayList<TankHull> tankHulls = JSONHelper.parse("src/objects/tankHulls.json", "hulls", json -> new TankHull(json));
 
         for(TankHull tankHull : tankHulls) {
             JPanel hullCard = tankHull.generateTankHullCard(tankHull);
@@ -84,11 +82,11 @@ public class ShopPanel extends JPanel {
         JPanel imagePanel = new JPanel();
         imagePanel.setLayout(new BoxLayout(scrollBox, BoxLayout.X_AXIS));
 
-        ArrayList<TankCannon> tankCannons = JSONReader.parseJSON("src/objects/maps.json", "maps", json -> new TankHull(json));
+        ArrayList<TankCannon> tankCannons = JSONHelper.parse("src/objects/tankCannons.json", "cannons", json -> new TankCannon(json));
 
         for(TankCannon tankCannon : tankCannons) {
 //            JPanel hullCard = tankCannon.generateTankHullCard(tankCannon);
-            imagePanel.add(tankCannon);
+//            imagePanel.add(tankCannon);
             imagePanel.add(Box.createRigidArea(new Dimension(10, 0)));
         }
 

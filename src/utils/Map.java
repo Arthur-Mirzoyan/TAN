@@ -1,16 +1,15 @@
 package utils;
 
-import entities.mysteryBox.BonusBox;
-import entities.mysteryBox.MysteryBox;
-import entities.mysteryBox.TrapBox;
-import entities.tank.Tank;
-import entities.tank.components.Bullet;
+import entities.mysteryBox.*;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import entities.tank.Tank;
+import entities.tank.components.Bullet;
 
 public class Map {
     public static final byte PATH = 0;
@@ -34,9 +33,9 @@ public class Map {
 
                 int rows = layout.length;
                 int cols = layout[0].length;
-                int cellSize = Math.min(getWidth(), getHeight()) / Math.max(rows, cols);
+                int cellSize = Math.min(getWidth() / cols, getHeight() / rows);
+                setSize(cellSize * cols, cellSize * rows);
 
-                this.setSize(cellSize * cols, cellSize * rows);
                 updateDimension(cellSize);
 
                 Image mysteryBoxImage = MysteryBox.image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);

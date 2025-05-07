@@ -7,11 +7,10 @@ import java.util.HashMap;
 
 import entities.tank.components.TankCannon;
 import entities.tank.components.TankHull;
+import org.json.JSONObject;
+import utils.*;
 import utils.Dimension;
-import utils.Entity;
-import utils.ImageDrawer;
 import utils.Point;
-import utils.Map;
 
 public class Tank extends Entity {
     public enum Controls {
@@ -34,9 +33,9 @@ public class Tank extends Entity {
     private final String id;
     private final TankHull hull;
     private final TankCannon cannon;
-    private final Map map;
     private final HashMap<Controls, Boolean> keysPressed = new HashMap<>();
 
+    private Map map;
     private Image image;
     private BufferedImage rotatedImage;
     private int angle = 0;
@@ -50,11 +49,30 @@ public class Tank extends Entity {
         this.map = map;
         this.id = "tank_" + hull.getId() + "_" + cannon.getId();
 
-        cannon.setBulletSpeed(cannon.getBulletSpeed() + hull.getSpeed());
+        this.prepareTank();
+    }
 
-        loadImage();
+    public Tank(Tank tank) {
+        super(tank.getPosition());
 
-        setDimension(new Dimension(image.getWidth(null), image.getHeight(null)));
+        this.hull = tank.getHull();
+        this.cannon = tank.getCannon();
+        this.id = "tank_" + hull.getId() + "_" + cannon.getId();
+        this.map = tank.map; // Privacy leakage, but map itself is pretty safe :)
+        setPosition(tank.getPosition());
+        setAngle(angle);
+
+        this.prepareTank();
+    }
+
+    public Tank(JSONObject json) {
+        super(new Point());
+
+        this.id = JSONHelper.getValue(json, "id", "");
+        this.hull = new TankHull(JSONHelper.getValue(json, "hull", new JSONObject()));
+        this.cannon = new TankCannon(JSONHelper.getValue(json, "cannon", new JSONObject()));
+
+        this.prepareTank();
     }
 
     // Ghost tank copy constructor
@@ -78,6 +96,10 @@ public class Tank extends Entity {
         if (lastAngle != angle) updateRotatedTankImage();
     }
 
+    public void setMap(Map map) {
+        this.map = map;
+    }
+
     public int getSpeed() {
         return hull.getSpeed();
     }
@@ -91,11 +113,21 @@ public class Tank extends Entity {
     }
 
     public TankHull getHull() {
-        return hull;
+        try {
+            return hull.clone();
+        } catch (CloneNotSupportedException e) {
+            System.out.println("Tank Hull was not cloned. Returning null.");
+            return null;
+        }
     }
 
     public TankCannon getCannon() {
-        return cannon;
+        try {
+            return cannon.clone();
+        } catch (CloneNotSupportedException e) {
+            System.out.println("Tank Cannon was not cloned. Returning null.");
+            return null;
+        }
     }
 
     public void onKeyPressed(KeyEvent e) {
@@ -133,6 +165,24 @@ public class Tank extends Entity {
         }
 
 //        cannon.verifyFiringBulletsList(); // might be redundant
+    }
+
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("id", id);
+        json.put("hull", hull.toJSON());
+        json.put("cannon", cannon.toJSON());
+
+        return json;
+    }
+
+    private void prepareTank() {
+        cannon.setBulletSpeed(cannon.getBulletSpeed() + hull.getSpeed());
+        loadImage();
+
+        if (image != null)
+            setDimension(new Dimension(image.getWidth(null), image.getHeight(null)));
     }
 
     private void updateRotatedTankImage() {

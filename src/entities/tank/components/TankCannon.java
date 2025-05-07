@@ -2,12 +2,14 @@ package entities.tank.components;
 
 import java.util.ArrayList;
 
+import entities.tank.Tank;
 import org.json.JSONObject;
 
+import utils.JSONHelper;
 import utils.Point;
 import utils.Map;
 
-public class TankCannon {
+public class TankCannon implements Cloneable {
     private final int id;
     private final String name;
     private final int price;
@@ -33,14 +35,14 @@ public class TankCannon {
     }
 
     public TankCannon(JSONObject json) {
-        this.id = json.getInt("id");
-        this.name = json.getString("name");
-        this.price = json.getInt("price");
-        this.bulletSpeed = json.getInt("bulletSpeed");
-        this.reloadSpeed = json.getInt("reloadSpeed");
-        this.ammo = json.getInt("ammo");
-        this.blankShootRate = json.getInt("blankShootRate");
-        this.firingRange = json.getInt("firingRange");
+        this.id = JSONHelper.getValue(json, "id", 1);
+        this.name = JSONHelper.getValue(json, "name", "");
+        this.price = JSONHelper.getValue(json, "price", 0);
+        this.bulletSpeed = JSONHelper.getValue(json, "bulletSpeed", 1);
+        this.reloadSpeed = JSONHelper.getValue(json, "reloadSpeed", 1);
+        this.ammo = JSONHelper.getValue(json, "ammo", 1);
+        this.blankShootRate = JSONHelper.getValue(json, "blankShootRate", 1);
+        this.firingRange = JSONHelper.getValue(json, "firingRange", 1);
         this.level = Level.PRIVATE; // TODO: should take from json
     }
 
@@ -114,9 +116,26 @@ public class TankCannon {
         bullets.removeIf(bullet -> !bullet.isFiring());
     }
 
-    public void draw() {
+    public void upgrade() {
     }
 
-    public void upgrade() {
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("name", name);
+        json.put("price", price);
+        json.put("bulletSpeed", bulletSpeed);
+        json.put("reloadSpeed", reloadSpeed);
+        json.put("blankShootRate", blankShootRate);
+        json.put("firingRange", firingRange);
+        json.put("ammo", ammo);
+        json.put("level", level); // TODO: implement Level getting from json
+
+        return json;
+    }
+
+    @Override
+    public TankCannon clone() throws CloneNotSupportedException {
+        return (TankCannon) super.clone();
     }
 }

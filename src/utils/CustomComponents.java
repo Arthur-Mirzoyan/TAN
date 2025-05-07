@@ -3,16 +3,25 @@ package utils;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.*;
+import java.awt.event.*;
 
 public abstract class CustomComponents {
+    public static final Cursor HAND_CURSOR = new Cursor(Cursor.HAND_CURSOR);
+    public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
+
     public static JTextField inputBox() {
         JTextField input = new JTextField();
 
         input.setFont(Values.MEDIUM_FONT);
         input.setForeground(Values.PRIMARY_COLOR);
         input.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+        input.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == KeyEvent.VK_SPACE) e.consume();
+            }
+        });
 
         return input;
     }
@@ -24,6 +33,12 @@ public abstract class CustomComponents {
         input.setFont(Values.MEDIUM_FONT);
         input.setForeground(Values.PRIMARY_COLOR);
         input.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+        input.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                if (e.getKeyChar() == KeyEvent.VK_SPACE) e.consume();
+            }
+        });
 
         return input;
     }
@@ -56,6 +71,19 @@ public abstract class CustomComponents {
 
         button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setCursor(HAND_CURSOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setCursor(DEFAULT_CURSOR);
+            }
+        });
+
+
         return button;
     }
 
@@ -65,5 +93,27 @@ public abstract class CustomComponents {
         label.setForeground(Values.PRIMARY_COLOR);
 
         return label;
+    }
+
+    public static JButton backButton() {
+        ImageIcon icon = new ImageIcon("assets/img/arrow.png");
+        JButton button = new JButton(icon);
+
+        button.setBorderPainted(false);
+        button.setContentAreaFilled(false);
+
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                button.setCursor(HAND_CURSOR);
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                button.setCursor(DEFAULT_CURSOR);
+            }
+        });
+
+        return button;
     }
 }
