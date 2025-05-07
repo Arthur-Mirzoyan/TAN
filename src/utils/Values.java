@@ -9,7 +9,7 @@ public abstract class Values {
 
     static {
         try {
-            CUSTOM_FONT = Font.createFont(Font.TRUETYPE_FONT, new File("src/assets/fonts/font.ttf"));
+            CUSTOM_FONT = Font.createFont(Font.TRUETYPE_FONT, new File("src/assets/fonts/Pixellari.ttf"));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(CUSTOM_FONT);
         } catch (IOException | FontFormatException e) {

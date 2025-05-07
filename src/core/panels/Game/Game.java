@@ -1,30 +1,19 @@
 package core.panels.Game;
 
-import utils.Map;
-import entities.tank.Tank;
-import entities.tank.components.TankCannon;
-import entities.tank.components.TankHull;
-import entities.user.User;
-import utils.JSONReader;
-import utils.PanelListener;
-import utils.Point;
-
 import javax.swing.*;
+
+import entities.user.User;
+import utils.Map;
+import utils.JSONHelper;
+import utils.PanelListener;
 
 public class Game {
     GamePanel scene;
 
+    public Game(PanelListener listener, User user) {
+        Map map = JSONHelper.parse("src/objects/maps.json", "maps", json -> new Map(json)).get(0);
 
-    public Game(PanelListener listener) {
-        Map map = JSONReader.parseJSON("src/objects/maps.json", "maps", json -> new Map(json)).get(0);
-
-        User user = new User("anun", "pass");
-        user.setCurrentTank(
-                new Tank(new Point(100, 45),
-                        new TankHull(3, "anun", 1000, 5, 10),
-                        new TankCannon(5, "anun", 1000, 1, 10, 5, 5, 500),
-                        map)
-        );
+        // TODO: Handle Tank SpawnPoints
 
         scene = new GamePanel(map, user,
                 new User[]{

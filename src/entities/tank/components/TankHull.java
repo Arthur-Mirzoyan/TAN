@@ -1,6 +1,11 @@
 package entities.tank.components;
 
-public class TankHull {
+import org.json.JSONObject;
+import utils.JSONHelper;
+
+import javax.swing.*;
+
+public class TankHull implements Cloneable {
     private final int id;
     private final String name;
     private final int price;
@@ -17,19 +22,17 @@ public class TankHull {
         this.price = price;
         this.speed = speed;
         this.armorStrength = armorStrength;
-
         this.health = 100;
         this.level = Level.PRIVATE;
     }
 
-    public TankHull(TankHull other) {
-        this.id = other.id;
-        this.name = other.name;
-        this.price = other.price;
-        this.speed = other.speed;
-        this.armorStrength = other.armorStrength;
-        this.health = other.getHealth();
-        this.level = other.getLevel();
+    public TankHull(JSONObject json) {
+        this.id = JSONHelper.getValue(json, "id", 1);
+        this.name = JSONHelper.getValue(json, "name", "");
+        this.price = JSONHelper.getValue(json, "price", 1);
+        this.speed = JSONHelper.getValue(json, "speed", 1);
+        this.armorStrength = JSONHelper.getValue(json, "armorStrength", 1);
+        this.level = Level.PRIVATE; // TODO: should take from json
     }
 
     public int getId() {
@@ -79,9 +82,20 @@ public class TankHull {
     public void upgrade() {
     }
 
-    public void move() {
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("id", id);
+        json.put("name", name);
+        json.put("price", price);
+        json.put("speed", speed);
+        json.put("armorStrength", armorStrength);
+
+        return json;
     }
 
-    public void draw() {
+    @Override
+    public TankHull clone() throws CloneNotSupportedException {
+        return (TankHull) super.clone();
     }
 }

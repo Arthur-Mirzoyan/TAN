@@ -5,9 +5,9 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import utils.Map;
-import entities.tank.Tank;
 import entities.user.User;
+import entities.tank.Tank;
+import utils.Map;
 import utils.CustomComponents;
 
 public class GamePanel extends JPanel implements KeyListener {
@@ -22,6 +22,7 @@ public class GamePanel extends JPanel implements KeyListener {
         addKeyListener(this);
 
         tank = user.getCurrentTank();
+        tank.setMap(map);
         map.setTanksToDraw(new Tank[]{user.getCurrentTank()});
         mapPanel = map.getPanel();
 
@@ -34,6 +35,7 @@ public class GamePanel extends JPanel implements KeyListener {
             tank.updateTankPosition();
             mapPanel.repaint();
         });
+
         gameLoop.start();
     }
 

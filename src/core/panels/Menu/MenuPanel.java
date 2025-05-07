@@ -1,6 +1,5 @@
 package core.panels.Menu;
 
-
 import utils.CustomComponents;
 import utils.Values;
 
@@ -21,6 +20,30 @@ public class MenuPanel extends JPanel {
         add(generateButtonBox(), BorderLayout.CENTER);
         add(generateStatisticsBox(), BorderLayout.SOUTH);
         add(generateVolumeConfiguratorBox(), BorderLayout.NORTH);
+    }
+
+    public JButton getPlayButton() {
+        return playButton;
+    }
+
+    public JButton getInventoryButton() {
+        return inventoryButton;
+    }
+
+    public JButton getShopButton() {
+        return shopButton;
+    }
+
+    public JButton getVolumeConfiguratorButton() {
+        return volumeConfiguratorButton;
+    }
+
+    public ImageIcon getVolumeIcon() {
+        return volumeIcon;
+    }
+
+    public ImageIcon getMuteIcon() {
+        return muteIcon;
     }
 
     private JPanel generateButtonBox() {
@@ -137,29 +160,5 @@ public class MenuPanel extends JPanel {
 
         panel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 20));
         return panel;
-    }
-
-    public JButton getPlayButton() {
-        return playButton;
-    }
-
-    public JButton getInventoryButton() {
-        return inventoryButton;
-    }
-
-    public JButton getShopButton() {
-        return shopButton;
-    }
-
-    public JButton getVolumeConfiguratorButton() {
-        return volumeConfiguratorButton;
-    }
-
-    public ImageIcon getVolumeIcon() {
-        return volumeIcon;
-    }
-
-    public ImageIcon getMuteIcon() {
-        return muteIcon;
     }
 }

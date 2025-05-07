@@ -1,13 +1,14 @@
 package utils;
 
-import entities.tank.Tank;
-import entities.tank.components.Bullet;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import entities.tank.Tank;
+import entities.tank.components.Bullet;
 
 public class Map {
     public static final byte PATH = 0;
@@ -31,11 +32,10 @@ public class Map {
 
                 int rows = layout.length;
                 int cols = layout[0].length;
-                int cellSize = Math.min(getWidth(), getHeight()) / Math.max(rows, cols);
+                int cellSize = Math.min(getWidth() / cols, getHeight() / rows);
+                setSize(cellSize * cols, cellSize * rows);
 
-                this.setSize(cellSize * cols, cellSize * rows);
                 updateDimension(cellSize);
-
 
                 for (int row = 0; row < rows; row++) {
                     for (int col = 0; col < cols; col++) {

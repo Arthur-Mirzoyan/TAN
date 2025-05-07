@@ -1,88 +1,62 @@
 package core.panels.SignUp;
 
+import core.exceptions.UserNotFoundException;
+import entities.user.User;
+import utils.HashUtil;
+import utils.JSONHelper;
 import utils.PanelListener;
 import utils.Panels;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.util.ArrayList;
 
 public class SignUp {
+    private PanelListener panelListener;
     private SignUpPanel scene;
-    private String username;
-    private String password;
 
-    public SignUp(PanelListener listener) {
+    public SignUp(PanelListener listener, ArrayList<User> users) {
         scene = new SignUpPanel();
-
-        username = "";
-        password = "";
+        panelListener = listener;
 
         scene.getSignUpButton().addActionListener(e -> listener.goTo(Panels.LOGIN));
-        scene.getLogInButton().addActionListener(e -> signUp());
-
-        addUsernameListeners(scene.getUsernameField());
-        addPasswordListeners(scene.getPasswordField());
+        scene.getLogInButton().addActionListener(e -> signUp(users));
     }
 
     public JPanel getPanel() {
         return scene.getPanel();
     }
 
-    public void setUsername(String username) {
-        this.username = username.trim();
-    }
+    private void signUp(ArrayList<User> users) {
+        String username = scene.getUsernameField().getText();
+        String password = scene.getPasswordField().getText();
+        String passwordHash = HashUtil.toMD5(password);
 
-    public void setPassword(String password) {
-        this.password = password.trim();
-    }
-
-    private void signUp() {
         if (username.isBlank())
             JOptionPane.showMessageDialog(getPanel(), "Username missing!!!", "Error", JOptionPane.ERROR_MESSAGE);
         else if (password.isBlank())
             JOptionPane.showMessageDialog(getPanel(), "Password missing!!!", "Error", JOptionPane.ERROR_MESSAGE);
-        else
-            JOptionPane.showMessageDialog(getPanel(), "Username: " + username + "\nPassword: " + password);
+        else {
+            try {
+                getUserWith(users);
+                JOptionPane.showMessageDialog(getPanel(), "User " + username + " already exists", "Error", JOptionPane.ERROR_MESSAGE);
+//                panelListener.goTo(Panels.MENU, user);
+            } catch (UserNotFoundException e) {
+                User user = new User(username, passwordHash);
+                JSONHelper.write("src/data/users.json", "users", user.toJSON());
+                panelListener.goTo(Panels.MENU, user);
+            }
+        }
     }
 
-    private void addUsernameListeners(JTextField usernameField) {
-        usernameField.getDocument().addDocumentListener(new DocumentListener() {
-            public void changedUpdate(DocumentEvent e) {
-                handleChange();
-            }
+    private User getUserWith(ArrayList<User> users) throws UserNotFoundException {
+        String username = scene.getUsernameField().getText();
 
-            public void removeUpdate(DocumentEvent e) {
-                handleChange();
-            }
+        for (User user : users)
+            if (user.getUsername().equals(username))
+                return user;
 
-            public void insertUpdate(DocumentEvent e) {
-                handleChange();
-            }
-
-            private void handleChange() {
-                setUsername(usernameField.getText());
-            }
-        });
-    }
-
-    private void addPasswordListeners(JPasswordField passwordField) {
-        passwordField.getDocument().addDocumentListener(new DocumentListener() {
-            public void changedUpdate(DocumentEvent e) {
-                handleChange();
-            }
-
-            public void removeUpdate(DocumentEvent e) {
-                handleChange();
-            }
-
-            public void insertUpdate(DocumentEvent e) {
-                handleChange();
-            }
-
-            private void handleChange() {
-                setPassword(passwordField.getText());
-            }
-        });
+        throw new UserNotFoundException();
     }
 }
