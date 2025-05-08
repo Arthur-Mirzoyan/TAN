@@ -1,13 +1,15 @@
 package utils;
 
-import entities.tank.Tank;
-import entities.tank.components.Bullet;
+import entities.mysteryBox.*;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import entities.tank.Tank;
+import entities.tank.components.Bullet;
 
 public class Map {
     public static final byte PATH = 0;
@@ -33,19 +35,35 @@ public class Map {
 
                 int rows = layout.length;
                 int cols = layout[0].length;
-                int cellSize = Math.min(getWidth(), getHeight()) / Math.max(rows, cols);
+                int cellSize = Math.min(getWidth() / cols, getHeight() / rows);
+                setSize(cellSize * cols, cellSize * rows);
 
-                this.setSize(cellSize * cols, cellSize * rows);
                 updateDimension(cellSize);
 
+                Image mysteryBoxImage = MysteryBox.image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+                int mysteryBoxWidthHalf = mysteryBoxImage.getWidth(null) / 2;
+                int mysteryBoxHeightHalf = mysteryBoxImage.getHeight(null) / 2;
 
                 for (int row = 0; row < rows; row++) {
                     for (int col = 0; col < cols; col++) {
                         int x = col * cellSize;
                         int y = row * cellSize;
 
-                        g.setColor(layout[row][col] == WALL ? Color.BLACK : Color.WHITE);
+                        if (layout[row][col] == WALL)
+                            g.setColor(Color.BLACK);
+                        else if (layout[row][col] == PATH)
+                            g.setColor(Color.WHITE);
+
                         g.fillRect(x, y, cellSize, cellSize);
+                    }
+                }
+
+                for (int row = 0; row < rows; row++) {
+                    for (int col = 0; col < cols; col++) {
+                        if (layout[row][col] == BonusBox.BONUS_INDEX || layout[row][col] == TrapBox.TRAP_INDEX) {
+                            Point position = new Point(col * cellSize, row * cellSize);
+                            g.drawImage(mysteryBoxImage, position.getX(), position.getY(), panel);
+                        }
                     }
                 }
 
@@ -76,6 +94,11 @@ public class Map {
         }
 
         this(byteLayout, spawnPoints);
+    }
+
+    public void setLayout(int row, int col, byte value) {
+        if (row >= layout.length || col >= layout[0].length) return;
+        if (layout[row][col] != Map.WALL) layout[row][col] = value;
     }
 
     public void setTanksToDraw(Tank[] tanks) {

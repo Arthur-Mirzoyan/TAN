@@ -5,29 +5,59 @@ import java.util.ArrayList;
 import entities.tank.Tank;
 import entities.tank.components.TankCannon;
 import entities.tank.components.TankHull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import utils.JSONHelper;
 
 public class Inventory {
     private int money;
-    private TankCannon[] cannons;
-    private TankHull[] hulls;
+    private ArrayList<TankCannon> cannons;
+    private ArrayList<TankHull> hulls;
     private ArrayList<Tank> tanks;
 
     public Inventory() {
-        money = 0;
-        cannons = new TankCannon[5];
-        hulls = new TankHull[5];
-        tanks = new ArrayList<>();
+        this.money = 0;
+        this.cannons = new ArrayList<>();
+        this.hulls = new ArrayList<>();
+        this.tanks = new ArrayList<>();
+    }
+
+    public Inventory(Inventory inventory) {
+        this.money = inventory.money;
+        this.cannons = inventory.cannons;
+        this.hulls = inventory.hulls;
+        this.tanks = new ArrayList<>();
+
+        for (Tank tank : inventory.tanks) {
+            this.tanks.add(new Tank(tank));
+        }
+    }
+
+    public Inventory(JSONObject json) {
+        this.money = JSONHelper.getValue(json, "money", 0);
+        this.cannons = new ArrayList<>();
+        this.hulls = new ArrayList<>();
+        this.tanks = new ArrayList<>();
+
+        JSONArray jsonCannons = JSONHelper.getValue(json, "cannons", new JSONArray());
+        JSONArray jsonHulls = JSONHelper.getValue(json, "hulls", new JSONArray());
+        JSONArray jsonTanks = JSONHelper.getValue(json, "tanks", new JSONArray());
+
+        for (Object obj : jsonCannons) this.cannons.add(new TankCannon((JSONObject) obj));
+        for (Object obj : jsonHulls) this.hulls.add(new TankHull((JSONObject) obj));
+        for (Object obj : jsonTanks) this.tanks.add(new Tank((JSONObject) obj));
     }
 
     public int getMoney() {
         return money;
     }
 
-    public TankCannon[] getCannons() {
+    public ArrayList<TankCannon> getCannons() {
         return cannons;
     }
 
-    public TankHull[] getHulls() {
+    public ArrayList<TankHull> getHulls() {
         return hulls;
     }
 
@@ -48,20 +78,28 @@ public class Inventory {
     }
 
     public void addCannon(TankCannon cannon) {
-        for (int i = 0; i < cannons.length; i++) {
-            if (cannons[i] == null) {
-                cannons[i] = cannon;
-                return;
-            }
-        }
+        this.cannons.add(cannon);
     }
 
     public void addHull(TankHull hull) {
-        for (int i = 0; i < hulls.length; i++) {
-            if (hulls[i] == null) {
-                hulls[i] = hull;
-                return;
-            }
-        }
+        this.hulls.add(hull);
+    }
+
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+        JSONArray cannons = new JSONArray();
+        JSONArray hulls = new JSONArray();
+        JSONArray tanks = new JSONArray();
+
+        this.cannons.forEach(cannon -> cannons.put(cannon.toJSON()));
+        this.hulls.forEach(hull -> hulls.put(hull.toJSON()));
+        this.tanks.forEach(tank -> tanks.put(tank.toJSON()));
+
+        json.put("money", money);
+        json.put("cannons", cannons);
+        json.put("hulls", hulls);
+        json.put("tanks", tanks);
+
+        return json;
     }
 }

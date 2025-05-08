@@ -8,8 +8,7 @@ import entities.user.User;
 import utils.CustomComponents;
 import utils.Values;
 
-public class LobbyPanel {
-    private JPanel panel;
+public class LobbyPanel extends JPanel {
     private JList<User> connectedUsersList;
     private JTextField worldJoinIPField;
     private JButton joinButton;
@@ -21,10 +20,8 @@ public class LobbyPanel {
     private GridBagConstraints gbc;
 
     public LobbyPanel() {
-        panel = new JPanel();
-
-        panel.setOpaque(false);
-        panel.setLayout(new BorderLayout());
+        setOpaque(false);
+        setLayout(new BorderLayout());
 
         JPanel box = new JPanel();
         joinButton = CustomComponents.button("JOIN");
@@ -52,15 +49,11 @@ public class LobbyPanel {
         gbc.gridwidth = 2;
         box.add(viewBox, gbc);
 
-        panel.add(box, BorderLayout.CENTER);
+        add(box, BorderLayout.CENTER);
     }
 
     public void setConnectedUsersList(ArrayList<User> connectedUsers) {
         connectedUsersList = new JList((User[]) connectedUsers.toArray());
-    }
-
-    public JPanel getPanel() {
-        return panel;
     }
 
     public JTextField getWorldJoinIPField() {

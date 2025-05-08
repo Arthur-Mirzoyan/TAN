@@ -1,0 +1,21 @@
+# Compiled class files
+*.class
+
+# Production output folders
+/out/
+/build/
+/bin/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Logs
+*.log
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Other
+*.swp

@@ -5,7 +5,8 @@ import entities.tank.Tank;
 import entities.tank.components.TankCannon;
 import entities.tank.components.TankHull;
 import entities.user.User;
-import utils.JSONReader;
+import utils.Map;
+import utils.JSONHelper;
 import utils.PanelListener;
 
 import javax.swing.*;
@@ -18,9 +19,8 @@ public class Game {
     //should be properly implemented and placed correctly
     //this one is just a test version.
 
-
-    public Game(PanelListener listener) {
-        Map map = JSONReader.parseJSON("src/objects/maps.json", "maps", json -> new Map(json)).get(0);
+    public Game(PanelListener listener, User user) {
+        Map map = JSONHelper.parse("src/objects/maps.json", "maps", json -> new Map(json)).get(0);
 
         tankList = new ArrayList<>();
 
@@ -73,7 +73,4 @@ public class Game {
     public JPanel getPanel() {
         return scene;
     }
-
-
-
 }

@@ -4,6 +4,8 @@ public enum Panels {
     LOGIN,
     SIGNUP,
     MENU,
+    LOBBY,
     INVENTORY,
-    SHOP
+    SHOP,
+    GAME
 }
