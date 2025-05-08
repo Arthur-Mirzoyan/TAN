@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import utils.Map;
 import entities.tank.Tank;
@@ -13,6 +14,7 @@ import utils.CustomComponents;
 public class GamePanel extends JPanel implements KeyListener {
     JPanel mapPanel;
     Tank tank;
+    ArrayList<User> users;
 
     public GamePanel(Map map, User user, User[] users) {
         setOpaque(false);
@@ -21,8 +23,15 @@ public class GamePanel extends JPanel implements KeyListener {
         requestFocusInWindow();
         addKeyListener(this);
 
+        this.users = new ArrayList<>(java.util.List.of(users));
+
         tank = user.getCurrentTank();
-        map.setTanksToDraw(new Tank[]{user.getCurrentTank()});
+
+        Tank[] tanksArr = new Tank[users.length];
+        for (int i = 0; i < users.length; i++){
+            tanksArr[i] = users[i].getCurrentTank();
+        }
+        map.setTanksToDraw(tanksArr);
         mapPanel = map.getPanel();
 
         add(generateGameInfo(users), BorderLayout.WEST);
@@ -79,7 +88,7 @@ public class GamePanel extends JPanel implements KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        tank.onKeyReleased(e);
+        tank.onKeyReleased(e, users);
     }
 
     @Override

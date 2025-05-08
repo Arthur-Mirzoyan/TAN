@@ -2,6 +2,8 @@ package entities.tank.components;
 
 import java.util.ArrayList;
 
+import entities.tank.Tank;
+import entities.user.User;
 import org.json.JSONObject;
 
 import utils.Point;
@@ -18,6 +20,7 @@ public class TankCannon {
     private int ammo;
     private int firingRange;
     private Level level;
+    private User owner;
     private ArrayList<Bullet> bullets = new ArrayList<>();
 
     public TankCannon(int id, String name, int price, int bulletSpeed, int reloadSpeed, int ammo, int blankShootRate, int firingRange) {
@@ -60,6 +63,10 @@ public class TankCannon {
         this.level = level;
     }
 
+    public void setOwner(User owner) {
+        this.owner=owner;
+    }
+
     public void setBulletSpeed(int bulletSpeed) {
         this.bulletSpeed = bulletSpeed;
     }
@@ -100,14 +107,14 @@ public class TankCannon {
         return level;
     }
 
-    public void shoot(Map map, Point bulletInitialPosition, int angle) {
+    public void shoot(Map map, ArrayList<User> users, Point bulletInitialPosition, int angle) {
         if (ammo <= 0) return;
 
-        Bullet bullet = new Bullet(bulletInitialPosition, bulletSpeed, -angle, firingRange);
+        Bullet bullet = new Bullet(bulletInitialPosition, bulletSpeed, -angle, firingRange, owner);
         bullets.add(bullet);
 
         ammo--;
-        bullet.fire(map, () -> bullets.remove(bullet));
+        bullet.fire(map, users, () -> bullets.remove(bullet));
     }
 
     public void verifyFiringBulletsList() {

@@ -3,6 +3,7 @@ package core;
 import javax.swing.*;
 import java.awt.*;
 
+import core.panels.Game.Game;
 import core.panels.LogIn.LogIn;
 import core.panels.Menu.Menu;
 import core.panels.SignUp.SignUp;
@@ -18,7 +19,7 @@ public class MainWindow implements PanelListener {
     public MainWindow() {
         initialize();
         addBackground();
-        switchPanel((new LogIn(this)).getPanel());
+        switchPanel((new Game(this)).getPanel());
     }
 
     public void initialize() {

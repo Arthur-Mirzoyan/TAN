@@ -3,15 +3,18 @@ package entities.tank;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import entities.tank.components.TankCannon;
 import entities.tank.components.TankHull;
+import entities.user.User;
 import utils.Dimension;
 import utils.Entity;
 import utils.ImageDrawer;
 import utils.Point;
 import utils.Map;
+import core.panels.Game.GamePanel;
 
 public class Tank extends Entity {
     public enum Controls {
@@ -42,11 +45,12 @@ public class Tank extends Entity {
     private int angle = 0;
     private int lastAngle = -1;
 
-    public Tank(Point position, TankHull hull, TankCannon cannon, Map map) {
+    public Tank(Point position, TankHull hull, TankCannon cannon, Map map, User owner) {
         super(position);
 
         this.hull = hull;
         this.cannon = cannon;
+        this.cannon.setOwner(owner);
         this.map = map;
         this.id = "tank_" + hull.getId() + "_" + cannon.getId();
 
@@ -103,11 +107,11 @@ public class Tank extends Entity {
         if (control != null) keysPressed.put(control, true);
     }
 
-    public void onKeyReleased(KeyEvent e) {
+    public void onKeyReleased(KeyEvent e, ArrayList<User> users) {
         Controls control = Controls.parseControls(e);
         if (control != null) keysPressed.put(control, false);
 
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) shoot();
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) shoot(users);
     }
 
     public void updateTankPosition() {
@@ -161,12 +165,13 @@ public class Tank extends Entity {
         updateRotatedTankImage();
     }
 
-    private void shoot() {
+    private void shoot(ArrayList<User> users) {
         Point[] corners = getCorners();
         Point topRightCorner = corners[1];
         Point bottomRightCorner = corners[2];
 
         cannon.shoot(map,
+                users,
                 new Point((topRightCorner.getX() + bottomRightCorner.getX()) / 2, (topRightCorner.getY() + bottomRightCorner.getY()) / 2),
                 angle);
     }

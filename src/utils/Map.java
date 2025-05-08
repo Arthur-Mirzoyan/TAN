@@ -15,14 +15,16 @@ public class Map {
 
     private final JPanel panel;
     private final byte[][] layout;
+    private final Point[] spawnPoints;
 
     private Dimension dimension;
     private Tank[] tanksToDraw;
     private int cellSize;
 
-    public Map(byte[][] layout) {
+    public Map(byte[][] layout, Point[] spawnPoints) {
         this.layout = layout;
         this.dimension = new Dimension(0, 0);
+        this.spawnPoints = spawnPoints;
 
         panel = new JPanel() {
             @Override
@@ -54,8 +56,10 @@ public class Map {
 
     public Map(JSONObject json) {
         JSONArray layout = json.getJSONArray("layout");
+        JSONArray points = json.getJSONArray("spawnPoints");
 
         byte[][] byteLayout = new byte[layout.length()][];
+        Point[] spawnPoints = new Point[4];
 
         for (int i = 0; i < layout.length(); i++) {
             JSONArray row = layout.getJSONArray(i);
@@ -66,7 +70,12 @@ public class Map {
             byteLayout[i] = byteRow;
         }
 
-        this(byteLayout);
+        for (int i = 0; i < points.length(); i++) {
+            JSONObject p = (JSONObject) points.get(i);
+            spawnPoints[i]= new Point(p);
+        }
+
+        this(byteLayout, spawnPoints);
     }
 
     public void setTanksToDraw(Tank[] tanks) {
@@ -106,6 +115,10 @@ public class Map {
         return res;
     }
 
+    public Point getSpawnPoint(int index){
+        return spawnPoints[index];
+    }
+
     public JPanel getPanel() {
         return panel;
     }
@@ -124,6 +137,10 @@ public class Map {
 
                 int imageWidthHalf = image.getWidth(null) / 2;
                 int imageHeightHalf = image.getHeight(null) / 2;
+
+                for(Point p: tank.getCorners()){
+                    g.fillOval(p.getX(), p.getY(), 6, 6);
+                }
 
                 g.drawImage(image, position.getX() - imageWidthHalf, position.getY() - imageHeightHalf, panel);
 

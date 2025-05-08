@@ -13,10 +13,6 @@ public abstract class Entity extends Collider{
         super(other);
     }
 
-    protected void setPosition(Point position) {
-        this.position = position;
-    }
-
     protected Point getPosition() {
         return new Point(position);
     }

@@ -3,13 +3,17 @@ package entities.tank.components;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.Timer;
 
+import entities.tank.Tank;
+import entities.user.User;
 import utils.*;
 import utils.Dimension;
 import utils.Point;
 
-public class Bullet extends Collider {
+public class
+Bullet extends Collider {
     public static final int SIZE = 6;
     public static final Color COLOR = Values.ACCENT_COLOR;
 
@@ -20,8 +24,9 @@ public class Bullet extends Collider {
     private int speed; // pixels per frame
     private int range;
     private boolean isFiring = false;
+    private User owner;
 
-    public Bullet(Point initialPosition, int speed, int angle, int range) {
+    public Bullet(Point initialPosition, int speed, int angle, int range, User owner) {
         super(initialPosition, new Dimension(SIZE, SIZE));
 
         setRotation(angle);
@@ -31,9 +36,10 @@ public class Bullet extends Collider {
         this.speed = speed;
         this.angle = angle;
         this.range = range;
+        this.owner = owner;
     }
 
-    public void fire(Map map, Runnable onCompletion) {
+    public void fire(Map map, ArrayList<User> users, Runnable onCompletion) {
         if (isFiring) return;
 
         isFiring = true;
@@ -66,10 +72,25 @@ public class Bullet extends Collider {
                 int row = currentPosition.getY() / cellSize;
                 int col = currentPosition.getX() / cellSize;
 
+                setPosition(currentPosition);
+
                 // Hitting wall eliminates the bullet
                 if (layout[row][col] == Map.WALL) framesPassed = totalFrames;
 
                 // TODO: implement tank penetration logic
+
+                                // Check tank collision
+                for (User user : users) {
+                    Tank target = user.getCurrentTank();
+//                    System.out.println((user != owner) + " " + collidesWith(target));
+                    if (user != owner && collidesWith(target)) {
+                        framesPassed = totalFrames;
+                        System.out.println("Korum emmm :(((((");
+                        // TODO: return a namyok vor kpel a
+                        // Optionally: tank.takeDamage(), remove tank, etc.
+                        return;
+                    }
+                }
 
                 framesPassed++;
 
