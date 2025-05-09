@@ -23,8 +23,8 @@ public class TankCard extends JPanel {
         nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-        Image image = new ImageDrawer("assets/img/tanks/tank_" + tank.getHull().getId() + "_" + tank.getCannon().getId() + ".png").
-                getScaledImage(imageWidth, imageHeight);
+        Image image = ImageDrawer.rotateImage(new ImageDrawer("assets/img/tanks/tank_" + tank.getHull().getId() + "_" + tank.getCannon().getId() + ".png").getImage(), -90).getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
+
         JLabel imageLabel = new JLabel(new ImageIcon(image));
         imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 

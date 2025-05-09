@@ -56,7 +56,7 @@ public class Map {
                     }
                 }
 
-//                drawMysteryBoxes(g);
+                drawMysteryBoxes(g);
                 drawTanks(g);
             }
         };
@@ -156,11 +156,6 @@ public class Map {
 
                 int imageWidthHalf = image.getWidth(null) / 2;
                 int imageHeightHalf = image.getHeight(null) / 2;
-
-                for (Point p : tank.getCorners()) {
-                    g.setColor(Color.RED);
-                    g.fillOval(p.getX(), p.getY(), 5, 5);
-                }
 
                 g.drawImage(image, position.getX() - imageWidthHalf, position.getY() - imageHeightHalf, panel);
 

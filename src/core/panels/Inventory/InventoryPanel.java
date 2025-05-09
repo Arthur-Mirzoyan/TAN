@@ -14,8 +14,6 @@ public class InventoryPanel extends JPanel {
     private final User user;
 
     private JButton addNewTankButton;
-    private ImageIcon addNewTankIcon;
-    private ImageIcon moneyIcon;
 
     public InventoryPanel(User user) {
         this.user = user;

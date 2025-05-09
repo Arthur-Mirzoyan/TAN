@@ -36,7 +36,7 @@ public class MainWindow implements PanelListener {
 
         window.setTitle("TAN - Terminate Advance Neutralise");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window.setSize(800, 450);
+        window.setResizable(false);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         getUsers();
@@ -118,9 +118,8 @@ public class MainWindow implements PanelListener {
     public void goToGame(User user, UserData currentUserData, Client client, CopyOnWriteArrayList<UserData> users) {
         if (user == null || users == null || users.isEmpty()) return;
 
-        // TODO: remove menu bar
+        window.setJMenuBar(createMenuBar("Enjoy Playing", null));
         switchPanel(new Game(this, user, currentUserData, client, users).getPanel());
-
     }
 
     private void addBackground() {
