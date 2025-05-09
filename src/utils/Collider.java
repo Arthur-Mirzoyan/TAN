@@ -1,5 +1,8 @@
 package utils;
 
+import java.awt.*;
+import java.awt.Dimension;
+
 public abstract class Collider {
     protected Dimension dimension;
     protected Point position; // midpoint
@@ -40,6 +43,10 @@ public abstract class Collider {
             corners[i] = new Point(other.corners[i]);
     }
 
+    public Collider(Point position) {
+        this(position, new Dimension(0, 0));
+    }
+
     protected void setRotation(double rotation) {
         this.rotation = -Math.toRadians(rotation);
         updateCorners();
@@ -61,6 +68,10 @@ public abstract class Collider {
         for (int i = 0; i < 4; i++) res[i] = new Point(corners[i]);
 
         return res;
+    }
+
+    protected Point getPosition() {
+        return new Point(position);
     }
 
     public boolean collidesWith(Collider other) {

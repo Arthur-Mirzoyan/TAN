@@ -3,13 +3,16 @@ package entities.tank.components;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.SocketOption;
 import java.util.ArrayList;
 import javax.swing.Timer;
 
 import entities.tank.Tank;
 import entities.user.User;
 import utils.*;
-import utils.Dimension;
+import java.awt.Dimension;
+import java.util.function.Consumer;
+
 import utils.Point;
 
 public class
@@ -25,6 +28,7 @@ Bullet extends Collider {
     private int range;
     private boolean isFiring = false;
     private User owner;
+    private int damage;
 
     public Bullet(Point initialPosition, int speed, int angle, int range, User owner) {
         super(initialPosition, new Dimension(SIZE, SIZE));
@@ -39,7 +43,7 @@ Bullet extends Collider {
         this.owner = owner;
     }
 
-    public void fire(Map map, ArrayList<User> users, Runnable onCompletion) {
+    public void fire(Map map, ArrayList<User> users, Runnable onCompletion, Consumer<User> onTankPenetration) {
         if (isFiring) return;
 
         isFiring = true;
@@ -80,12 +84,13 @@ Bullet extends Collider {
                 // TODO: implement tank penetration logic
 
                                 // Check tank collision
+                damage = owner.getCurrentTank().getCannon().getDamage();
                 for (User user : users) {
                     Tank target = user.getCurrentTank();
-//                    System.out.println((user != owner) + " " + collidesWith(target));
+
                     if (user != owner && collidesWith(target)) {
                         framesPassed = totalFrames;
-                        System.out.println("Korum emmm :(((((");
+                        target.hit(damage);
                         // TODO: return a namyok vor kpel a
                         // Optionally: tank.takeDamage(), remove tank, etc.
                         return;

@@ -5,16 +5,18 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.awt.Dimension;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+import entities.mysteryBox.MysteryBox;
 import entities.tank.components.TankCannon;
 import entities.tank.components.TankHull;
 import org.json.JSONObject;
 import utils.*;
 import entities.user.User;
-import utils.Dimension;
 import utils.Point;
 
-public class Tank extends Entity {
+public class Tank extends Collider {
     public enum Controls {
         UP, DOWN, LEFT, RIGHT;
 
@@ -165,6 +167,16 @@ public class Tank extends Entity {
         if ((new Tank(this, newX, newY, newAngle)).isFreeOfCollisions(map)) {
             setPosition(new Point(newX, newY));
             setAngle(newAngle);
+
+            CopyOnWriteArrayList<MysteryBox> mysteryBoxes = map.getMysteryBoxesToDraw();
+            if (mysteryBoxes != null) {
+                for (MysteryBox box : mysteryBoxes) {
+                    if (box.collidesWith(this)) {
+                        mysteryBoxes.remove(box);
+                        box.action(this);
+                    }
+                }
+            }
         }
 
 //        cannon.verifyFiringBulletsList(); // might be redundant
@@ -222,6 +234,12 @@ public class Tank extends Entity {
         cannon.shoot(map,
                 users,
                 new Point((topRightCorner.getX() + bottomRightCorner.getX()) / 2, (topRightCorner.getY() + bottomRightCorner.getY()) / 2),
-                angle);
+                angle, user -> {
+            // TODO: Send to server
+                });
+    }
+
+    public void hit(int damage) {
+        hull.setHealth(hull.getHealth() - damage * (1 - hull.getArmorStrength()));
     }
 }

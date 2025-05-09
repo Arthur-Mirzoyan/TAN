@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import entities.mysteryBox.BonusBox;
 import entities.mysteryBox.MysteryBox;
@@ -93,7 +94,7 @@ public class GamePanel extends JPanel implements KeyListener {
         byte[][] layout = map.getLayout();
         final boolean[] shouldClear = {false};
 
-        ArrayList<MysteryBox> activeMysteryBoxes = new ArrayList<>();
+        CopyOnWriteArrayList<MysteryBox> activeMysteryBoxes = new CopyOnWriteArrayList<>();
 
         ActionListener addBoxes = new ActionListener() {
             @Override
@@ -103,26 +104,12 @@ public class GamePanel extends JPanel implements KeyListener {
                 if (!shouldClear[0]) {
                     try {
                         if (activeMysteryBoxes.size() > 3) {
-                            for (MysteryBox box : activeMysteryBoxes) {
-                                Point position = box.getPosition();
-                                int r = position.getY() / cellSize;
-                                int c = position.getX() / cellSize;
-
-                                map.setLayout(r, c, Map.PATH);
-                            }
-
                             activeMysteryBoxes.clear();
                         } else {
-                            MysteryBox box = activeMysteryBoxes.getFirst();
-                            Point position = box.getPosition();
-                            int r = position.getY() / cellSize;
-                            int c = position.getX() / cellSize;
-
-                            map.setLayout(r, c, Map.PATH);
-                            activeMysteryBoxes.remove(box);
+                            activeMysteryBoxes.remove(activeMysteryBoxes.getFirst());
                         }
                     } catch (Exception ex) {
-                        System.out.println(":(");
+
                     }
                 }
 
@@ -142,14 +129,14 @@ public class GamePanel extends JPanel implements KeyListener {
                 MysteryBox box;
 
                 if (Math.random() >= 0.5) {
-                    box = new BonusBox(point);
-                    map.setLayout(row, col, (byte) BonusBox.BONUS_INDEX);
+                    box = new BonusBox(point, new Dimension(cellSize, cellSize));
                 } else {
-                    box = new TrapBox(point);
-                    map.setLayout(row, col, (byte) TrapBox.TRAP_INDEX);
+                    box = new TrapBox(point, new Dimension(cellSize, cellSize));
                 }
 
                 activeMysteryBoxes.add(box);
+
+                map.setMysteryBoxesToDraw(activeMysteryBoxes);
             }
         };
 

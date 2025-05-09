@@ -27,8 +27,8 @@ public class Game {
         User user1 = new User("anun", "pass");
         user1.setCurrentTank(
                 new Tank(map.getSpawnPoint(0),
-                        new TankHull(3, "anun", 1000, 5, 10),
-                        new TankCannon(5, "anun", 1000, 1, 10, 5, 5, 500),
+                        new TankHull(3, "anun", 1000, 5, 0.6),
+                        new TankCannon(5, "anun", 1000, 1, 10, 5, 5, 500, 20),
                         map,
                         user1)
         );
@@ -37,8 +37,8 @@ public class Game {
         User user2 = new User("anun", "pass");
         user2.setCurrentTank(
                 new Tank(map.getSpawnPoint(1),
-                        new TankHull(3, "anun", 1000, 5, 10),
-                        new TankCannon(5, "anun", 1000, 1, 10, 5, 5, 500),
+                        new TankHull(3, "anun", 1000, 5, 0.6),
+                        new TankCannon(5, "anun", 1000, 1, 10, 5, 5, 500, 20),
                         map, user2)
         );
         tankList.add(user2.getCurrentTank());
@@ -46,8 +46,8 @@ public class Game {
         User user3 = new User("anun", "pass");
         user3.setCurrentTank(
                 new Tank(map.getSpawnPoint(2),
-                        new TankHull(3, "anun", 1000, 5, 10),
-                        new TankCannon(5, "anun", 1000, 1, 10, 5, 5, 500),
+                        new TankHull(3, "anun", 1000, 5, 0.6),
+                        new TankCannon(5, "anun", 1000, 1, 10, 5, 5, 500, 20),
                         map, user3)
         );
         tankList.add(user3.getCurrentTank());
@@ -55,8 +55,8 @@ public class Game {
         User user4 = new User("anun", "pass");
         user4.setCurrentTank(
                 new Tank(map.getSpawnPoint(3),
-                        new TankHull(3, "anun", 1000, 5, 10),
-                        new TankCannon(5, "anun", 1000, 1, 10, 5, 5, 500),
+                        new TankHull(3, "anun", 1000, 5, 0.6),
+                        new TankCannon(5, "anun", 1000, 1, 10, 5, 5, 500, 20),
                         map, user4)
         );
         tankList.add(user4.getCurrentTank());

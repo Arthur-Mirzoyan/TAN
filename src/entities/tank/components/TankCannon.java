@@ -1,6 +1,7 @@
 package entities.tank.components;
 
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 import entities.tank.Tank;
 import entities.user.User;
@@ -22,9 +23,10 @@ public class TankCannon implements Cloneable {
     private int firingRange;
     private Level level;
     private User owner;
+    private int damage;
     private ArrayList<Bullet> bullets = new ArrayList<>();
 
-    public TankCannon(int id, String name, int price, int bulletSpeed, int reloadSpeed, int ammo, int blankShootRate, int firingRange) {
+    public TankCannon(int id, String name, int price, int bulletSpeed, int reloadSpeed, int ammo, int blankShootRate, int firingRange, int damage) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -34,6 +36,7 @@ public class TankCannon implements Cloneable {
         this.blankShootRate = blankShootRate;
         this.firingRange = firingRange;
         this.level = Level.PRIVATE;
+        this.damage = damage;
     }
 
     public TankCannon(JSONObject json) {
@@ -45,6 +48,7 @@ public class TankCannon implements Cloneable {
         this.ammo = JSONHelper.getValue(json, "ammo", 1);
         this.blankShootRate = JSONHelper.getValue(json, "blankShootRate", 1);
         this.firingRange = JSONHelper.getValue(json, "firingRange", 1);
+        this.damage = JSONHelper.getValue(json, "damage", 1);
         this.level = Level.PRIVATE; // TODO: should take from json
     }
 
@@ -100,6 +104,10 @@ public class TankCannon implements Cloneable {
         return name;
     }
 
+    public int getDamage(){
+        return damage;
+    }
+
     public ArrayList<Bullet> getBullets() {
         return bullets;
     }
@@ -108,14 +116,13 @@ public class TankCannon implements Cloneable {
         return level;
     }
 
-    public void shoot(Map map, ArrayList<User> users, Point bulletInitialPosition, int angle) {
+    public void shoot(Map map, ArrayList<User> users, Point bulletInitialPosition, int angle, Consumer<User> onTankPenetration) {
         if (ammo <= 0) return;
 
         Bullet bullet = new Bullet(bulletInitialPosition, bulletSpeed, -angle, firingRange, owner);
         bullets.add(bullet);
-
         ammo--;
-        bullet.fire(map, users, () -> bullets.remove(bullet));
+        bullet.fire(map, users, () -> bullets.remove(bullet), user -> onTankPenetration.accept(user));
     }
 
     public void verifyFiringBulletsList() {
