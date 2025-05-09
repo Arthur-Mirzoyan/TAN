@@ -38,7 +38,7 @@ class ClientHandler implements Runnable {
             while ((message = input.readLine()) != null) {
                 try {
                     UserData userData = new UserData(new JSONObject(message));
-                    clientIp = socket.getInetAddress().getHostAddress();
+                    clientIp = socket.getInetAddress().getHostAddress() + userData.getUsername();
 
                     userData.setIp(clientIp);
                     connectedUsers.put(clientIp, userData);

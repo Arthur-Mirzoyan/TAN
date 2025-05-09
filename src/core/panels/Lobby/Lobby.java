@@ -8,18 +8,21 @@ import network.Client;
 import network.IPHelper;
 import network.Server;
 import utils.CustomComponents;
+import utils.CustomThread;
 import utils.PanelListener;
 
 import javax.swing.*;
 import java.io.IOException;
 
 public class Lobby {
+    private PanelListener panelListener;
     private LobbyPanel scene;
     private Server server;
     private Client client;
     private User user;
 
     public Lobby(PanelListener listener, User user) {
+        this.panelListener = listener;
         this.scene = new LobbyPanel();
         this.user = user;
 
@@ -49,14 +52,17 @@ public class Lobby {
 
         scene.getJoinButton().addActionListener(e -> scene.switchToJoin());
         scene.getJoinWorldButton().addActionListener(e -> joinGame(scene.getWorldJoinIPField().getText()));
-        scene.getCreateWorldButton().addActionListener(e -> {
-            client.sendJSON(server.getConnectedUsers());
-            listener.goToGame(user, server.getClientUser(client), client, server.getConnectedUsers());
-        });
+        scene.getCreateWorldButton().addActionListener(e -> createGame());
     }
 
     public JPanel getPanel() {
         return scene;
+    }
+
+    private void createGame() {
+        server.broadcast("START", null);
+        client.sendJSON(server.getConnectedUsers());
+        panelListener.goToGame(user, server.getClientUser(client), client, server.getConnectedUsers(), server);
     }
 
     private void joinGame(String worldCode) {
@@ -70,6 +76,20 @@ public class Lobby {
                 client.kill();
             });
             loadingDialog.setVisible(true);
+
+            CustomThread clientListener = new CustomThread(500);
+            new Thread(() -> {
+                client.listenForServerMessages();
+            }).start();
+
+            clientListener.run(() -> {
+                if (client.getIsReady()) {
+                    System.out.println("GAME!!!");
+                    loadingDialog.dispose();
+                    panelListener.goToGame(user, client.getUserData(), client, client.getConnectedUsers(), server);
+                    clientListener.stop();
+                }
+            });
 
 
         } catch (IPNotFoundException e) {

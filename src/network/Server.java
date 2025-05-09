@@ -20,6 +20,8 @@ public class Server {
     private ArrayList<ClientHandler> clients;
     private ConcurrentHashMap<String, UserData> connectedUsers;
     private CopyOnWriteArrayList<UserData> users;
+    private boolean isRunning;
+    private ServerSocket serverSocket;
 
     public Server() {
         try {
@@ -39,32 +41,52 @@ public class Server {
 
     public void run() throws ServerCreationException, ServerBindingException {
         ExecutorService pool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+        isRunning = true;
 
-        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
-
+        try {
+            serverSocket = new ServerSocket(PORT);
             System.out.println("Messenger Server is running...");
 
-            while (true) {
-                Socket clientSocket = serverSocket.accept();
-                System.out.println("Client connected: " + clientSocket.getInetAddress());
+            while (isRunning) {
+                try {
+                    Socket clientSocket = serverSocket.accept();
+                    System.out.println("Client connected: " + clientSocket.getInetAddress());
 
-                ClientHandler clientHandler = new ClientHandler(this, clientSocket, connectedUsers, users);
-                clients.add(clientHandler);
-                pool.execute(clientHandler);
+                    ClientHandler clientHandler = new ClientHandler(this, clientSocket, connectedUsers, users);
+                    clients.add(clientHandler);
+                    pool.execute(clientHandler);
+                } catch (SocketException e) {
+                    // This happens when serverSocket is closed during kill()
+                    if (isRunning) {
+                        System.out.println("Socket error: " + e.getMessage());
+                    }
+                    break;
+                }
             }
+
         } catch (BindException e) {
             throw new ServerBindingException();
         } catch (IOException e) {
             throw new ServerCreationException();
         } finally {
             pool.shutdown();
+            try {
+                if (serverSocket != null && !serverSocket.isClosed()) {
+                    serverSocket.close();
+                }
+            } catch (IOException e) {
+                System.out.println("Error closing server socket: " + e.getMessage());
+            }
         }
     }
 
     public void broadcast(String message, ClientHandler sender) {
-        for (ClientHandler client : clients)
-            if (client != sender)  // Avoid sending the message back to the sender
+        System.out.println("Broadcasting: " + message);
+        for (ClientHandler client : clients) {
+            if (client != sender) {
                 client.sendMessage(message);
+            }
+        }
     }
 
     public void removeClient(ClientHandler clientHandler) {
@@ -77,5 +99,16 @@ public class Server {
 
     public UserData getClientUser(Client client) {
         return connectedUsers.get(client.getUserData().getIp());
+    }
+
+    public void kill() {
+        isRunning = false;
+        try {
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close(); // This will unblock accept()
+            }
+        } catch (IOException e) {
+            System.out.println("Error closing server socket: " + e.getMessage());
+        }
     }
 }
