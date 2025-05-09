@@ -12,6 +12,8 @@ import utils.*;
 import utils.Dimension;
 import utils.Point;
 
+import javax.swing.*;
+
 public class Tank extends Entity {
     public enum Controls {
         UP, DOWN, LEFT, RIGHT;
@@ -61,6 +63,16 @@ public class Tank extends Entity {
         this.map = tank.map; // Privacy leakage, but map itself is pretty safe :)
         setPosition(tank.getPosition());
         setAngle(angle);
+
+        this.prepareTank();
+    }
+
+    public Tank(TankHull hull, TankCannon cannon) {
+        super(new Point());
+
+        this.hull = hull;
+        this.cannon = cannon;
+        this.id = "tank_" + hull.getId() + "_" + cannon.getId();
 
         this.prepareTank();
     }
@@ -219,5 +231,13 @@ public class Tank extends Entity {
         cannon.shoot(map,
                 new Point((topRightCorner.getX() + bottomRightCorner.getX()) / 2, (topRightCorner.getY() + bottomRightCorner.getY()) / 2),
                 angle);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) return true;
+        if(obj == null || obj.getClass() != this.getClass()) return false;
+
+        return id.equals(((Tank) obj).id);
     }
 }

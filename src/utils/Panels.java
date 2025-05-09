@@ -6,6 +6,7 @@ public enum Panels {
     MENU,
     LOBBY,
     INVENTORY,
+    TANK_ADDING,
     SHOP,
     GAME
 }

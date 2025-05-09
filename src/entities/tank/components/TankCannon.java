@@ -1,13 +1,16 @@
 package entities.tank.components;
 
+import java.awt.*;
+import java.awt.Dimension;
 import java.util.ArrayList;
 
 import entities.tank.Tank;
 import org.json.JSONObject;
 
-import utils.JSONHelper;
+import utils.*;
 import utils.Point;
-import utils.Map;
+
+import javax.swing.*;
 
 public class TankCannon implements Cloneable {
     private final int id;
@@ -90,6 +93,10 @@ public class TankCannon implements Cloneable {
         return ammo;
     }
 
+    public int getFiringRange() {
+        return firingRange;
+    }
+
     public String getName() {
         return name;
     }
@@ -137,5 +144,13 @@ public class TankCannon implements Cloneable {
     @Override
     public TankCannon clone() throws CloneNotSupportedException {
         return (TankCannon) super.clone();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) return true;
+        if(obj == null || obj.getClass() != this.getClass()) return false;
+
+        return id == ((TankCannon) obj).id;
     }
 }

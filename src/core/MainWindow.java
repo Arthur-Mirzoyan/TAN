@@ -5,6 +5,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import core.panels.Game.Game;
+import core.panels.Inventory.TankAdding;
 import core.panels.Lobby.Lobby;
 import core.panels.LogIn.LogIn;
 import core.panels.Menu.Menu;
@@ -12,13 +13,12 @@ import core.panels.SignUp.SignUp;
 import core.panels.Inventory.Inventory;
 import core.panels.Shop.Shop;
 import entities.user.User;
-import utils.JSONHelper;
-import utils.PanelListener;
-import utils.Panels;
+import utils.*;
 
 public class MainWindow implements PanelListener {
     private JFrame window;
     private JPanel background;
+    private JButton backButton;
 
     private ArrayList<User> users;
 
@@ -35,8 +35,26 @@ public class MainWindow implements PanelListener {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setSize(800, 450);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-
         getUsers();
+    }
+
+    public JMenuBar createMenuBar(String panelName, Runnable action) {
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.setLayout(new BorderLayout());
+        menuBar.setOpaque(false);
+
+        if (action != null) {
+            backButton = CustomComponents.button("Back");
+            backButton.addActionListener(e -> action.run());
+            menuBar.add(backButton, BorderLayout.WEST);
+        }
+
+        JLabel label = new JLabel(panelName);
+        label.setFont(Values.EXTRA_LARGE_FONT);
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        menuBar.add(label, BorderLayout.CENTER);
+
+        return menuBar;
     }
 
     public void show() {
@@ -71,18 +89,27 @@ public class MainWindow implements PanelListener {
         switch (panel) {
             case Panels.MENU:
                 switchPanel(new Menu(this, user).getPanel());
+                window.setJMenuBar(createMenuBar("Menu", null));
                 break;
             case Panels.LOBBY:
                 switchPanel(new Lobby(this, user).getPanel());
+                window.setJMenuBar(createMenuBar("Lobby", () -> goTo(Panels.MENU, user)));
                 break;
             case Panels.INVENTORY:
                 switchPanel(new Inventory(this, user).getPanel());
+                window.setJMenuBar(createMenuBar("Inventory", () -> goTo(Panels.MENU, user)));
                 break;
             case Panels.SHOP:
                 switchPanel(new Shop(this, user).getPanel());
+                window.setJMenuBar(createMenuBar("Shop", () -> goTo(Panels.MENU, user)));
+                break;
+            case Panels.TANK_ADDING:
+                switchPanel(new TankAdding(this, user).getPanel());
+                window.setJMenuBar(createMenuBar("Inventory", () -> goTo(Panels.INVENTORY, user)));
                 break;
             case Panels.GAME:
                 switchPanel(new Game(this, user).getPanel());
+                window.setJMenuBar(createMenuBar("Game", () -> goTo(Panels.LOBBY, user)));
                 break;
         }
     }
