@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import entities.tank.Tank;
 import entities.tank.components.Bullet;
@@ -17,14 +19,18 @@ public class Map {
 
     private final JPanel panel;
     private final byte[][] layout;
+    private final Point[] spawnPoints;
 
     private Dimension dimension;
     private Tank[] tanksToDraw;
+    private CopyOnWriteArrayList<MysteryBox> mysteryBoxesToDraw = new CopyOnWriteArrayList<>();
+
     private int cellSize;
 
-    public Map(byte[][] layout) {
+    public Map(byte[][] layout, Point[] spawnPoints) {
         this.layout = layout;
         this.dimension = new Dimension();
+        this.spawnPoints = spawnPoints;
 
         panel = new JPanel() {
             @Override
@@ -37,8 +43,6 @@ public class Map {
                 setSize(cellSize * cols, cellSize * rows);
 
                 updateDimension(cellSize);
-
-                Image mysteryBoxImage = MysteryBox.image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
 
                 for (int row = 0; row < rows; row++) {
                     for (int col = 0; col < cols; col++) {
@@ -54,15 +58,7 @@ public class Map {
                     }
                 }
 
-                for (int row = 0; row < rows; row++) {
-                    for (int col = 0; col < cols; col++) {
-                        if (layout[row][col] == BonusBox.BONUS_INDEX || layout[row][col] == TrapBox.TRAP_INDEX) {
-                            Point position = new Point(col * cellSize, row * cellSize);
-                            g.drawImage(mysteryBoxImage, position.getX(), position.getY(), panel);
-                        }
-                    }
-                }
-
+                drawMysteryBoxes(g);
                 drawTanks(g);
             }
         };
@@ -70,8 +66,10 @@ public class Map {
 
     public Map(JSONObject json) {
         JSONArray layout = json.getJSONArray("layout");
+        JSONArray points = json.getJSONArray("spawnPoints");
 
         byte[][] byteLayout = new byte[layout.length()][];
+        Point[] spawnPoints = new Point[4];
 
         for (int i = 0; i < layout.length(); i++) {
             JSONArray row = layout.getJSONArray(i);
@@ -82,16 +80,20 @@ public class Map {
             byteLayout[i] = byteRow;
         }
 
-        this(byteLayout);
-    }
+        for (int i = 0; i < points.length(); i++) {
+            JSONObject p = (JSONObject) points.get(i);
+            spawnPoints[i]= new Point(p);
+        }
 
-    public void setLayout(int row, int col, byte value) {
-        if (row >= layout.length || col >= layout[0].length) return;
-        if (layout[row][col] != Map.WALL) layout[row][col] = value;
+        this(byteLayout, spawnPoints);
     }
 
     public void setTanksToDraw(Tank[] tanks) {
         this.tanksToDraw = tanks;
+    }
+
+    public void setMysteryBoxesToDraw(CopyOnWriteArrayList<MysteryBox> mysteryBoxesToDraw) {
+        this.mysteryBoxesToDraw = mysteryBoxesToDraw;
     }
 
     private void updateDimension(int cellSize) {
@@ -129,8 +131,16 @@ public class Map {
         return res;
     }
 
+    public Point getSpawnPoint(int index){
+        return spawnPoints[index];
+    }
+
     public JPanel getPanel() {
         return panel;
+    }
+
+    public CopyOnWriteArrayList<MysteryBox> getMysteryBoxesToDraw(){
+        return mysteryBoxesToDraw;
     }
 
     private void drawTanks(Graphics g) {
@@ -148,6 +158,10 @@ public class Map {
                 int imageWidthHalf = image.getWidth(null) / 2;
                 int imageHeightHalf = image.getHeight(null) / 2;
 
+                for(Point p: tank.getCorners()){
+                    g.fillOval(p.getX(), p.getY(), 6, 6);
+                }
+
                 g.drawImage(image, position.getX() - imageWidthHalf, position.getY() - imageHeightHalf, panel);
 
                 for (Bullet bullet : tank.getCannon().getBullets()) {
@@ -156,6 +170,20 @@ public class Map {
                         g.fillOval(pos.getX(), pos.getY(), Bullet.SIZE, Bullet.SIZE);
                     }
                 }
+            }
+        }
+    }
+
+    private void drawMysteryBoxes(Graphics g){
+        if (mysteryBoxesToDraw != null){
+            Image image = MysteryBox.image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+            int imageWidthHalf = image.getWidth(null) / 2;
+            int imageHeightHalf = image.getHeight(null) / 2;
+
+            for (MysteryBox box: mysteryBoxesToDraw){
+                Point position = box.getPosition();
+
+                g.drawImage(image, position.getX() - imageWidthHalf, position.getY() - imageHeightHalf, panel);
             }
         }
     }

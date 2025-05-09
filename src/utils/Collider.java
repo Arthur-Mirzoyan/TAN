@@ -1,6 +1,6 @@
 package utils;
 
-import java.awt.Dimension;
+import java.awt.*;
 
 public abstract class Collider {
     protected Dimension dimension;
@@ -46,8 +46,13 @@ public abstract class Collider {
             corners[i] = new Point(other.corners[i]);
     }
 
-    protected void setPosition(Point position) {
+    public Collider(Point position) {
+        this(position, new Dimension(0, 0));
+    }
+
+    public void setPosition(Point position) {
         this.position = position;
+        updateCorners(); // Important for accurate collision detection
     }
 
     protected void setRotation(double rotation) {
@@ -80,6 +85,8 @@ public abstract class Collider {
         Point vectorAB = new Point(B.getX() - A.getX(), B.getY() - A.getY());
         Point vectorAD = new Point(D.getX() - A.getX(), D.getY() - A.getY());
 
+        double dotAB_AB = vectorAB.getVectorDotProduct(vectorAB);
+        double dotAD_AD = vectorAD.getVectorDotProduct(vectorAD);
         double dotAB_AB = vectorAB.getVectorDotProduct(vectorAB);
         double dotAD_AD = vectorAD.getVectorDotProduct(vectorAD);
 
@@ -120,7 +127,7 @@ public abstract class Collider {
         return true;
     }
 
-    private void updateCorners() {
+    protected void updateCorners() {
         int centerX = position.getX();
         int centerY = position.getY();
         int halfWidth = (int) dimension.getWidth() / 2;

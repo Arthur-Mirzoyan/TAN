@@ -130,5 +130,71 @@
     },
     "username": "Ashot",
     "gamesWon": 0
+  },
+  {
+    "password": "202cb962ac59075b964b07152d234b70",
+    "gamesPlayed": 0,
+    "currentTank": {
+      "cannon": {
+        "ammo": 3,
+        "price": 0,
+        "reloadSpeed": 10,
+        "name": "Standard Cannon",
+        "id": 1,
+        "bulletSpeed": 3,
+        "blankShootRate": 10,
+        "firingRange": 50
+      },
+      "id": "tank_3_1",
+      "hull": {
+        "armorStrength": 20,
+        "price": 0,
+        "name": "Standard Hull",
+        "id": 1,
+        "speed": 5
+      }
+    },
+    "inventory": {
+      "money": 1200,
+      "cannons": [{
+        "ammo": 3,
+        "price": 0,
+        "reloadSpeed": 10,
+        "name": "Standard Cannon",
+        "id": 1,
+        "bulletSpeed": 3,
+        "blankShootRate": 10,
+        "firingRange": 50
+      }],
+      "hulls": [{
+        "armorStrength": 20,
+        "price": 0,
+        "name": "Standard Hull",
+        "id": 1,
+        "speed": 3
+      }],
+      "tanks": [{
+        "cannon": {
+          "ammo": 3,
+          "price": 0,
+          "reloadSpeed": 10,
+          "name": "Standard Cannon",
+          "id": 1,
+          "bulletSpeed": 3,
+          "blankShootRate": 10,
+          "firingRange": 50
+        },
+        "id": "tank_3_1",
+        "hull": {
+          "armorStrength": 20,
+          "price": 0,
+          "name": "Standard Hull",
+          "id": 1,
+          "speed": 3
+        }
+      }]
+    },
+    "username": "Samo",
+    "gamesWon": 0
   }
 ]}
