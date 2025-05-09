@@ -46,13 +46,9 @@ public abstract class Collider {
             corners[i] = new Point(other.corners[i]);
     }
 
-    public Collider(Point position) {
-        this(position, new Dimension(0, 0));
-    }
-
     public void setPosition(Point position) {
         this.position = position;
-        updateCorners(); // Important for accurate collision detection
+        updateCorners();
     }
 
     protected void setRotation(double rotation) {
@@ -65,7 +61,7 @@ public abstract class Collider {
         updateCorners();
     }
 
-    protected Point getPosition() {
+    public Point getPosition() {
         return new Point(position);
     }
 
@@ -87,13 +83,12 @@ public abstract class Collider {
 
         double dotAB_AB = vectorAB.getVectorDotProduct(vectorAB);
         double dotAD_AD = vectorAD.getVectorDotProduct(vectorAD);
-        double dotAB_AB = vectorAB.getVectorDotProduct(vectorAB);
-        double dotAD_AD = vectorAD.getVectorDotProduct(vectorAD);
 
         if (dotAB_AB == 0 || dotAD_AD == 0) return false;
 
         for (Point P : other.corners) {
             Point vectorAP = new Point(P.getX() - A.getX(), P.getY() - A.getY());
+
             double dotAP_AB = vectorAP.getVectorDotProduct(vectorAB);
             double dotAP_AD = vectorAP.getVectorDotProduct(vectorAD);
 
@@ -101,7 +96,29 @@ public abstract class Collider {
                 return true;
         }
 
-        return other.collidesWith(this);
+        Point A2 = other.corners[3];
+        Point B2 = other.corners[2];
+        Point D2 = other.corners[0];
+
+        Point vectorAB2 = new Point(B2.getX() - A2.getX(), B2.getY() - A2.getY());
+        Point vectorAD2 = new Point(D2.getX() - A2.getX(), D2.getY() - A2.getY());
+
+        double dotAB2_AB2 = vectorAB2.getVectorDotProduct(vectorAB2);
+        double dotAD2_AD2 = vectorAD2.getVectorDotProduct(vectorAD2);
+
+        if (dotAB2_AB2 == 0 || dotAD2_AD2 == 0) return false;
+
+        for (Point P : this.corners) {
+            Point vectorAP2 = new Point(P.getX() - A2.getX(), P.getY() - A2.getY());
+
+            double dotAP2_AB2 = vectorAP2.getVectorDotProduct(vectorAB2);
+            double dotAP2_AD2 = vectorAP2.getVectorDotProduct(vectorAD2);
+
+            if ((0 <= dotAP2_AB2 && dotAP2_AB2 <= dotAB2_AB2) && (0 <= dotAP2_AD2 && dotAP2_AD2 <= dotAD2_AD2))
+                return true;
+        }
+
+        return false;
     }
 
     public boolean isFreeOfCollisions(Map map) {
@@ -115,7 +132,6 @@ public abstract class Collider {
 
         int cellSize = map.getCellSize();
         byte[][] layout = map.getLayout();
-
 
         for (Point corner : corners) {
             int row = corner.getY() / cellSize;

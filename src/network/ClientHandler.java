@@ -1,5 +1,7 @@
 package network;
 
+import entities.user.components.UserData;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -9,21 +11,22 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.concurrent.ConcurrentHashMap;
-
-import entities.user.components.UserData;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 class ClientHandler implements Runnable {
     private final Server server;
     private final Socket socket;
+    private final ConcurrentHashMap<String, UserData> connectedUsers;
+    private final CopyOnWriteArrayList<UserData> users;
 
     private PrintWriter output;
-    private ConcurrentHashMap<String, UserData> connectedUsers;
     private String clientIp;
 
-    public ClientHandler(Server server, Socket socket, ConcurrentHashMap<String, UserData> connectedUsers) {
+    public ClientHandler(Server server, Socket socket, ConcurrentHashMap<String, UserData> connectedUsers, CopyOnWriteArrayList<UserData> users) {
         this.server = server;
         this.socket = socket;
         this.connectedUsers = connectedUsers;
+        this.users = users;
     }
 
     @Override
@@ -35,24 +38,35 @@ class ClientHandler implements Runnable {
             while ((message = input.readLine()) != null) {
                 try {
                     UserData userData = new UserData(new JSONObject(message));
-                    String username = userData.getUsername();
                     clientIp = socket.getInetAddress().getHostAddress();
 
                     userData.setIp(clientIp);
-
                     connectedUsers.put(clientIp, userData);
+                    users.add(userData);
 
-                    System.out.println(username + ": " + message);
                     server.broadcast(message, this);
                 } catch (JSONException e) {
-                    System.out.println("Error: Message couldn't be parsed.");
+                    try {
+                        JSONArray array = new JSONArray(message);
+
+                        for (int i = 0; i < array.length(); i++) {
+                            UserData userData = new UserData((JSONObject) array.get(i));
+                            connectedUsers.put(clientIp, userData);
+
+                            for (UserData user : users)
+                                if (user.getIp().equals(userData.getIp()))
+                                    user.updateTank(userData.getTank());
+                        }
+                    } catch (JSONException ex) {
+                        System.out.println("Error: Message couldn't be parsed.");
+                    }
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error");
+            System.out.println("Error: " + e.getMessage());
         } finally {
             server.removeClient(this);
+            users.remove(connectedUsers.get(clientIp));
             connectedUsers.remove(clientIp);
 
             try {

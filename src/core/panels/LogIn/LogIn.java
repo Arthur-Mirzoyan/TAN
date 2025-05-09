@@ -1,15 +1,12 @@
 package core.panels.LogIn;
 
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import core.exceptions.UserNotFoundException;
 import entities.user.User;
 import utils.HashUtil;
-import utils.Panels;
 import utils.PanelListener;
+import utils.Panels;
 
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class LogIn {

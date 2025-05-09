@@ -1,22 +1,23 @@
 package core;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-
 import core.panels.Game.Game;
+import core.panels.Inventory.Inventory;
 import core.panels.Lobby.Lobby;
 import core.panels.LogIn.LogIn;
 import core.panels.Menu.Menu;
-import core.panels.SignUp.SignUp;
-import core.panels.Inventory.Inventory;
 import core.panels.Shop.Shop;
+import core.panels.SignUp.SignUp;
 import entities.user.User;
+import entities.user.components.UserData;
+import network.Client;
 import utils.JSONHelper;
 import utils.PanelListener;
 import utils.Panels;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class MainWindow implements PanelListener {
     private JFrame window;
@@ -83,10 +84,15 @@ public class MainWindow implements PanelListener {
             case Panels.SHOP:
                 switchPanel(new Shop(this, user).getPanel());
                 break;
-            case Panels.GAME:
-                switchPanel(new Game(this, user).getPanel());
-                break;
         }
+    }
+
+    @Override
+    public void goToGame(User user, UserData currentUserData, Client client, CopyOnWriteArrayList<UserData> users) {
+        if (user == null || users == null || users.isEmpty()) return;
+
+        switchPanel(new Game(this, user, currentUserData, client, users).getPanel());
+
     }
 
     private void addBackground() {

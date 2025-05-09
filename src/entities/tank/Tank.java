@@ -1,18 +1,18 @@
 package entities.tank;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import entities.mysteryBox.MysteryBox;
 import entities.tank.components.TankCannon;
 import entities.tank.components.TankHull;
+import entities.user.components.UserData;
 import org.json.JSONObject;
-import utils.*;
-import entities.user.User;
 import utils.Point;
+import utils.*;
+
+import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Tank extends Collider {
     public enum Controls {
@@ -36,13 +36,13 @@ public class Tank extends Collider {
     private final TankCannon cannon;
     private final HashMap<Controls, Boolean> keysPressed = new HashMap<>();
 
-    private Map map;
     private Image image;
     private BufferedImage rotatedImage;
+    private Map map;
     private int angle = 0;
     private int lastAngle = -1;
 
-    public Tank(Point position, TankHull hull, TankCannon cannon, Map map, User owner) {
+    public Tank(Point position, TankHull hull, TankCannon cannon, Map map, UserData owner) {
         super(position);
 
         this.hull = hull;
@@ -60,7 +60,6 @@ public class Tank extends Collider {
         this.hull = tank.getHull();
         this.cannon = tank.getCannon();
         this.id = "tank_" + hull.getId() + "_" + cannon.getId();
-        this.map = tank.map; // Privacy leakage, but map itself is pretty safe :)
         setPosition(tank.getPosition());
         setAngle(angle);
 
@@ -77,16 +76,15 @@ public class Tank extends Collider {
         this.prepareTank();
     }
 
-    // Not a full copy constructor (Ghost tank)
-    private Tank(Tank other, int newX, int newY, int angle) {
+    // Not a copy constructor (Ghost tank)
+    private Tank(Tank other, Point position, int angle) {
         super(other);
 
         this.hull = null;
         this.cannon = null;
         this.id = null;
-        this.map = null;
 
-        setPosition(new Point(newX, newY));
+        setPosition(position);
         setAngle(angle);
     }
 
@@ -99,6 +97,10 @@ public class Tank extends Collider {
 
     public void setMap(Map map) {
         this.map = map;
+    }
+
+    public void setOwner(UserData user) {
+        this.cannon.setOwner(user);
     }
 
     public int getSpeed() {
@@ -140,7 +142,7 @@ public class Tank extends Collider {
         if (control != null) keysPressed.put(control, true);
     }
 
-    public void onKeyReleased(KeyEvent e, ArrayList<User> users) {
+    public void onKeyReleased(KeyEvent e, CopyOnWriteArrayList<UserData> users) {
         Controls control = Controls.parseControls(e);
         if (control != null) keysPressed.put(control, false);
 
@@ -164,7 +166,7 @@ public class Tank extends Collider {
             newY -= (int) (direction * speed * Math.sin(angleRad));
         }
 
-        if ((new Tank(this, newX, newY, newAngle)).isFreeOfCollisions(map)) {
+        if ((new Tank(this, new Point(newX, newY), newAngle)).isFreeOfCollisions(map)) {
             setPosition(new Point(newX, newY));
             setAngle(newAngle);
 
@@ -178,8 +180,6 @@ public class Tank extends Collider {
                 }
             }
         }
-
-//        cannon.verifyFiringBulletsList(); // might be redundant
     }
 
     public JSONObject toJSON() {
@@ -226,7 +226,7 @@ public class Tank extends Collider {
         updateRotatedTankImage();
     }
 
-    private void shoot(ArrayList<User> users) {
+    private void shoot(CopyOnWriteArrayList<UserData> users) {
         Point[] corners = getCorners();
         Point topRightCorner = corners[1];
         Point bottomRightCorner = corners[2];
@@ -234,8 +234,9 @@ public class Tank extends Collider {
         cannon.shoot(map,
                 users,
                 new Point((topRightCorner.getX() + bottomRightCorner.getX()) / 2, (topRightCorner.getY() + bottomRightCorner.getY()) / 2),
-                angle, user -> {
-            // TODO: Send to server
+                angle,
+                user -> {
+                    // TODO: Send to server
                 });
     }
 

@@ -1,14 +1,13 @@
 package entities.user.components;
 
-import java.util.ArrayList;
-
 import entities.tank.Tank;
 import entities.tank.components.TankCannon;
 import entities.tank.components.TankHull;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import utils.JSONHelper;
+
+import java.util.ArrayList;
 
 public class Inventory {
     private int money;

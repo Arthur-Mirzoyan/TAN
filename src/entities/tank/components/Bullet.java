@@ -1,20 +1,24 @@
 package entities.tank.components;
 
+import entities.tank.Tank;
+import entities.user.components.UserData;
+import utils.Collider;
+import utils.Map;
+import utils.Point;
+import utils.Values;
+
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.SocketOption;
-import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
-import javax.swing.Timer;
-
-import entities.tank.Tank;
-import entities.user.User;
-import utils.*;
 
 public class Bullet extends Collider {
     public static final int SIZE = 6;
     public static final Color COLOR = Values.ACCENT_COLOR;
+
+    private final UserData owner;
 
     private Timer animationTimer;
     private Point initialPosition;
@@ -22,11 +26,9 @@ public class Bullet extends Collider {
     private int angle;
     private int speed; // pixels per frame
     private int range;
-    private boolean isFiring = false;
-    private User owner;
-    private int damage;
+    private boolean isFiring;
 
-    public Bullet(Point initialPosition, int speed, int angle, int range, User owner) {
+    public Bullet(UserData owner, Point initialPosition, int speed, int angle, int range) {
         super(initialPosition, new Dimension(SIZE, SIZE));
 
         setRotation(angle);
@@ -39,7 +41,7 @@ public class Bullet extends Collider {
         this.owner = owner;
     }
 
-    public void fire(Map map, ArrayList<User> users, Runnable onCompletion, Consumer<User> onTankPenetration) {
+    public void fire(Map map, CopyOnWriteArrayList<UserData> users, Runnable onCompletion, Consumer<UserData> onTankPenetration) {
         if (isFiring) return;
 
         isFiring = true;
@@ -53,13 +55,12 @@ public class Bullet extends Collider {
 
 
         animationTimer = new Timer(16, new ActionListener() { // ~60fps
-            private int framesPassed = 0;
+            int framesPassed = 0;
 
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (framesPassed >= totalFrames) {
-                    animationTimer.stop();
-                    isFiring = false;
+                    stop();
 
                     if (onCompletion != null) onCompletion.run();
 
@@ -74,46 +75,36 @@ public class Bullet extends Collider {
 
                 setPosition(currentPosition);
 
-                // Hitting wall eliminates the bullet
-                if (layout[row][col] == Map.WALL) framesPassed = totalFrames;
+                if (layout[row][col] == Map.WALL) stop();
 
-                // TODO: implement tank penetration logic
+                int damage = owner.getTank().getCannon().getDamage();
 
-                                // Check tank collision
-                damage = owner.getCurrentTank().getCannon().getDamage();
-                for (User user : users) {
-                    Tank target = user.getCurrentTank();
+                for (UserData user : users) {
+                    Tank target = user.getTank();
 
                     if (user != owner && collidesWith(target)) {
-                        framesPassed = totalFrames;
                         target.hit(damage);
-                        // TODO: return a namyok vor kpel a
-                        // Optionally: tank.takeDamage(), remove tank, etc.
+                        onTankPenetration.accept(user);
+                        stop();
                         return;
                     }
                 }
 
                 framesPassed++;
-
-                // Here you would typically trigger a repaint of your game component
-                // For example: gamePanel.repaint();
             }
         });
 
         animationTimer.start();
     }
 
-    // Get current position for rendering
     public Point getCurrentPosition() {
         return currentPosition;
     }
 
-    // Check if bullet is currently firing
     public boolean isFiring() {
         return isFiring;
     }
 
-    // Stop the bullet animation
     public void stop() {
         if (animationTimer != null && animationTimer.isRunning()) {
             animationTimer.stop();

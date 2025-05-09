@@ -9,7 +9,6 @@ import network.IPHelper;
 import network.Server;
 import utils.CustomComponents;
 import utils.PanelListener;
-import utils.Panels;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -48,11 +47,12 @@ public class Lobby {
             scene.switchToCreate(worldCode);
         });
 
-        this.scene.getJoinButton().addActionListener(e -> scene.switchToJoin());
-        this.scene.getJoinWorldButton().addActionListener(e -> joinGame(scene.getWorldJoinIPField().getText()));
-//        this.scene.getCreateWorldButton().addActionListener(e -> {
-//            listener.goTo(Panels.GAME, user);
-//        });
+        scene.getJoinButton().addActionListener(e -> scene.switchToJoin());
+        scene.getJoinWorldButton().addActionListener(e -> joinGame(scene.getWorldJoinIPField().getText()));
+        scene.getCreateWorldButton().addActionListener(e -> {
+            client.sendJSON(server.getConnectedUsers());
+            listener.goToGame(user, server.getClientUser(client), client, server.getConnectedUsers());
+        });
     }
 
     public JPanel getPanel() {

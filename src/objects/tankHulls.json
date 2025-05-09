@@ -4,35 +4,35 @@
       "id": 1,
       "name": "Standard Hull",
       "price": 0,
-      "armorStrength": 20,
+      "armorStrength": 30,
       "speed": 3
     },
     {
       "id": 2,
       "name": "Modified Hull",
       "price": 1000,
-      "armorStrength": 20,
+      "armorStrength": 40,
       "speed": 3
     },
     {
       "id": 3,
       "name": "Charged Hull",
       "price": 1500,
-      "armorStrength": 40,
+      "armorStrength": 50,
       "speed": 6
     },
     {
       "id": 4,
       "name": "Professional Hull",
       "price": 2000,
-      "armorStrength": 75,
+      "armorStrength": 70,
       "speed": 10
     },
     {
       "id": 5,
       "name": "Custom Build Hull",
       "price": 2500,
-      "armorStrength": 100,
+      "armorStrength": 85,
       "speed": 15
     }
   ]

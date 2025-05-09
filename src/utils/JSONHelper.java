@@ -2,8 +2,8 @@ package utils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONTokener;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.FileReader;
 import java.nio.file.Files;
@@ -68,7 +68,7 @@ public class JSONHelper {
     public static <T> T getValue(JSONObject jsonObject, String key, T defaultValue) {
         try {
             return (T) jsonObject.get(key);
-        } catch (JSONException e) {
+        } catch (JSONException | ClassCastException e) {
             return defaultValue;
         }
     }

@@ -44,4 +44,18 @@ public class UserData {
 
         return json;
     }
+
+    public void updateTank(Tank tank) {
+        this.tank.setPosition(tank.getPosition());
+        this.tank.getHull().setHealth(tank.getHull().getHealth());
+    }
+
+    @Override
+    public String toString() {
+        return "UserData{" +
+                "username='" + username + '\'' +
+                ", ip='" + ip + '\'' +
+                ", tank=" + tank +
+                '}';
+    }
 }

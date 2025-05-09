@@ -19,9 +19,8 @@ public class Point {
         this(p.x, p.y);
     }
 
-    public Point(JSONObject p){
-        x = p.getInt("x");
-        y = p.getInt("y");
+    public Point(JSONObject p) {
+        this(p.getInt("x"), p.getInt("y"));
     }
 
     public void setX(int x) {
@@ -45,10 +44,11 @@ public class Point {
     }
 
     @Override
-    public String toString() {
-        return "Point{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || obj.getClass() != getClass()) return false;
+
+        Point other = (Point) obj;
+        return x == other.x && y == other.y;
     }
 }

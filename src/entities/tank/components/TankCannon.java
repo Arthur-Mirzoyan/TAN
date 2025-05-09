@@ -1,30 +1,29 @@
 package entities.tank.components;
 
-import java.util.ArrayList;
-import java.util.function.Consumer;
-
-import entities.tank.Tank;
-import entities.user.User;
+import entities.user.components.UserData;
 import org.json.JSONObject;
-
 import utils.JSONHelper;
-import utils.Point;
 import utils.Map;
+import utils.Point;
+
+import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
 public class TankCannon implements Cloneable {
     private final int id;
     private final String name;
     private final int price;
 
+    private UserData owner;
+    private ArrayList<Bullet> bullets = new ArrayList<>();
+    private Level level;
     private int blankShootRate;
     private int bulletSpeed;
     private int reloadSpeed;
     private int ammo;
     private int firingRange;
-    private Level level;
-    private User owner;
     private int damage;
-    private ArrayList<Bullet> bullets = new ArrayList<>();
 
     public TankCannon(int id, String name, int price, int bulletSpeed, int reloadSpeed, int ammo, int blankShootRate, int firingRange, int damage) {
         this.id = id;
@@ -35,8 +34,8 @@ public class TankCannon implements Cloneable {
         this.ammo = ammo;
         this.blankShootRate = blankShootRate;
         this.firingRange = firingRange;
-        this.level = Level.PRIVATE;
         this.damage = damage;
+        this.level = Level.PRIVATE;
     }
 
     public TankCannon(JSONObject json) {
@@ -48,9 +47,8 @@ public class TankCannon implements Cloneable {
         this.ammo = JSONHelper.getValue(json, "ammo", 1);
         this.blankShootRate = JSONHelper.getValue(json, "blankShootRate", 1);
         this.firingRange = JSONHelper.getValue(json, "firingRange", 1);
-        this.level = Level.parseLevel(JSONHelper.getValue(json, "level", ""));
         this.damage = JSONHelper.getValue(json, "damage", 1);
-        this.level = Level.PRIVATE; // TODO: should take from json
+        this.level = Level.parseLevel(JSONHelper.getValue(json, "level", ""));
     }
 
     public void setReloadSpeed(int reloadSpeed) {
@@ -69,8 +67,8 @@ public class TankCannon implements Cloneable {
         this.level = level;
     }
 
-    public void setOwner(User owner) {
-        this.owner=owner;
+    public void setOwner(UserData owner) {
+        this.owner = owner;
     }
 
     public void setBulletSpeed(int bulletSpeed) {
@@ -105,7 +103,7 @@ public class TankCannon implements Cloneable {
         return name;
     }
 
-    public int getDamage(){
+    public int getDamage() {
         return damage;
     }
 
@@ -117,18 +115,14 @@ public class TankCannon implements Cloneable {
         return level;
     }
 
-    public void shoot(Map map, ArrayList<User> users, Point bulletInitialPosition, int angle, Consumer<User> onTankPenetration) {
+    public void shoot(Map map, CopyOnWriteArrayList<UserData> users, Point bulletInitialPosition, int angle, Consumer<UserData> onTankPenetration) {
         if (ammo <= 0) return;
 
-        Bullet bullet = new Bullet(bulletInitialPosition, bulletSpeed, -angle, firingRange, owner);
+        Bullet bullet = new Bullet(owner, bulletInitialPosition, bulletSpeed, -angle, firingRange);
         bullets.add(bullet);
 
         ammo--;
         bullet.fire(map, users, () -> bullets.remove(bullet), user -> onTankPenetration.accept(user));
-    }
-
-    public void verifyFiringBulletsList() {
-        bullets.removeIf(bullet -> !bullet.isFiring());
     }
 
     public void upgrade() {

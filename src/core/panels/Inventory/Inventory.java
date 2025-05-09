@@ -2,6 +2,7 @@ package core.panels.Inventory;
 
 import entities.user.User;
 import utils.PanelListener;
+
 import javax.swing.*;
 
 public class Inventory {

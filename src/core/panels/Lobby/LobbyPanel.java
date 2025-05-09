@@ -1,16 +1,14 @@
 package core.panels.Lobby;
 
-import java.util.ArrayList;
-import javax.swing.*;
-import java.awt.*;
-import java.util.function.Consumer;
-
-import entities.user.User;
 import entities.user.components.UserData;
 import network.Server;
 import utils.CustomComponents;
 import utils.CustomThread;
 import utils.Values;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class LobbyPanel extends JPanel {
     private JPanel viewBox;
@@ -20,7 +18,7 @@ public class LobbyPanel extends JPanel {
     private JButton joinButton;
     private JButton createButton;
     private JButton joinWorldButton;
-    private JButton createWorldButton;
+    private JButton createWorldButton = CustomComponents.button("Start");
 
     private Server server;
 
@@ -162,9 +160,7 @@ public class LobbyPanel extends JPanel {
 
     private JPanel createConnectedUsersPanel() {
         JPanel box = new JPanel(new GridBagLayout());
-        ArrayList<UserData> users = server.getConnectedClients();
-
-        System.out.println("Users: " + users);
+        CopyOnWriteArrayList<UserData> users = server.getConnectedUsers();
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -181,10 +177,7 @@ public class LobbyPanel extends JPanel {
                 gbc.gridy++;
             }
 
-            if (users.size() > 1) {
-                createWorldButton = CustomComponents.button("Start");
-                box.add(createWorldButton, gbc);
-            }
+            if (users.size() > 0) box.add(createWorldButton, gbc);
         }
 
         return box;

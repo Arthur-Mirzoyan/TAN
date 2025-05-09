@@ -1,8 +1,10 @@
 package utils;
 
-import entities.mysteryBox.*;
-import org.json.JSONObject;
+import entities.mysteryBox.MysteryBox;
+import entities.tank.Tank;
+import entities.tank.components.Bullet;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,24 +12,22 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import entities.tank.Tank;
-import entities.tank.components.Bullet;
-
 public class Map {
     public static final byte PATH = 0;
     public static final byte WALL = 1;
 
     private final JPanel panel;
     private final byte[][] layout;
-    private final Point[] spawnPoints;
+    private final ArrayList<Point> spawnPoints;
 
+    private Image mysteryBoxImage;
     private Dimension dimension;
-    private Tank[] tanksToDraw;
+    private ArrayList<Tank> tanksToDraw;
     private CopyOnWriteArrayList<MysteryBox> mysteryBoxesToDraw = new CopyOnWriteArrayList<>();
 
     private int cellSize;
 
-    public Map(byte[][] layout, Point[] spawnPoints) {
+    public Map(byte[][] layout, ArrayList<Point> spawnPoints) {
         this.layout = layout;
         this.dimension = new Dimension();
         this.spawnPoints = spawnPoints;
@@ -49,16 +49,14 @@ public class Map {
                         int x = col * cellSize;
                         int y = row * cellSize;
 
-                        if (layout[row][col] == WALL)
-                            g.setColor(Color.BLACK);
-                        else if (layout[row][col] == PATH)
-                            g.setColor(Color.WHITE);
+                        if (layout[row][col] == WALL) g.setColor(Values.PRIMARY_COLOR);
+                        else if (layout[row][col] == PATH) g.setColor(Values.SECONDARY_COLOR);
 
                         g.fillRect(x, y, cellSize, cellSize);
                     }
                 }
 
-                drawMysteryBoxes(g);
+//                drawMysteryBoxes(g);
                 drawTanks(g);
             }
         };
@@ -69,7 +67,7 @@ public class Map {
         JSONArray points = json.getJSONArray("spawnPoints");
 
         byte[][] byteLayout = new byte[layout.length()][];
-        Point[] spawnPoints = new Point[4];
+        ArrayList<Point> spawnPoints = new ArrayList<>();
 
         for (int i = 0; i < layout.length(); i++) {
             JSONArray row = layout.getJSONArray(i);
@@ -80,15 +78,13 @@ public class Map {
             byteLayout[i] = byteRow;
         }
 
-        for (int i = 0; i < points.length(); i++) {
-            JSONObject p = (JSONObject) points.get(i);
-            spawnPoints[i]= new Point(p);
-        }
+        for (int i = 0; i < points.length(); i++)
+            spawnPoints.add(new Point((JSONObject) points.get(i)));
 
         this(byteLayout, spawnPoints);
     }
 
-    public void setTanksToDraw(Tank[] tanks) {
+    public void setTanksToDraw(ArrayList<Tank> tanks) {
         this.tanksToDraw = tanks;
     }
 
@@ -97,6 +93,9 @@ public class Map {
     }
 
     private void updateDimension(int cellSize) {
+        if (this.cellSize != cellSize)
+            mysteryBoxImage = MysteryBox.image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
+
         this.cellSize = cellSize;
 
         double newWidth = layout[0].length * cellSize;
@@ -131,15 +130,15 @@ public class Map {
         return res;
     }
 
-    public Point getSpawnPoint(int index){
-        return spawnPoints[index];
+    public ArrayList<Point> getSpawnPoints() {
+        return spawnPoints;
     }
 
     public JPanel getPanel() {
         return panel;
     }
 
-    public CopyOnWriteArrayList<MysteryBox> getMysteryBoxesToDraw(){
+    public CopyOnWriteArrayList<MysteryBox> getMysteryBoxesToDraw() {
         return mysteryBoxesToDraw;
     }
 
@@ -158,8 +157,9 @@ public class Map {
                 int imageWidthHalf = image.getWidth(null) / 2;
                 int imageHeightHalf = image.getHeight(null) / 2;
 
-                for(Point p: tank.getCorners()){
-                    g.fillOval(p.getX(), p.getY(), 6, 6);
+                for (Point p : tank.getCorners()) {
+                    g.setColor(Color.RED);
+                    g.fillOval(p.getX(), p.getY(), 5, 5);
                 }
 
                 g.drawImage(image, position.getX() - imageWidthHalf, position.getY() - imageHeightHalf, panel);
@@ -174,16 +174,14 @@ public class Map {
         }
     }
 
-    private void drawMysteryBoxes(Graphics g){
-        if (mysteryBoxesToDraw != null){
-            Image image = MysteryBox.image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
-            int imageWidthHalf = image.getWidth(null) / 2;
-            int imageHeightHalf = image.getHeight(null) / 2;
+    private void drawMysteryBoxes(Graphics g) {
+        if (mysteryBoxesToDraw != null) {
+            int imageWidthHalf = mysteryBoxImage.getWidth(null) / 2;
+            int imageHeightHalf = mysteryBoxImage.getHeight(null) / 2;
 
-            for (MysteryBox box: mysteryBoxesToDraw){
+            for (MysteryBox box : mysteryBoxesToDraw) {
                 Point position = box.getPosition();
-
-                g.drawImage(image, position.getX() - imageWidthHalf, position.getY() - imageHeightHalf, panel);
+                g.drawImage(mysteryBoxImage, position.getX() - imageWidthHalf, position.getY() - imageHeightHalf, panel);
             }
         }
     }

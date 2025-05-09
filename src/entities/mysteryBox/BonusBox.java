@@ -1,16 +1,14 @@
 package entities.mysteryBox;
 
-import javax.swing.*;
-
-import java.awt.Dimension;
-import utils.Point;
 import entities.tank.Tank;
-import entities.tank.components.TankHull;
 import entities.tank.components.TankCannon;
+import entities.tank.components.TankHull;
+import utils.Point;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class BonusBox extends MysteryBox {
-    public static final int BONUS_INDEX = 2;
-
     public BonusBox(Point point, Dimension dimension) {
         super(point, dimension);
     }

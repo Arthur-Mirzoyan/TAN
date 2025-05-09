@@ -1,15 +1,17 @@
 package network;
 
+import core.exceptions.ServerBindingException;
+import core.exceptions.ServerCreationException;
+import entities.user.components.UserData;
+import org.json.JSONArray;
+
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import core.exceptions.ServerBindingException;
-import core.exceptions.ServerCreationException;
-import entities.user.components.UserData;
 
 public class Server {
     public static final int PORT = 5000;
@@ -18,6 +20,7 @@ public class Server {
     private String ip;
     private ArrayList<ClientHandler> clients;
     private ConcurrentHashMap<String, UserData> connectedUsers;
+    private CopyOnWriteArrayList<UserData> users;
 
     public Server() {
         try {
@@ -25,6 +28,7 @@ public class Server {
             ip = localHost.getHostAddress();
             clients = new ArrayList<>();
             connectedUsers = new ConcurrentHashMap<>();
+            users = new CopyOnWriteArrayList<>();
         } catch (UnknownHostException e) {
             System.out.println("Error: Couldn't get local host.");
         }
@@ -45,7 +49,7 @@ public class Server {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Client connected: " + clientSocket.getInetAddress());
 
-                ClientHandler clientHandler = new ClientHandler(this, clientSocket, connectedUsers);
+                ClientHandler clientHandler = new ClientHandler(this, clientSocket, connectedUsers, users);
                 clients.add(clientHandler);
                 pool.execute(clientHandler);
             }
@@ -68,11 +72,11 @@ public class Server {
         clients.remove(clientHandler);
     }
 
-    public ArrayList<UserData> getConnectedClients() {
-        ArrayList<UserData> users = new ArrayList<>();
-
-        connectedUsers.forEach((_, value) -> users.add(value));
-
+    public CopyOnWriteArrayList<UserData> getConnectedUsers() {
         return users;
+    }
+
+    public UserData getClientUser(Client client) {
+        return connectedUsers.get(client.getUserData().getIp());
     }
 }

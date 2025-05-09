@@ -1,7 +1,9 @@
 package network;
 
+import core.exceptions.IPNotFoundException;
 import entities.user.User;
 import entities.user.components.UserData;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -10,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Client {
     private final UserData userData;
@@ -18,11 +21,18 @@ public class Client {
     public Client(User user, String host, int port) throws IOException {
         this.userData = new UserData(user);
         this.resources = this.connectToServer(host, port);
-        sendJson(userData.toJSON());
+
+        try {
+            userData.setIp(IPHelper.getLocalIP());
+        } catch (IPNotFoundException e) {
+            System.out.println("Client IP not found!");
+        } finally {
+            sendJSON(userData.toJSON());
+        }
     }
 
-    public String getUsername() {
-        return this.userData.getUsername();
+    public UserData getUserData() {
+        return this.userData;
     }
 
     public ClientResources connectToServer(String host, int port) throws IOException {
@@ -44,9 +54,18 @@ public class Client {
         this.resources.close();
     }
 
-    public void sendJson(JSONObject json) {
+    public void sendJSON(JSONObject json) {
         PrintWriter clientWriter = resources.getClientWriter();
         clientWriter.println(json.toString());
+    }
+
+    public void sendJSON(CopyOnWriteArrayList<UserData> users) {
+        PrintWriter clientWriter = resources.getClientWriter();
+        JSONArray json = new JSONArray();
+
+        users.forEach(user -> json.put(user.toJSON()));
+
+        clientWriter.println(json);
     }
 
 

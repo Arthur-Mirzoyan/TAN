@@ -1,11 +1,11 @@
 package utils;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.*;
-import java.net.URL;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public abstract class CustomComponents {
     public static final Cursor HAND_CURSOR = new Cursor(Cursor.HAND_CURSOR);

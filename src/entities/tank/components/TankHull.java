@@ -14,9 +14,8 @@ public class TankHull implements Cloneable {
     private final String name;
     private final int price;
 
-    private double armorStrength;
     private int speed;
-
+    private double armorStrength;
     private double health;
     private Level level;
 
@@ -36,7 +35,7 @@ public class TankHull implements Cloneable {
         this.name = JSONHelper.getValue(json, "name", "");
         this.price = JSONHelper.getValue(json, "price", 1);
         this.speed = JSONHelper.getValue(json, "speed", 1);
-        this.armorStrength = JSONHelper.getValue(json, "armorStrength", 1);
+        this.armorStrength = JSONHelper.getValue(json, "armorStrength", 20) / 100.0;
         this.level = Level.parseLevel(JSONHelper.getValue(json, "level", ""));
     }
 
@@ -150,7 +149,7 @@ public class TankHull implements Cloneable {
         json.put("name", name);
         json.put("price", price);
         json.put("speed", speed);
-        json.put("armorStrength", armorStrength);
+        json.put("armorStrength", (int) (armorStrength * 100));
 
         return json;
     }

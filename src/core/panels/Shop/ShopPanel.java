@@ -61,7 +61,7 @@ public class ShopPanel extends JPanel {
 
         ArrayList<TankHull> tankHulls = JSONHelper.parse("src/objects/tankHulls.json", "hulls", json -> new TankHull(json));
 
-        for(TankHull tankHull : tankHulls) {
+        for (TankHull tankHull : tankHulls) {
             JPanel hullCard = tankHull.generateTankHullCard(tankHull);
             imagePanel.add(hullCard);
             imagePanel.add(Box.createRigidArea(new Dimension(10, 0)));
@@ -84,7 +84,7 @@ public class ShopPanel extends JPanel {
 
         ArrayList<TankCannon> tankCannons = JSONHelper.parse("src/objects/tankCannons.json", "cannons", json -> new TankCannon(json));
 
-        for(TankCannon tankCannon : tankCannons) {
+        for (TankCannon tankCannon : tankCannons) {
 //            JPanel hullCard = tankCannon.generateTankHullCard(tankCannon);
 //            imagePanel.add(tankCannon);
             imagePanel.add(Box.createRigidArea(new Dimension(10, 0)));

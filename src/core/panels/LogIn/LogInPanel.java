@@ -1,10 +1,10 @@
 package core.panels.LogIn;
 
-import java.awt.*;
-import javax.swing.*;
-
 import utils.CustomComponents;
 import utils.Values;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class LogInPanel {
     private JPanel panel;
