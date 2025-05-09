@@ -1,5 +1,6 @@
 package core.panels.Menu;
 
+import entities.user.User;
 import utils.CustomComponents;
 import utils.Values;
 
@@ -7,11 +8,15 @@ import javax.swing.*;
 import java.awt.*;
 
 public class MenuPanel extends JPanel {
+    User user;
+
     private JButton playButton;
     private JButton inventoryButton;
     private JButton shopButton;
 
-    public MenuPanel() {
+    public MenuPanel(User user) {
+        this.user = user;
+
         setOpaque(false);
         setLayout(new BorderLayout());
         add(generateButtonBox(), BorderLayout.CENTER);
@@ -91,15 +96,15 @@ public class MenuPanel extends JPanel {
         gamesLostLabel.setForeground(Values.PRIMARY_COLOR);
         gamesLostLabel.setHorizontalAlignment(SwingConstants.LEFT);
 
-        JLabel gamesPlayedCount = new JLabel(String.valueOf(0));
+        JLabel gamesPlayedCount = new JLabel(String.valueOf(user.getGamesPlayed()));
         gamesPlayedCount.setFont(Values.EXTRA_LARGE_FONT);
         gamesPlayedCount.setForeground(Values.PRIMARY_COLOR);
 
-        JLabel gamesWonCount = new JLabel(String.valueOf(0));
+        JLabel gamesWonCount = new JLabel(String.valueOf(user.getGamesWon()));
         gamesWonCount.setFont(Values.EXTRA_LARGE_FONT);
         gamesWonCount.setForeground(Values.PRIMARY_COLOR);
 
-        JLabel gamesLostCount = new JLabel(String.valueOf(0));
+        JLabel gamesLostCount = new JLabel(String.valueOf(user.getGamesPlayed() - user.getGamesWon()));
         gamesLostCount.setFont(Values.EXTRA_LARGE_FONT);
         gamesLostCount.setForeground(Values.PRIMARY_COLOR);
 

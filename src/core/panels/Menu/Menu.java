@@ -12,7 +12,7 @@ public class Menu {
     MenuPanel scene;
 
     public Menu(PanelListener listener, User user) {
-        scene = new MenuPanel();
+        scene = new MenuPanel(user);
 
         scene.getPlayButton().addActionListener(e -> listener.goTo(Panels.LOBBY, user));
         scene.getInventoryButton().addActionListener(e -> listener.goTo(Panels.INVENTORY, user));
