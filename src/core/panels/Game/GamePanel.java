@@ -23,6 +23,8 @@ public class GamePanel extends JPanel implements KeyListener {
     private final Tank userTank;
     private final JPanel mapPanel;
 
+    private JButton exitButton;
+
     public GamePanel(UserData user, CopyOnWriteArrayList<UserData> users, Map map, Runnable action) {
         this.users = users;
 
@@ -92,9 +94,17 @@ public class GamePanel extends JPanel implements KeyListener {
             descriptionPanel.add(text);
         }
 
+        exitButton = CustomComponents.button("EXIT");
+        exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        exitButton.setFont(Values.EXTRA_LARGE_FONT);
+
+
         panel.add(players);
         panel.add(Box.createVerticalStrut(10));
         panel.add(descriptionPanel);
+        panel.add(Box.createVerticalGlue());
+        panel.add(exitButton);
+        panel.add(Box.createVerticalStrut(42));
 
         return panel;
     }
@@ -168,5 +178,9 @@ public class GamePanel extends JPanel implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
+    }
+
+    public JButton getExitButton() {
+        return exitButton;
     }
 }
