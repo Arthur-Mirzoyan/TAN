@@ -46,7 +46,8 @@ public class GamePanel extends JPanel implements KeyListener {
         new Timer(16, e -> {
             action.run();
             userTank.updateTankPosition();
-            mapPanel.repaint();
+//            mapPanel.repaint();
+            repaint();
         }).start();
 
         generateMysteryBox(map);
@@ -73,7 +74,7 @@ public class GamePanel extends JPanel implements KeyListener {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         for (UserData user : users) {
-            JLabel text = CustomComponents.label(user.getUsername());
+            JLabel text = CustomComponents.label(user.getUsername() + ": " + user.getTank().getHull().getHealth());
             panel.add(text);
         }
 

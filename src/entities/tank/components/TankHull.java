@@ -10,8 +10,7 @@ public class TankHull implements Cloneable {
 
     private int speed;
     private double armorStrength;
-    private double health;
-    private Level level;
+    private int health;
 
     public TankHull(int id, String name, int price, int speed, double armorStrength) {
         this.id = id;
@@ -19,9 +18,7 @@ public class TankHull implements Cloneable {
         this.price = price;
         this.speed = speed;
         this.armorStrength = armorStrength;
-
         this.health = 100;
-        this.level = Level.PRIVATE;
     }
 
     public TankHull(JSONObject json) {
@@ -30,7 +27,7 @@ public class TankHull implements Cloneable {
         this.price = JSONHelper.getValue(json, "price", 1);
         this.speed = JSONHelper.getValue(json, "speed", 1);
         this.armorStrength = JSONHelper.getValue(json, "armorStrength", 20) / 100.0;
-        this.level = Level.parseLevel(JSONHelper.getValue(json, "level", ""));
+        this.health = 100;
     }
 
     public int getId() {
@@ -49,7 +46,7 @@ public class TankHull implements Cloneable {
         return armorStrength;
     }
 
-    public double getHealth() {
+    public int getHealth() {
         return health;
     }
 
@@ -57,15 +54,11 @@ public class TankHull implements Cloneable {
         return speed;
     }
 
-    public Level getLevel() {
-        return level;
-    }
-
     public void setArmorStrength(int armorStrength) {
         this.armorStrength = armorStrength;
     }
 
-    public void setHealth(double health) {
+    public void setHealth(int health) {
         this.health = Math.max(health, 0);
     }
 
@@ -73,14 +66,7 @@ public class TankHull implements Cloneable {
         this.speed = speed;
     }
 
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
-    public void upgrade() {
-    }
-
-    public JSONObject toJSON() {
+    public JSONObject toJSON(boolean withHealth) {
         JSONObject json = new JSONObject();
 
         json.put("id", id);
@@ -89,7 +75,13 @@ public class TankHull implements Cloneable {
         json.put("speed", speed);
         json.put("armorStrength", (int) (armorStrength * 100));
 
+        if (withHealth) json.put("health", health);
+
         return json;
+    }
+
+    public JSONObject toJSON() {
+        return toJSON(false);
     }
 
     @Override
@@ -103,5 +95,17 @@ public class TankHull implements Cloneable {
         if (obj == null || obj.getClass() != this.getClass()) return false;
 
         return id == ((TankHull) obj).id;
+    }
+
+    @Override
+    public String toString() {
+        return "TankHull{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", speed=" + speed +
+                ", armorStrength=" + armorStrength +
+                ", health=" + health +
+                '}';
     }
 }

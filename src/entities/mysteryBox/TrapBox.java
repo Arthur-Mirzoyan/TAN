@@ -22,8 +22,8 @@ public class TrapBox extends MysteryBox {
         timer.start();
     }
 
-    private void decreaseArmourAffect(TankHull hull) {
-        hull.setArmorStrength((int) (hull.getArmorStrength() * 0.8));
+    private void decreaseAmmoAffect(TankCannon cannon) {
+        cannon.setAmmo(cannon.getAmmo() - 10);
     }
 
     private void subtractHealthAffect(TankHull hull, int health) {
@@ -50,7 +50,7 @@ public class TrapBox extends MysteryBox {
     public void action(Tank tank) {
         Runnable[] effects = new Runnable[]{
                 () -> decreaseSpeedAffect(tank.getHull()),
-                () -> decreaseArmourAffect(tank.getHull()),
+                () -> decreaseAmmoAffect(tank.getCannon()),
                 () -> subtractHealthAffect(tank.getHull(), (int) (Math.random() * 30 + 10)),
                 () -> decreaseBulletSpeedAffect(tank.getCannon()),
                 () -> reloadBulletSpeedAffect(tank.getCannon())

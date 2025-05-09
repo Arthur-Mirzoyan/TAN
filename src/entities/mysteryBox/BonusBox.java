@@ -17,8 +17,8 @@ public class BonusBox extends MysteryBox {
         hull.setSpeed((int) (hull.getSpeed() * 1.2));
     }
 
-    private void increaseArmourAffect(TankHull hull) {
-        hull.setArmorStrength((int) (hull.getArmorStrength() * 1.2));
+    private void addAmmoAffect(TankCannon cannon) {
+        cannon.setAmmo(cannon.getAmmo() + 10);
     }
 
     private void resetHealthAffect(TankHull hull) {
@@ -45,7 +45,7 @@ public class BonusBox extends MysteryBox {
     public void action(Tank tank) {
         Runnable[] effects = new Runnable[]{
                 () -> increaseSpeedAffect(tank.getHull()),
-                () -> increaseArmourAffect(tank.getHull()),
+                () -> addAmmoAffect(tank.getCannon()),
                 () -> resetHealthAffect(tank.getHull()),
                 () -> addHealthAffect(tank.getHull(), (int) (Math.random() * 40 + 10)),
                 () -> increaseBulletSpeedAffect(tank.getCannon()),

@@ -10,16 +10,12 @@ public class MenuPanel extends JPanel {
     private JButton playButton;
     private JButton inventoryButton;
     private JButton shopButton;
-    private JButton volumeConfiguratorButton;
-    private ImageIcon volumeIcon;
-    private ImageIcon muteIcon;
 
     public MenuPanel() {
         setOpaque(false);
         setLayout(new BorderLayout());
         add(generateButtonBox(), BorderLayout.CENTER);
         add(generateStatisticsBox(), BorderLayout.SOUTH);
-        add(generateVolumeConfiguratorBox(), BorderLayout.NORTH);
     }
 
     public JButton getPlayButton() {
@@ -32,18 +28,6 @@ public class MenuPanel extends JPanel {
 
     public JButton getShopButton() {
         return shopButton;
-    }
-
-    public JButton getVolumeConfiguratorButton() {
-        return volumeConfiguratorButton;
-    }
-
-    public ImageIcon getVolumeIcon() {
-        return volumeIcon;
-    }
-
-    public ImageIcon getMuteIcon() {
-        return muteIcon;
     }
 
     private JPanel generateButtonBox() {
@@ -141,24 +125,6 @@ public class MenuPanel extends JPanel {
 
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 80));
         panel.add(panel1, BorderLayout.WEST);
-        return panel;
-    }
-
-    private JPanel generateVolumeConfiguratorBox() {
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.setOpaque(false);
-
-        volumeIcon = new ImageIcon(new ImageIcon("src/assets/img/volume_button.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-        muteIcon = new ImageIcon(new ImageIcon("src/assets/img/mute_button.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH));
-
-        volumeConfiguratorButton = new JButton(volumeIcon);
-        volumeConfiguratorButton.setOpaque(false);
-        volumeConfiguratorButton.setContentAreaFilled(false);
-        volumeConfiguratorButton.setBorderPainted(false);
-        volumeConfiguratorButton.setFocusPainted(false);
-        panel.add(volumeConfiguratorButton, BorderLayout.EAST);
-
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 20));
         return panel;
     }
 }

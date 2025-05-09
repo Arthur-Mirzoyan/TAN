@@ -3,6 +3,7 @@ package core.panels.Shop;
 import entities.tank.components.TankCannon;
 import entities.tank.components.TankHull;
 import entities.user.User;
+import utils.JSONHelper;
 import utils.PanelListener;
 
 import javax.swing.*;
@@ -30,6 +31,7 @@ public class Shop {
                     user.getInventory().addCannon(tankCannon);
                     user.getInventory().setMoney(user.getInventory().getMoney() - tankCannon.getPrice());
                     JOptionPane.showMessageDialog(null, "Cannon purchased successfully!");
+                    updateUserData(user);
                 } else {
                     JOptionPane.showMessageDialog(null, "Not enough money.");
                 }
@@ -42,11 +44,20 @@ public class Shop {
                     user.getInventory().addHull(tankHull);
                     user.getInventory().setMoney(user.getInventory().getMoney() - tankHull.getPrice());
                     JOptionPane.showMessageDialog(null, "Hull purchased successfully!");
+                    updateUserData(user);
                 } else {
                     JOptionPane.showMessageDialog(null, "Not enough money.");
                 }
             } else
                 JOptionPane.showMessageDialog(null, "You already have this hull.");
         }
+    }
+
+    private void updateUserData(User user) {
+        JSONHelper.update("src/data/users.json",
+                "users",
+                "username",
+                user.getUsername(),
+                user.toJSON());
     }
 }

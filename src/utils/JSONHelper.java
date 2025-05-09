@@ -72,4 +72,26 @@ public class JSONHelper {
             return defaultValue;
         }
     }
+
+    public static void update(String path, String JSONArrayName, String key, String keyName, JSONObject json) {
+        try (FileReader reader = new FileReader(path)) {
+            JSONTokener tokener = new JSONTokener(reader);
+            JSONObject jsonObject = new JSONObject(tokener);
+
+            JSONArray arrayJSON = jsonObject.getJSONArray(JSONArrayName);
+
+            for (int i = 0; i < arrayJSON.length(); i++) {
+                JSONObject obj = arrayJSON.getJSONObject(i);
+                System.out.println(obj.getString(key).equals(keyName));
+                if (obj.getString(key).equals(keyName)) {
+                    arrayJSON.put(i, json);
+                    break;
+                }
+            }
+
+            Files.write(Path.of(path), jsonObject.toString(2).getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }

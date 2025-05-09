@@ -51,12 +51,6 @@ public class TankCard extends JPanel {
         descriptionPanel.add(bulletSpeed);
         descriptionPanel.add(Box.createVerticalStrut(3));
 
-        JLabel reloadSpeed = new JLabel("Reload Speed: " + tank.getCannon().getReloadSpeed());
-        reloadSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
-        reloadSpeed.setFont(Values.SMALL_FONT);
-        descriptionPanel.add(reloadSpeed);
-        descriptionPanel.add(Box.createVerticalStrut(3));
-
         JLabel ammo = new JLabel("Ammo: " + tank.getCannon().getAmmo());
         ammo.setAlignmentX(Component.CENTER_ALIGNMENT);
         ammo.setFont(Values.SMALL_FONT);
@@ -168,12 +162,6 @@ public class TankCard extends JPanel {
         bulletSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
         bulletSpeed.setFont(Values.SMALL_FONT);
         descriptionPanel.add(bulletSpeed);
-        descriptionPanel.add(Box.createVerticalStrut(3));
-
-        JLabel reloadSpeed = new JLabel("Reload Speed: " + cannon.getReloadSpeed());
-        reloadSpeed.setAlignmentX(Component.CENTER_ALIGNMENT);
-        reloadSpeed.setFont(Values.SMALL_FONT);
-        descriptionPanel.add(reloadSpeed);
         descriptionPanel.add(Box.createVerticalStrut(3));
 
         JLabel ammo = new JLabel("Ammo: " + cannon.getAmmo());

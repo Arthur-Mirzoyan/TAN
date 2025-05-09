@@ -130,21 +130,11 @@ public class Tank extends Collider {
     }
 
     public TankHull getHull() {
-        try {
-            return hull.clone();
-        } catch (CloneNotSupportedException e) {
-            System.out.println("Tank Hull was not cloned. Returning null.");
-            return null;
-        }
+        return hull;
     }
 
     public TankCannon getCannon() {
-        try {
-            return cannon.clone();
-        } catch (CloneNotSupportedException e) {
-            System.out.println("Tank Cannon was not cloned. Returning null.");
-            return null;
-        }
+        return cannon;
     }
 
     public void onKeyPressed(KeyEvent e) {
@@ -181,25 +171,32 @@ public class Tank extends Collider {
             setAngle(newAngle);
 
             CopyOnWriteArrayList<MysteryBox> mysteryBoxes = map.getMysteryBoxesToDraw();
+
             if (mysteryBoxes != null) {
                 for (MysteryBox box : mysteryBoxes) {
                     if (box.collidesWith(this)) {
-                        mysteryBoxes.remove(box);
                         box.action(this);
+//                        mysteryBoxes.remove(box);
+                        System.out.println("Calling box action");
+                        System.out.println("Box action ended");
                     }
                 }
             }
         }
     }
 
-    public JSONObject toJSON() {
+    public JSONObject toJSON(boolean withHealth) {
         JSONObject json = new JSONObject();
 
         json.put("id", id);
-        json.put("hull", hull.toJSON());
+        json.put("hull", hull.toJSON(withHealth));
         json.put("cannon", cannon.toJSON());
 
         return json;
+    }
+
+    public JSONObject toJSON() {
+        return toJSON(false);
     }
 
     private void prepareTank() {
@@ -251,7 +248,7 @@ public class Tank extends Collider {
     }
 
     public void hit(int damage) {
-        hull.setHealth(hull.getHealth() - damage * (1 - hull.getArmorStrength()));
+        hull.setHealth((int) (hull.getHealth() - damage * (1 - hull.getArmorStrength())));
     }
 
     @Override
@@ -260,5 +257,19 @@ public class Tank extends Collider {
         if (obj == null || obj.getClass() != this.getClass()) return false;
 
         return id.equals(((Tank) obj).id);
+    }
+
+    @Override
+    public String toString() {
+        return "Tank{" +
+                "id='" + id + '\'' +
+                ", cannon=" + cannon +
+                ", keysPressed=" + keysPressed +
+                ", image=" + image +
+                ", rotatedImage=" + rotatedImage +
+                ", map=" + map +
+                ", angle=" + angle +
+                ", lastAngle=" + lastAngle +
+                '}';
     }
 }

@@ -17,10 +17,7 @@ public class TankCannon implements Cloneable {
 
     private UserData owner;
     private ArrayList<Bullet> bullets = new ArrayList<>();
-    private Level level;
-    private int blankShootRate;
     private int bulletSpeed;
-    private int reloadSpeed;
     private int ammo;
     private int firingRange;
     private int damage;
@@ -30,12 +27,9 @@ public class TankCannon implements Cloneable {
         this.name = name;
         this.price = price;
         this.bulletSpeed = bulletSpeed;
-        this.reloadSpeed = reloadSpeed;
         this.ammo = ammo;
-        this.blankShootRate = blankShootRate;
         this.firingRange = firingRange;
         this.damage = damage;
-        this.level = Level.PRIVATE;
     }
 
     public TankCannon(JSONObject json) {
@@ -43,28 +37,13 @@ public class TankCannon implements Cloneable {
         this.name = JSONHelper.getValue(json, "name", "");
         this.price = JSONHelper.getValue(json, "price", 0);
         this.bulletSpeed = JSONHelper.getValue(json, "bulletSpeed", 1);
-        this.reloadSpeed = JSONHelper.getValue(json, "reloadSpeed", 1);
         this.ammo = JSONHelper.getValue(json, "ammo", 1);
-        this.blankShootRate = JSONHelper.getValue(json, "blankShootRate", 1);
         this.firingRange = JSONHelper.getValue(json, "firingRange", 1);
         this.damage = JSONHelper.getValue(json, "damage", 1);
-        this.level = Level.parseLevel(JSONHelper.getValue(json, "level", ""));
-    }
-
-    public void setReloadSpeed(int reloadSpeed) {
-        this.reloadSpeed = reloadSpeed;
     }
 
     public void setAmmo(int ammo) {
-        this.ammo = ammo;
-    }
-
-    public void setBlankShootRate(byte blankShootRate) {
-        this.blankShootRate = blankShootRate;
-    }
-
-    public void setLevel(Level level) {
-        this.level = level;
+        this.ammo = Math.max(ammo, 0);
     }
 
     public void setOwner(UserData owner) {
@@ -73,10 +52,6 @@ public class TankCannon implements Cloneable {
 
     public void setBulletSpeed(int bulletSpeed) {
         this.bulletSpeed = bulletSpeed;
-    }
-
-    public int getBlankShootRate() {
-        return blankShootRate;
     }
 
     public int getId() {
@@ -89,10 +64,6 @@ public class TankCannon implements Cloneable {
 
     public int getBulletSpeed() {
         return bulletSpeed;
-    }
-
-    public int getReloadSpeed() {
-        return reloadSpeed;
     }
 
     public int getAmmo() {
@@ -115,9 +86,6 @@ public class TankCannon implements Cloneable {
         return bullets;
     }
 
-    public Level getLevel() {
-        return level;
-    }
 
     public void shoot(Map map, CopyOnWriteArrayList<UserData> users, Point bulletInitialPosition, int angle, Consumer<UserData> onTankPenetration) {
         if (ammo <= 0) return;
@@ -138,11 +106,8 @@ public class TankCannon implements Cloneable {
         json.put("name", name);
         json.put("price", price);
         json.put("bulletSpeed", bulletSpeed);
-        json.put("reloadSpeed", reloadSpeed);
-        json.put("blankShootRate", blankShootRate);
         json.put("firingRange", firingRange);
         json.put("ammo", ammo);
-        json.put("level", level);
 
         return json;
     }
@@ -158,5 +123,19 @@ public class TankCannon implements Cloneable {
         if (obj == null || obj.getClass() != this.getClass()) return false;
 
         return id == ((TankCannon) obj).id;
+    }
+
+    @Override
+    public String toString() {
+        return "TankCannon{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", owner=" + owner +
+                ", bullets=" + bullets +
+                ", ammo=" + ammo +
+                ", firingRange=" + firingRange +
+                ", damage=" + damage +
+                '}';
     }
 }

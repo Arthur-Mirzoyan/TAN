@@ -2,6 +2,7 @@ package core.panels.Inventory;
 
 import entities.tank.Tank;
 import entities.user.User;
+import utils.JSONHelper;
 import utils.PanelListener;
 
 import javax.swing.*;
@@ -15,6 +16,11 @@ public class TankAdding {
             if (!(user.getInventory().getTanks().contains(tank))) {
                 user.getInventory().addTank(tank);
                 JOptionPane.showMessageDialog(null, "Tank successfully added");
+                JSONHelper.update("src/data/users.json",
+                        "users",
+                        "username",
+                        user.getUsername(),
+                        user.toJSON());
             } else
                 JOptionPane.showMessageDialog(null, "Tank is already in the inventory");
         });

@@ -55,7 +55,7 @@ class ClientHandler implements Runnable {
 
                             for (UserData user : users)
                                 if (user.getIp().equals(userData.getIp()))
-                                    user.updateTank(userData.getTank());
+                                    user.updateTankScore(userData.getTank(), user.getScore());
                         }
                     } catch (JSONException ex) {
                         System.out.println("Error: Message couldn't be parsed.");

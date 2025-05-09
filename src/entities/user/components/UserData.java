@@ -9,6 +9,7 @@ public class UserData {
     private String username;
     private String ip;
     private Tank tank;
+    private int score;
 
     public UserData(User user) {
         this.username = user.getUsername();
@@ -18,10 +19,19 @@ public class UserData {
     public UserData(JSONObject json) throws JSONException {
         this.username = json.getString("username");
         this.tank = new Tank(json.getJSONObject("tank"));
+        this.score = json.getInt("score");
     }
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getScore() {
+        return this.score;
     }
 
     public String getUsername() {
@@ -40,14 +50,16 @@ public class UserData {
         JSONObject json = new JSONObject();
 
         json.put("username", username);
-        json.put("tank", tank.toJSON());
+        json.put("tank", tank.toJSON(true));
+        json.put("score", score);
 
         return json;
     }
 
-    public void updateTank(Tank tank) {
+    public void updateTankScore(Tank tank, int score) {
         this.tank.setPosition(tank.getPosition());
         this.tank.getHull().setHealth(tank.getHull().getHealth());
+        this.score = score;
     }
 
     @Override
@@ -56,6 +68,7 @@ public class UserData {
                 "username='" + username + '\'' +
                 ", ip='" + ip + '\'' +
                 ", tank=" + tank +
+                ", score=" + score +
                 '}';
     }
 }
