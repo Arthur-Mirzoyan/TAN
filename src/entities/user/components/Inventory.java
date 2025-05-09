@@ -34,7 +34,7 @@ public class Inventory {
     }
 
     public Inventory(JSONObject json) {
-        this.money = JSONHelper.getValue(json, "money", 0);
+        this.money = JSONHelper.getValue(json, "money", 1000000);
         this.cannons = new ArrayList<>();
         this.hulls = new ArrayList<>();
         this.tanks = new ArrayList<>();

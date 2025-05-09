@@ -66,6 +66,16 @@ public class Tank extends Collider {
         this.prepareTank();
     }
 
+    public Tank(TankHull hull, TankCannon cannon) {
+        super(new Point());
+
+        this.hull = hull;
+        this.cannon = cannon;
+        this.id = "tank_" + hull.getId() + "_" + cannon.getId();
+
+        this.prepareTank();
+    }
+
     public Tank(JSONObject json) {
         super(new Point());
 
@@ -242,5 +252,13 @@ public class Tank extends Collider {
 
     public void hit(int damage) {
         hull.setHealth(hull.getHealth() - damage * (1 - hull.getArmorStrength()));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) return true;
+        if(obj == null || obj.getClass() != this.getClass()) return false;
+
+        return id.equals(((Tank) obj).id);
     }
 }

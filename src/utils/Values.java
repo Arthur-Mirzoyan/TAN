@@ -17,10 +17,12 @@ public abstract class Values {
         }
     }
 
+    public static final Font EXTRA_SUPER_LARGE_FONT = CUSTOM_FONT.deriveFont(40f);
     public static final Font EXTRA_LARGE_FONT = CUSTOM_FONT.deriveFont(28f);
     public static final Font LARGE_FONT = CUSTOM_FONT.deriveFont(20f);
     public static final Font MEDIUM_FONT = CUSTOM_FONT.deriveFont(16f);
     public static final Font SMALL_FONT = CUSTOM_FONT.deriveFont(12f);
+
 
     public static final Color PRIMARY_COLOR = new Color(68, 54, 39);
     public static final Color SECONDARY_COLOR = new Color(239, 220, 171);

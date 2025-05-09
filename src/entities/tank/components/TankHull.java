@@ -1,13 +1,18 @@
 package entities.tank.components;
 
+import entities.tank.Tank;
 import org.json.JSONObject;
 import utils.CustomComponents;
 import utils.ImageDrawer;
 import utils.JSONHelper;
 import utils.Values;
+import entities.user.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.function.Consumer;
 
 public class TankHull implements Cloneable {
     private final int id;
@@ -37,62 +42,6 @@ public class TankHull implements Cloneable {
         this.speed = JSONHelper.getValue(json, "speed", 1);
         this.armorStrength = JSONHelper.getValue(json, "armorStrength", 20) / 100.0;
         this.level = Level.parseLevel(JSONHelper.getValue(json, "level", ""));
-    }
-
-    public JPanel generateTankHullCard(TankHull tankHull) {
-        JPanel cardPanel = new JPanel();
-        cardPanel.setOpaque(false);
-        cardPanel.setLayout(new BoxLayout(cardPanel, BoxLayout.Y_AXIS));
-        cardPanel.setBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0));
-
-        JLabel nameLabel = CustomComponents.label(tankHull.getName());
-        nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        Image image = new ImageDrawer("assets/img/tankHull/hull" + tankHull.getId() + ".png").getScaledImage(50, 100);
-        JLabel imageLabel = new JLabel(new ImageIcon(image));
-        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JPanel descriptionPanel = new JPanel();
-        descriptionPanel.setLayout(new BoxLayout(descriptionPanel, BoxLayout.Y_AXIS));
-
-        JLabel speed = new JLabel("Speed: " + tankHull.getSpeed());
-        speed.setAlignmentX(Component.LEFT_ALIGNMENT);
-        speed.setFont(Values.SMALL_FONT);
-        descriptionPanel.add(speed);
-        descriptionPanel.add(Box.createVerticalStrut(3));
-
-        JLabel armor = new JLabel("Armor: " + tankHull.getArmorStrength());
-        armor.setAlignmentX(Component.LEFT_ALIGNMENT);
-        armor.setFont(Values.SMALL_FONT);
-        descriptionPanel.add(armor);
-        descriptionPanel.add(Box.createVerticalStrut(3));
-
-        JLabel health = new JLabel("Health: " + tankHull.getHealth());
-        health.setAlignmentX(Component.LEFT_ALIGNMENT);
-        health.setFont(Values.SMALL_FONT);
-        descriptionPanel.add(health);
-        descriptionPanel.add(Box.createVerticalStrut(3));
-
-        JLabel level = new JLabel("Level: " + tankHull.getLevel());
-        level.setAlignmentX(Component.LEFT_ALIGNMENT);
-        level.setFont(Values.SMALL_FONT);
-        descriptionPanel.add(level);
-
-        JButton buyButton = new JButton("Buy");
-        buyButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        cardPanel.add(nameLabel);
-        cardPanel.add(Box.createVerticalStrut(10));
-
-        cardPanel.add(imageLabel);
-        cardPanel.add(Box.createVerticalStrut(10));
-
-        cardPanel.add(descriptionPanel);
-        cardPanel.add(Box.createVerticalStrut(10));
-
-        cardPanel.add(buyButton);
-
-        return cardPanel;
     }
 
     public int getId() {
@@ -157,5 +106,13 @@ public class TankHull implements Cloneable {
     @Override
     public TankHull clone() throws CloneNotSupportedException {
         return (TankHull) super.clone();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) return true;
+        if(obj == null || obj.getClass() != this.getClass()) return false;
+
+        return id == ((TankHull) obj).id;
     }
 }

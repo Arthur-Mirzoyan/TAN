@@ -1,7 +1,19 @@
 package entities.tank.components;
 
+import java.awt.*;
+import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.function.Consumer;
+
+import entities.tank.Tank;
+import entities.user.User;
 import entities.user.components.UserData;
 import org.json.JSONObject;
+
+import utils.*;
+import utils.Point;
+
+import javax.swing.*;
 import utils.JSONHelper;
 import utils.Map;
 import utils.Point;
@@ -99,6 +111,10 @@ public class TankCannon implements Cloneable {
         return ammo;
     }
 
+    public int getFiringRange() {
+        return firingRange;
+    }
+
     public String getName() {
         return name;
     }
@@ -146,5 +162,13 @@ public class TankCannon implements Cloneable {
     @Override
     public TankCannon clone() throws CloneNotSupportedException {
         return (TankCannon) super.clone();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == this) return true;
+        if(obj == null || obj.getClass() != this.getClass()) return false;
+
+        return id == ((TankCannon) obj).id;
     }
 }
