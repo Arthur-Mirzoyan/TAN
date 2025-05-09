@@ -19,13 +19,13 @@ public class TankHull implements Cloneable {
     private final String name;
     private final int price;
 
-    private int armorStrength;
+    private double armorStrength;
     private int speed;
 
-    private int health;
+    private double health;
     private Level level;
 
-    public TankHull(int id, String name, int price, int speed, int armorStrength) {
+    public TankHull(int id, String name, int price, int speed, double armorStrength) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -57,11 +57,11 @@ public class TankHull implements Cloneable {
         return price;
     }
 
-    public int getArmorStrength() {
+    public double getArmorStrength() {
         return armorStrength;
     }
 
-    public int getHealth() {
+    public double getHealth() {
         return health;
     }
 
@@ -77,8 +77,8 @@ public class TankHull implements Cloneable {
         this.armorStrength = armorStrength;
     }
 
-    public void setHealth(int health) {
-        this.health = health;
+    public void setHealth(double health) {
+        this.health = Math.max(health, 0);
     }
 
     public void setSpeed(int speed) {

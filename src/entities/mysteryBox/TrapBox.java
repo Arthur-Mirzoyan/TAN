@@ -5,13 +5,15 @@ import entities.tank.components.TankCannon;
 import entities.tank.components.TankHull;
 import utils.Point;
 
+
 import javax.swing.*;
+import java.awt.*;
 
 public class TrapBox extends MysteryBox {
     public static final int TRAP_INDEX = 3;
 
-    public TrapBox(Point point) {
-        super(point);
+    public TrapBox(Point point, Dimension dimension) {
+        super(point, dimension);
     }
 
     private void decreaseSpeedAffect(TankHull hull) {

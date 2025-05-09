@@ -1,5 +1,7 @@
 package utils;
 
+import org.json.JSONObject;
+
 public class Point {
     private int x;
     private int y;
@@ -15,6 +17,11 @@ public class Point {
 
     public Point(Point p) {
         this(p.x, p.y);
+    }
+
+    public Point(JSONObject p){
+        x = p.getInt("x");
+        y = p.getInt("y");
     }
 
     public void setX(int x) {

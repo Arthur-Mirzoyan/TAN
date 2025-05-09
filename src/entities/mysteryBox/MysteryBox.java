@@ -1,23 +1,23 @@
 package entities.mysteryBox;
 
 import entities.tank.Tank;
+import utils.Collider;
 import utils.ImageDrawer;
 import utils.Point;
 
 import java.awt.*;
 
-public abstract class MysteryBox {
+public abstract class MysteryBox extends Collider {
     public static final Image image = new ImageDrawer("assets/img/mysteryBox.jpg").getImage();
 
-    private Point position;
-
-    public MysteryBox(Point point) {
-        this.position = new Point(point);
+    public MysteryBox(Point point, Dimension dimension) {
+        super(point, dimension);
     }
 
     public Point getPosition() {
-        return new Point(position);
+        return super.getPosition();
     }
 
-    abstract void action(Tank tank);
+    public abstract void action(Tank tank);
 }
+
