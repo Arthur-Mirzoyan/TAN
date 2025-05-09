@@ -1,6 +1,5 @@
 package core.panels.Shop;
 
-import entities.tank.Tank;
 import entities.tank.components.TankCannon;
 import entities.tank.components.TankHull;
 import entities.user.User;

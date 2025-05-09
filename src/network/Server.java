@@ -3,7 +3,6 @@ package network;
 import core.exceptions.ServerBindingException;
 import core.exceptions.ServerCreationException;
 import entities.user.components.UserData;
-import org.json.JSONArray;
 
 import java.io.IOException;
 import java.net.*;

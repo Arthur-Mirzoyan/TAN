@@ -168,6 +168,7 @@ public class Tank extends Collider {
         if (keysPressed.getOrDefault(Controls.RIGHT, false)) newAngle = (angle - 5) % 360;
 
         if (keysPressed.getOrDefault(Controls.UP, false) || keysPressed.getOrDefault(Controls.DOWN, false)) {
+            System.out.println("Up or Down");
             int direction = keysPressed.getOrDefault(Controls.UP, false) ? 1 : -1;
             int speed = hull.getSpeed();
             double angleRad = Math.toRadians(angle);
@@ -256,8 +257,8 @@ public class Tank extends Collider {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == this) return true;
-        if(obj == null || obj.getClass() != this.getClass()) return false;
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
 
         return id.equals(((Tank) obj).id);
     }

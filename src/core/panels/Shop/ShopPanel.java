@@ -11,7 +11,6 @@ import utils.Values;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class ShopPanel extends JPanel {

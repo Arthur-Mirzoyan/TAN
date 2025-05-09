@@ -4,7 +4,6 @@ import entities.user.User;
 import utils.PanelListener;
 import utils.Panels;
 
-
 import javax.swing.*;
 
 public class Inventory {

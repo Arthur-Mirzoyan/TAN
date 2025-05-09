@@ -130,19 +130,11 @@ public class GamePanel extends JPanel implements KeyListener {
         }).start();
     }
 
-    //    private ArrayList<Tank> getTanksToDraw(ArrayList<Point> spawnPoints) {
     private ArrayList<Tank> getTanksToDraw() {
         ArrayList<Tank> tanksToDraw = new ArrayList<>();
-//        int k = 0;
 
-        for (UserData userData : users) {
-//            if (k >= spawnPoints.size()) break;
-
-//            Tank tank = userData.getTank();
-//            tank.setPosition(spawnPoints.get(k));
+        for (UserData userData : users)
             tanksToDraw.add(userData.getTank());
-//            ++k;
-        }
 
         return tanksToDraw;
     }

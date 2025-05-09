@@ -1,19 +1,11 @@
 package utils;
 
-import entities.tank.components.TankCannon;
-
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Dimension;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.function.Function;
 
 public abstract class CustomComponents {
     public static final Cursor HAND_CURSOR = new Cursor(Cursor.HAND_CURSOR);

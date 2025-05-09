@@ -1,22 +1,17 @@
 package core;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-
 import core.panels.Game.Game;
+import core.panels.Inventory.Inventory;
 import core.panels.Inventory.TankAdding;
 import core.panels.Lobby.Lobby;
 import core.panels.LogIn.LogIn;
 import core.panels.Menu.Menu;
 import core.panels.Shop.Shop;
+import core.panels.SignUp.SignUp;
 import entities.user.User;
-import utils.*;
 import entities.user.components.UserData;
 import network.Client;
-import utils.JSONHelper;
-import utils.PanelListener;
-import utils.Panels;
+import utils.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,6 +38,7 @@ public class MainWindow implements PanelListener {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setSize(800, 450);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
         getUsers();
     }
 
@@ -122,6 +118,7 @@ public class MainWindow implements PanelListener {
     public void goToGame(User user, UserData currentUserData, Client client, CopyOnWriteArrayList<UserData> users) {
         if (user == null || users == null || users.isEmpty()) return;
 
+        // TODO: remove menu bar
         switchPanel(new Game(this, user, currentUserData, client, users).getPanel());
 
     }

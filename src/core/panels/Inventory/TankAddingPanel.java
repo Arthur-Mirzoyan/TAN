@@ -1,13 +1,10 @@
 package core.panels.Inventory;
 
-import entities.tank.Tank;
 import entities.tank.components.TankCannon;
 import entities.tank.components.TankCard;
 import entities.tank.components.TankHull;
 import entities.user.User;
 import utils.CustomComponents;
-import utils.ImageDrawer;
-import utils.JSONHelper;
 import utils.Values;
 
 import javax.swing.*;

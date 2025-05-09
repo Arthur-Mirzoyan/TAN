@@ -1,18 +1,7 @@
 package entities.tank.components;
 
-import entities.tank.Tank;
 import org.json.JSONObject;
-import utils.CustomComponents;
-import utils.ImageDrawer;
 import utils.JSONHelper;
-import utils.Values;
-import entities.user.*;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.function.Consumer;
 
 public class TankHull implements Cloneable {
     private final int id;
@@ -110,8 +99,8 @@ public class TankHull implements Cloneable {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj == this) return true;
-        if(obj == null || obj.getClass() != this.getClass()) return false;
+        if (obj == this) return true;
+        if (obj == null || obj.getClass() != this.getClass()) return false;
 
         return id == ((TankHull) obj).id;
     }
