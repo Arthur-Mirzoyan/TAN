@@ -43,7 +43,7 @@ public class TankCannon implements Cloneable {
         this.ammo = JSONHelper.getValue(json, "ammo", 1);
         this.blankShootRate = JSONHelper.getValue(json, "blankShootRate", 1);
         this.firingRange = JSONHelper.getValue(json, "firingRange", 1);
-        this.level = Level.PRIVATE; // TODO: should take from json
+        this.level = Level.parseLevel(JSONHelper.getValue(json, "level", ""));
     }
 
     public void setReloadSpeed(int reloadSpeed) {
@@ -129,7 +129,7 @@ public class TankCannon implements Cloneable {
         json.put("blankShootRate", blankShootRate);
         json.put("firingRange", firingRange);
         json.put("ammo", ammo);
-        json.put("level", level); // TODO: implement Level getting from json
+        json.put("level", level);
 
         return json;
     }

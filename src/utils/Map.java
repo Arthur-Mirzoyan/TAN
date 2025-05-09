@@ -24,7 +24,7 @@ public class Map {
 
     public Map(byte[][] layout) {
         this.layout = layout;
-        this.dimension = new Dimension(0, 0);
+        this.dimension = new Dimension();
 
         panel = new JPanel() {
             @Override
@@ -39,8 +39,6 @@ public class Map {
                 updateDimension(cellSize);
 
                 Image mysteryBoxImage = MysteryBox.image.getScaledInstance(cellSize, cellSize, Image.SCALE_SMOOTH);
-                int mysteryBoxWidthHalf = mysteryBoxImage.getWidth(null) / 2;
-                int mysteryBoxHeightHalf = mysteryBoxImage.getHeight(null) / 2;
 
                 for (int row = 0; row < rows; row++) {
                     for (int col = 0; col < cols; col++) {
@@ -101,9 +99,11 @@ public class Map {
 
         double newWidth = layout[0].length * cellSize;
         double newHeight = layout.length * cellSize;
+        double currentWidth = dimension.getWidth();
+        double currentHeight = dimension.getHeight();
 
-        if (dimension.getWidth() != newWidth) dimension.setWidth(newWidth);
-        if (dimension.getHeight() != newHeight) dimension.setHeight(newHeight);
+        if (currentWidth != newWidth) dimension.setSize(newWidth, currentHeight);
+        if (currentHeight != newHeight) dimension.setSize(currentWidth, newHeight);
     }
 
     public int getCellSize() {

@@ -1,5 +1,9 @@
 package network;
 
+import entities.user.User;
+import entities.user.components.UserData;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,36 +12,28 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-    private final String name;
+    private final UserData userData;
     private final ClientResources resources;
 
-    public Client(String name, String host, int port) {
-        this.name = name;
+    public Client(User user, String host, int port) throws IOException {
+        this.userData = new UserData(user);
         this.resources = this.connectToServer(host, port);
+        sendJson(userData.toJSON());
     }
 
-    public String getName() {
-        return this.name;
+    public String getUsername() {
+        return this.userData.getUsername();
     }
 
-    // Method to connect to the server and return the ClientResources object
-    public ClientResources connectToServer(String host, int port) {
-        try {
-            System.out.println("Connecting to " + host + ":" + port);
-            Socket socket = new Socket(host, port);
-            System.out.println("socket");
-            BufferedReader socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            System.out.println("socketReader");
-            PrintWriter clientWriter = new PrintWriter(socket.getOutputStream(), true);
-            System.out.println("clientWriter");
-            Scanner clientReader = new Scanner(System.in);
-            System.out.println("clientReader");
+    public ClientResources connectToServer(String host, int port) throws IOException {
+        System.out.println("Connecting to " + host + ":" + port);
 
-            return new ClientResources(socket, socketReader, clientWriter, clientReader);
-        } catch (IOException e) {
-            System.out.println("Could not connect to server: " + e.getMessage());
-            return null;
-        }
+        Socket socket = new Socket(host, port);
+        BufferedReader socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        PrintWriter clientWriter = new PrintWriter(socket.getOutputStream(), true);
+        Scanner clientReader = new Scanner(System.in);
+
+        return new ClientResources(socket, socketReader, clientWriter, clientReader);
     }
 
     public boolean isConnectedToServer() {
@@ -48,24 +44,12 @@ public class Client {
         this.resources.close();
     }
 
-    // Method to handle user messaging and server responses
-    public void startMessaging() {
-        Scanner clientReader = resources.getClientReader();
+    public void sendJson(JSONObject json) {
         PrintWriter clientWriter = resources.getClientWriter();
-
-        // Start a separate thread to listen for messages from the server
-        new Thread(this::listenForServerMessages).start();
-
-        // Start message loop for user input
-        System.out.println("Start messaging (type 'exit' to quit):");
-        while (true) {
-            System.out.print("> ");
-            String message = clientReader.nextLine();
-            clientWriter.println(message); // Send the message to the server
-        }
+        clientWriter.println(json.toString());
     }
 
-    // Method to listen for messages from the server
+
     private void listenForServerMessages() {
         BufferedReader socketReader = resources.getSocketReader();
 

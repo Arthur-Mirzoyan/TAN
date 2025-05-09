@@ -1,12 +1,12 @@
 package entities.tank.components;
 
 import java.awt.*;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import utils.*;
-import utils.Dimension;
 import utils.Point;
 
 public class Bullet extends Collider {

@@ -1,10 +1,11 @@
 package utils;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 
 public abstract class CustomComponents {
     public static final Cursor HAND_CURSOR = new Cursor(Cursor.HAND_CURSOR);
@@ -29,7 +30,7 @@ public abstract class CustomComponents {
     public static JPasswordField passwordInputBox() {
         JPasswordField input = new JPasswordField();
 
-        input.setEchoChar('.');
+        input.setEchoChar('+');
         input.setFont(Values.MEDIUM_FONT);
         input.setForeground(Values.PRIMARY_COLOR);
         input.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
@@ -68,7 +69,6 @@ public abstract class CustomComponents {
         button.setFont(Values.MEDIUM_FONT);
         button.setForeground(Values.TERTIARY_COLOR);
         button.setBackground(Values.PRIMARY_COLOR);
-
         button.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
         button.addMouseListener(new MouseAdapter() {
@@ -95,25 +95,42 @@ public abstract class CustomComponents {
         return label;
     }
 
-    public static JButton backButton() {
-        ImageIcon icon = new ImageIcon("assets/img/arrow.png");
-        JButton button = new JButton(icon);
+    public static JDialog loadingDialog(String message, Runnable onClose) {
+        JDialog dialog = new JDialog((Frame) null, "Please Wait...", true);
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+        dialog.setSize(300, 150);
+        dialog.setLocationRelativeTo(null);
+        dialog.setResizable(false);
 
-        button.setBorderPainted(false);
-        button.setContentAreaFilled(false);
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                button.setCursor(HAND_CURSOR);
-            }
+        JLabel loadingLabel = new JLabel(message);
+        loadingLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        loadingLabel.setFont(new Font("Arial", Font.PLAIN, 16));
 
-            @Override
-            public void mouseExited(MouseEvent e) {
-                button.setCursor(DEFAULT_CURSOR);
-            }
+        JProgressBar progressBar = new JProgressBar();
+        progressBar.setIndeterminate(true);
+        progressBar.setBackground(Values.TERTIARY_COLOR);
+        progressBar.setForeground(Values.PRIMARY_COLOR);
+
+        JButton exitButton = button("Exit Game");
+        exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        exitButton.setSelected(false);
+        exitButton.addActionListener(e -> {
+            dialog.dispose();
+            onClose.run();
         });
 
-        return button;
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        panel.add(loadingLabel);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(progressBar);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(exitButton);
+
+        dialog.setContentPane(panel);
+
+        return dialog;
     }
 }

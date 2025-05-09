@@ -1,6 +1,7 @@
 package entities.tank;
 
 import java.awt.*;
+import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
@@ -9,10 +10,9 @@ import entities.tank.components.TankCannon;
 import entities.tank.components.TankHull;
 import org.json.JSONObject;
 import utils.*;
-import utils.Dimension;
 import utils.Point;
 
-public class Tank extends Entity {
+public class Tank extends Collider {
     public enum Controls {
         UP, DOWN, LEFT, RIGHT;
 
@@ -28,7 +28,6 @@ public class Tank extends Entity {
     }
 
     public static final double IMAGE_SCALE = 0.1;
-    private static final int Map_Bounds_Buffer_Zone = 5;
 
     private final String id;
     private final TankHull hull;
@@ -75,8 +74,7 @@ public class Tank extends Entity {
         this.prepareTank();
     }
 
-    // Ghost tank copy constructor
-    // Not a full copy
+    // Not a full copy constructor (Ghost tank)
     private Tank(Tank other, int newX, int newY, int angle) {
         super(other);
 
@@ -102,6 +100,10 @@ public class Tank extends Entity {
 
     public int getSpeed() {
         return hull.getSpeed();
+    }
+
+    public String getId() {
+        return id;
     }
 
     public Image getImage() {

@@ -37,7 +37,7 @@ public class TankHull implements Cloneable {
         this.price = JSONHelper.getValue(json, "price", 1);
         this.speed = JSONHelper.getValue(json, "speed", 1);
         this.armorStrength = JSONHelper.getValue(json, "armorStrength", 1);
-        this.level = Level.PRIVATE; // TODO: should take from json
+        this.level = Level.parseLevel(JSONHelper.getValue(json, "level", ""));
     }
 
     public JPanel generateTankHullCard(TankHull tankHull) {

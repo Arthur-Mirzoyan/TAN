@@ -1,5 +1,7 @@
 package utils;
 
+import java.awt.Dimension;
+
 public abstract class Collider {
     protected Dimension dimension;
     protected Point position; // midpoint
@@ -26,6 +28,10 @@ public abstract class Collider {
         updateCorners();
     }
 
+    public Collider(Point position) {
+        this(position, new Dimension());
+    }
+
     protected Collider(Collider other) {
         if (other == null) {
             System.out.println("Collider other cannot be null");
@@ -40,6 +46,10 @@ public abstract class Collider {
             corners[i] = new Point(other.corners[i]);
     }
 
+    protected void setPosition(Point position) {
+        this.position = position;
+    }
+
     protected void setRotation(double rotation) {
         this.rotation = -Math.toRadians(rotation);
         updateCorners();
@@ -48,6 +58,10 @@ public abstract class Collider {
     protected void setDimension(Dimension dimension) {
         this.dimension = dimension;
         updateCorners();
+    }
+
+    protected Point getPosition() {
+        return new Point(position);
     }
 
     protected Point[] getCorners() {
@@ -66,21 +80,21 @@ public abstract class Collider {
         Point vectorAB = new Point(B.getX() - A.getX(), B.getY() - A.getY());
         Point vectorAD = new Point(D.getX() - A.getX(), D.getY() - A.getY());
 
-        int dotAB_AB = vectorAB.getVectorDotProduct(vectorAB);
-        int dotAD_AD = vectorAD.getVectorDotProduct(vectorAD);
+        double dotAB_AB = vectorAB.getVectorDotProduct(vectorAB);
+        double dotAD_AD = vectorAD.getVectorDotProduct(vectorAD);
+
+        if (dotAB_AB == 0 || dotAD_AD == 0) return false;
 
         for (Point P : other.corners) {
             Point vectorAP = new Point(P.getX() - A.getX(), P.getY() - A.getY());
+            double dotAP_AB = vectorAP.getVectorDotProduct(vectorAB);
+            double dotAP_AD = vectorAP.getVectorDotProduct(vectorAD);
 
-            int dotAP_AB = vectorAP.getVectorDotProduct(vectorAB);
-            int dotAP_AD = vectorAP.getVectorDotProduct(vectorAD);
-
-            System.out.println((0 <= dotAP_AB) + " " + (dotAP_AB <= dotAB_AB) + " " + (0 <= dotAP_AD) + " " + (dotAP_AD <= dotAD_AD));
-
-            if ((0 <= dotAP_AB && dotAP_AB <= dotAB_AB) && (0 <= dotAP_AD && dotAP_AD <= dotAD_AD)) return true;
+            if ((0 <= dotAP_AB && dotAP_AB <= dotAB_AB) && (0 <= dotAP_AD && dotAP_AD <= dotAD_AD))
+                return true;
         }
 
-        return false;
+        return other.collidesWith(this);
     }
 
     public boolean isFreeOfCollisions(Map map) {

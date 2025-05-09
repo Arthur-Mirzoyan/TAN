@@ -41,7 +41,6 @@ public class SignUp {
             try {
                 getUserWith(users);
                 JOptionPane.showMessageDialog(getPanel(), "User " + username + " already exists", "Error", JOptionPane.ERROR_MESSAGE);
-//                panelListener.goTo(Panels.MENU, user);
             } catch (UserNotFoundException e) {
                 User user = new User(username, passwordHash);
                 JSONHelper.write("src/data/users.json", "users", user.toJSON());
