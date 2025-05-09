@@ -176,9 +176,7 @@ public class Tank extends Collider {
                 for (MysteryBox box : mysteryBoxes) {
                     if (box.collidesWith(this)) {
                         box.action(this);
-//                        mysteryBoxes.remove(box);
-                        System.out.println("Calling box action");
-                        System.out.println("Box action ended");
+                        mysteryBoxes.remove(box);
                     }
                 }
             }

@@ -23,19 +23,6 @@ public class Menu {
             else
                 listener.goTo(Panels.LOBBY, user);
         });
-
-        scene.getVolumeConfiguratorButton().addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                JButton button = scene.getVolumeConfiguratorButton();
-                Icon current = button.getIcon();
-
-                if (current.equals(scene.getVolumeIcon())) {
-                    button.setIcon(scene.getMuteIcon());
-                } else {
-                    button.setIcon(scene.getVolumeIcon());
-                }
-            }
-        });
     }
 
     public JPanel getPanel() {

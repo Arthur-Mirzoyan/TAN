@@ -39,13 +39,16 @@ public class MainWindow implements PanelListener {
         window.setResizable(false);
         window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+        window.setIconImage(new ImageDrawer("assets/img/logo.jpg").getImage());
         getUsers();
     }
 
     public JMenuBar createMenuBar(String panelName, Runnable action) {
         JMenuBar menuBar = new JMenuBar();
+
         menuBar.setLayout(new BorderLayout());
         menuBar.setOpaque(false);
+        menuBar.setBorder(BorderFactory.createEmptyBorder(5, 5,5 ,5));
 
         if (action != null) {
             backButton = CustomComponents.button("Back");
