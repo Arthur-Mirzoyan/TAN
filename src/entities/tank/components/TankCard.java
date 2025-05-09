@@ -208,6 +208,57 @@ public class TankCard extends JPanel {
         add(button);
     }
 
+    public TankCard(Tank tank, int panelWidth, int panelHeight, int imageWidth, int imageHeight) {
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setAlignmentX(Component.CENTER_ALIGNMENT);
+        setPreferredSize(new java.awt.Dimension(panelWidth, panelHeight));
+        setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        setOpaque(false);
+
+        JLabel nameLabel = CustomComponents.label("Custom Tank");
+        nameLabel.setOpaque(false);
+        nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        nameLabel.setFont(Values.EXTRA_SUPER_LARGE_FONT);
+
+        Image image = ImageDrawer.rotateImage(new ImageDrawer("assets/img/tanks/tank_" + tank.getHull().getId() + "_" + tank.getCannon().getId() + ".png").getImage(), -90).getScaledInstance(imageWidth, imageHeight, Image.SCALE_SMOOTH);
+
+        JLabel imageLabel = new JLabel(new ImageIcon(image));
+        imageLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JPanel descriptionPanel = new JPanel();
+        descriptionPanel.setOpaque(false);
+        descriptionPanel.setLayout(new BoxLayout(descriptionPanel, BoxLayout.Y_AXIS));
+        descriptionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel health = new JLabel("Health: " + tank.getHull().getHealth());
+        health.setAlignmentX(Component.CENTER_ALIGNMENT);
+        health.setFont(Values.EXTRA_LARGE_FONT);
+        descriptionPanel.add(health);
+        descriptionPanel.add(Box.createVerticalStrut(7));
+
+        JLabel ammo = new JLabel("Ammo: " + tank.getCannon().getAmmo());
+        ammo.setAlignmentX(Component.CENTER_ALIGNMENT);
+        ammo.setFont(Values.EXTRA_LARGE_FONT);
+        descriptionPanel.add(ammo);
+        descriptionPanel.add(Box.createVerticalStrut(7));
+
+        JLabel score = new JLabel("Score: 1000");
+        score.setAlignmentX(Component.CENTER_ALIGNMENT);
+        score.setFont(Values.EXTRA_LARGE_FONT);
+        descriptionPanel.add(score);
+        descriptionPanel.add(Box.createVerticalStrut(7));
+
+        add(nameLabel);
+        add(Box.createVerticalStrut(15));
+
+        add(imageLabel);
+        add(Box.createVerticalStrut(15));
+
+        add(descriptionPanel);
+        add(Box.createVerticalStrut(15));
+    }
+
     public JButton getButton() {
         return button;
     }

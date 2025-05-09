@@ -4,10 +4,12 @@ import entities.mysteryBox.BonusBox;
 import entities.mysteryBox.MysteryBox;
 import entities.mysteryBox.TrapBox;
 import entities.tank.Tank;
+import entities.tank.components.TankCard;
 import entities.user.components.UserData;
 import utils.CustomComponents;
 import utils.Map;
 import utils.Point;
+import utils.Values;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,6 +43,7 @@ public class GamePanel extends JPanel implements KeyListener {
 
         add(generateGameInfo(), BorderLayout.WEST);
         add(generateUserInfo(user), BorderLayout.EAST);
+
         add(mapPanel, BorderLayout.CENTER);
 
         new Timer(16, e -> {
@@ -54,14 +57,9 @@ public class GamePanel extends JPanel implements KeyListener {
 
     public JPanel generateUserInfo(UserData user) {
         JPanel panel = new JPanel();
-
         panel.setOpaque(false);
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JLabel text1 = CustomComponents.label(user.getUsername());
-
-        panel.setBorder(BorderFactory.createLineBorder(Color.RED, 50));
-        panel.add(text1);
+        panel.add(new TankCard(user.getTank(), 600, 700, 240, 400));
 
         return panel;
     }
@@ -71,13 +69,32 @@ public class GamePanel extends JPanel implements KeyListener {
 
         panel.setOpaque(false);
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 25));
+
+
+        JLabel players = new JLabel("Players");
+        players.setFont(Values.EXTRA_SUPER_LARGE_FONT);
+        players.setOpaque(false);
+        players.setAlignmentX(Component.CENTER_ALIGNMENT);
+        players.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JPanel descriptionPanel = new JPanel();
+        descriptionPanel.setOpaque(false);
+        descriptionPanel.setLayout(new BoxLayout(descriptionPanel, BoxLayout.Y_AXIS));
+        descriptionPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         for (UserData user : users) {
             JLabel text = CustomComponents.label(user.getUsername());
-            panel.add(text);
+            text.setAlignmentX(Component.CENTER_ALIGNMENT);
+            text.setFont(Values.LARGE_FONT);
+            descriptionPanel.add(Box.createVerticalStrut(3));
+            descriptionPanel.add(text);
         }
 
-        panel.setBorder(BorderFactory.createLineBorder(Color.RED, 50));
+        panel.add(players);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(descriptionPanel);
 
         return panel;
     }
