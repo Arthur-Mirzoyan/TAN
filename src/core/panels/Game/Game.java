@@ -1,6 +1,5 @@
 package core.panels.Game;
 
-import entities.tank.Tank;
 import entities.user.User;
 import entities.user.components.UserData;
 import network.Client;
@@ -32,9 +31,7 @@ public class Game {
         }
 
         scene = new GamePanel(currentUserData, connectedUsers, map, () -> client.listenForServerMessages(), () -> {
-            System.out.println("Client: " + client.getUserData());
-            System.out.println("UserDa: " + currentUserData);
-            //            client.sendJSON();
+            // TODO: client.sendJSON();
         });
 
         scene.getExitButton().addActionListener(e -> {

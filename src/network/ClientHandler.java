@@ -53,7 +53,6 @@ class ClientHandler implements Runnable {
                             UserData userData = new UserData((JSONObject) array.get(i));
                             connectedUsers.put(userData.getIp(), userData);
 
-                            System.out.println("Updating users");
                             for (UserData user : users)
                                 if (user.getIp().equals(userData.getIp()))
                                     user.updateTankScore(userData.getTank(), user.getScore());

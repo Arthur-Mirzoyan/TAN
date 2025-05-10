@@ -177,7 +177,7 @@ public class LobbyPanel extends JPanel {
                 gbc.gridy++;
             }
 
-            if (users.size() > 0) box.add(createWorldButton, gbc);
+            if (users.size() > 1) box.add(createWorldButton, gbc);
         }
 
         return box;

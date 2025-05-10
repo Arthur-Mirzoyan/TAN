@@ -26,8 +26,6 @@ public class GamePanel extends JPanel implements KeyListener {
     public GamePanel(UserData user, CopyOnWriteArrayList<UserData> users, Map map, Runnable action, Runnable onTankMove) {
         this.users = users;
 
-        System.out.println("GamePanel: " + user);
-
         setOpaque(false);
         setLayout(new BorderLayout());
         setFocusable(true);
