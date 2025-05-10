@@ -128,8 +128,8 @@ public abstract class CustomComponents {
      * Creates a modal loading dialog with a message and a progress bar.
      * Includes a cancel button that closes the dialog and invokes the given action.
      *
-     * @param message  the message to display
-     * @param onClose  the action to perform when the dialog is closed
+     * @param message the message to display
+     * @param onClose the action to perform when the dialog is closed
      * @return a configured {@code JDialog}
      */
     public static JDialog loadingDialog(String message, Runnable onClose) {

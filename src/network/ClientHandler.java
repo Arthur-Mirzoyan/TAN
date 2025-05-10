@@ -29,10 +29,10 @@ class ClientHandler implements Runnable {
     /**
      * Constructs a new handler for a connected client.
      *
-     * @param server           the server instance managing this client
-     * @param socket           the client socket
-     * @param connectedUsers   the map of connected users keyed by IP
-     * @param users            the active user list
+     * @param server         the server instance managing this client
+     * @param socket         the client socket
+     * @param connectedUsers the map of connected users keyed by IP
+     * @param users          the active user list
      */
     public ClientHandler(Server server, Socket socket, ConcurrentHashMap<String, UserData> connectedUsers, CopyOnWriteArrayList<UserData> users) {
         this.server = server;
@@ -67,7 +67,7 @@ class ClientHandler implements Runnable {
 
                         for (int i = 0; i < array.length(); i++) {
                             UserData userData = new UserData((JSONObject) array.get(i));
-                            connectedUsers.put(clientIp, userData);
+                            connectedUsers.put(userData.getIp(), userData);
 
                             for (UserData user : users)
                                 if (user.getIp().equals(userData.getIp()))

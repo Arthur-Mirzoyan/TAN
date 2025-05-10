@@ -17,7 +17,7 @@ public class IPHelper {
     /**
      * Returns the first non-loopback IPv4 address of the machine.
      *
-     * @return  the local IPv4 address as a String
+     * @return the local IPv4 address as a String
      * @throws IPNotFoundException if no valid IP could be found
      */
     public static String getLocalIP() throws IPNotFoundException {

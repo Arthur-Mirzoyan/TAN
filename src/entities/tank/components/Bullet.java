@@ -2,10 +2,9 @@ package entities.tank.components;
 
 import entities.tank.Tank;
 import entities.user.components.UserData;
-import utils.Collider;
-import utils.Map;
+import org.json.JSONObject;
 import utils.Point;
-import utils.Values;
+import utils.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,12 +43,23 @@ public class Bullet extends Collider {
         this.owner = owner;
     }
 
+    public Bullet(JSONObject json) {
+        super(new Point(JSONHelper.getValue(json, "initialPosition", new Point())), new Dimension(SIZE, SIZE));
+        this.initialPosition = this.getPosition();
+        this.currentPosition = new Point(JSONHelper.getValue(json, "currentPosition", new Point()));
+        this.speed = JSONHelper.getValue(json, "speed", 0);
+        this.angle = JSONHelper.getValue(json, "angle", 0);
+        this.range = JSONHelper.getValue(json, "range", 0);
+        this.isFiring = JSONHelper.getValue(json, "isFiring", false);
+        this.owner = JSONHelper.getValue(json, "owner", null);
+    }
+
     /**
      * Starts animating the bullet through the map, checking for tank hits or wall collisions.
      *
-     * @param map the map containing layout and walls
-     * @param users all players to check for collisions
-     * @param onCompletion callback on bullet completion
+     * @param map               the map containing layout and walls
+     * @param users             all players to check for collisions
+     * @param onCompletion      callback on bullet completion
      * @param onTankPenetration callback on hitting a tank
      */
     public void fire(Map map, CopyOnWriteArrayList<UserData> users, Runnable onCompletion, Consumer<UserData> onTankPenetration) {
@@ -110,6 +120,19 @@ public class Bullet extends Collider {
 
     public Point getCurrentPosition() {
         return currentPosition;
+    }
+
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("initialPosition", initialPosition);
+        json.put("currentPosition", currentPosition);
+        json.put("speed", speed);
+        json.put("angle", angle);
+        json.put("isFiring", isFiring);
+        json.put("range", range);
+
+        return json;
     }
 
     public boolean isFiring() {

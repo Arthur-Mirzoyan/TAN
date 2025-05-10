@@ -20,10 +20,10 @@ public class ClientResources implements AutoCloseable {
     /**
      * Constructs a new ClientResources object using the provided communication streams.
      *
-     * @param socket         the socket connected to the server
-     * @param socketReader   stream for reading server messages
-     * @param clientWriter   stream for sending messages to the server
-     * @param clientReader   scanner to handle client-side input (if any)
+     * @param socket       the socket connected to the server
+     * @param socketReader stream for reading server messages
+     * @param clientWriter stream for sending messages to the server
+     * @param clientReader scanner to handle client-side input (if any)
      */
     public ClientResources(Socket socket, BufferedReader socketReader, PrintWriter clientWriter, Scanner clientReader) {
         this.socket = socket;

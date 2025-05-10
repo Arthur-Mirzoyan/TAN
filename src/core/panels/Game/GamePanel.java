@@ -6,10 +6,8 @@ import entities.mysteryBox.TrapBox;
 import entities.tank.Tank;
 import entities.tank.components.TankCard;
 import entities.user.components.UserData;
-import utils.CustomComponents;
-import utils.Map;
 import utils.Point;
-import utils.Values;
+import utils.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,7 +27,7 @@ public class GamePanel extends JPanel implements KeyListener {
 
     private JButton exitButton;
 
-    public GamePanel(UserData user, CopyOnWriteArrayList<UserData> users, Map map, Runnable action) {
+    public GamePanel(UserData user, CopyOnWriteArrayList<UserData> users, Map map, Runnable action, Runnable onTankMove) {
         this.users = users;
 
         setOpaque(false);
@@ -41,7 +39,7 @@ public class GamePanel extends JPanel implements KeyListener {
         userTank = user.getTank();
         userTank.setOwner(user);
         userTank.setMap(map);
-        userTank.setPosition(map.getSpawnPoints().get(0));
+        userTank.setOnTankMove(onTankMove);
 
         map.setTanksToDraw(getTanksToDraw());
 
@@ -52,13 +50,22 @@ public class GamePanel extends JPanel implements KeyListener {
 
         add(mapPanel, BorderLayout.CENTER);
 
-        new Timer(16, e -> {
-            action.run();
+        CustomThread changeListener = new CustomThread(16);
+        changeListener.run(action);
+
+        Timer gameLoop = new Timer(16, e -> {
             userTank.updateTankPosition();
             mapPanel.repaint();
-        }).start();
+        });
 
+        gameLoop.start();
         generateMysteryBox(map);
+
+        if (exitButton != null)
+            exitButton.addActionListener(e -> {
+                changeListener.stop();
+                gameLoop.stop();
+            });
     }
 
     public JPanel generateUserInfo(UserData user) {
@@ -77,7 +84,6 @@ public class GamePanel extends JPanel implements KeyListener {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 25));
-
 
         JLabel players = new JLabel("Players");
         players.setFont(Values.EXTRA_SUPER_LARGE_FONT);
@@ -101,7 +107,6 @@ public class GamePanel extends JPanel implements KeyListener {
         exitButton = CustomComponents.button("EXIT");
         exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         exitButton.setFont(Values.EXTRA_LARGE_FONT);
-
 
         panel.add(players);
         panel.add(Box.createVerticalStrut(10));

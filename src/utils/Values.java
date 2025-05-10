@@ -13,7 +13,9 @@ import java.io.IOException;
  */
 public abstract class Values {
 
-    /** The custom game font loaded from a TTF file. */
+    /**
+     * The custom game font loaded from a TTF file.
+     */
     public static Font CUSTOM_FONT;
 
     static {

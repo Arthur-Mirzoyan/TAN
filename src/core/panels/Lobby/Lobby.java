@@ -8,6 +8,7 @@ import network.Client;
 import network.IPHelper;
 import network.Server;
 import utils.CustomComponents;
+import utils.CustomThread;
 import utils.PanelListener;
 
 import javax.swing.*;
@@ -18,6 +19,7 @@ import java.io.IOException;
  * It manages client-server connections and controls the interaction between the user and the lobby interface.
  */
 public class Lobby {
+    private PanelListener panelListener;
     private LobbyPanel scene;
     private Server server;
     private Client client;
@@ -30,6 +32,7 @@ public class Lobby {
      * @param user     the current user
      */
     public Lobby(PanelListener listener, User user) {
+        this.panelListener = listener;
         this.scene = new LobbyPanel();
         this.user = user;
 
@@ -59,10 +62,7 @@ public class Lobby {
 
         scene.getJoinButton().addActionListener(e -> scene.switchToJoin());
         scene.getJoinWorldButton().addActionListener(e -> joinGame(scene.getWorldJoinIPField().getText()));
-        scene.getCreateWorldButton().addActionListener(e -> {
-            client.sendJSON(server.getConnectedUsers());
-            listener.goToGame(user, server.getClientUser(client), client, server.getConnectedUsers());
-        });
+        scene.getCreateWorldButton().addActionListener(e -> createGame());
     }
 
     /**
@@ -72,6 +72,13 @@ public class Lobby {
      */
     public JPanel getPanel() {
         return scene;
+    }
+
+    private void createGame() {
+        server.broadcast("START", null);
+        server.sendJSON();
+        client.sendJSON(server.getConnectedUsers());
+        panelListener.goToGame(user, server.getClientUser(client), client, server.getConnectedUsers(), server);
     }
 
     /**
@@ -86,10 +93,26 @@ public class Lobby {
 
             client = new Client(user, ip, Server.PORT);
 
+            CustomThread clientListener = new CustomThread(500);
+            new Thread(() -> {
+                client.listenForServerMessages();
+            }).start();
+
             JDialog loadingDialog = CustomComponents.loadingDialog("Waiting for the host to start the game.", () -> {
                 client.kill();
             });
-            loadingDialog.setVisible(true);
+
+            new Thread(() -> {
+                loadingDialog.setVisible(true);
+            }).start();
+
+            clientListener.run(() -> {
+                if (client.getIsReady()) {
+                    loadingDialog.dispose();
+                    panelListener.goToGame(user, client.getUserData(), client, client.getConnectedUsers(), server);
+                    clientListener.stop();
+                }
+            });
 
 
         } catch (IPNotFoundException e) {

@@ -3,6 +3,7 @@ package utils;
 import entities.user.User;
 import entities.user.components.UserData;
 import network.Client;
+import network.Server;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -24,10 +25,10 @@ public interface PanelListener {
     /**
      * Switches to the game panel, initializing it with full multiplayer context.
      *
-     * @param user the current user
+     * @param user            the current user
      * @param currentUserData the user's game-specific data
-     * @param client the connected network client for communication
-     * @param users the list of other users in the session
+     * @param client          the connected network client for communication
+     * @param users           the list of other users in the session
      */
-    void goToGame(User user, UserData currentUserData, Client client, CopyOnWriteArrayList<UserData> users);
+    void goToGame(User user, UserData currentUserData, Client client, CopyOnWriteArrayList<UserData> users, Server server);
 }

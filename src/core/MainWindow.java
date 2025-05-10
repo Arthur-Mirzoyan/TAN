@@ -11,6 +11,7 @@ import core.panels.SignUp.SignUp;
 import entities.user.User;
 import entities.user.components.UserData;
 import network.Client;
+import network.Server;
 import utils.*;
 
 import javax.swing.*;
@@ -55,7 +56,7 @@ public class MainWindow implements PanelListener {
 
         menuBar.setLayout(new BorderLayout());
         menuBar.setOpaque(false);
-        menuBar.setBorder(BorderFactory.createEmptyBorder(5, 5,5 ,5));
+        menuBar.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         if (action != null) {
             backButton = CustomComponents.button("Back");
@@ -128,11 +129,11 @@ public class MainWindow implements PanelListener {
     }
 
     @Override
-    public void goToGame(User user, UserData currentUserData, Client client, CopyOnWriteArrayList<UserData> users) {
+    public void goToGame(User user, UserData currentUserData, Client client, CopyOnWriteArrayList<UserData> users, Server server) {
         if (user == null || users == null || users.isEmpty()) return;
 
         window.setJMenuBar(createMenuBar("Enjoy Playing", null));
-        switchPanel(new Game(this, user, currentUserData, client, users).getPanel());
+        switchPanel(new Game(this, user, currentUserData, client, users, server).getPanel());
     }
 
     private void addBackground() {

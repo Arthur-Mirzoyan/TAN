@@ -5,8 +5,6 @@ import utils.PanelListener;
 import utils.Panels;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * The {@code Menu} class manages the main menu screen of the application.
