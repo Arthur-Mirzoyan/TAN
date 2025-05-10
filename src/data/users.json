@@ -22,7 +22,7 @@
         }
       },
       "inventory": {
-        "money": 200,
+        "money": 999999,
         "cannons": [
           {
             "ammo": 3,
