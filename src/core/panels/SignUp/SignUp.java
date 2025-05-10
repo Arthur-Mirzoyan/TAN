@@ -10,10 +10,21 @@ import utils.Panels;
 import javax.swing.*;
 import java.util.ArrayList;
 
+/**
+ * The {@code SignUp} class handles the user registration process in the application.
+ * It manages user input, validation, and account creation by writing new user data
+ * to persistent storage. It also handles UI transitions.
+ */
 public class SignUp {
     private PanelListener panelListener;
     private SignUpPanel scene;
 
+    /**
+     * Constructs a {@code SignUp} controller that initializes the sign-up UI and its event logic.
+     *
+     * @param listener the panel listener to navigate between screens
+     * @param users    the list of existing users for duplicate checks
+     */
     public SignUp(PanelListener listener, ArrayList<User> users) {
         scene = new SignUpPanel();
         panelListener = listener;
@@ -22,10 +33,21 @@ public class SignUp {
         scene.getLogInButton().addActionListener(e -> signUp(users));
     }
 
+    /**
+     * Returns the visual panel representing the sign-up form.
+     *
+     * @return the sign-up UI panel
+     */
     public JPanel getPanel() {
         return scene.getPanel();
     }
 
+    /**
+     * Handles the sign-up logic: validates input, checks for duplicate usernames,
+     * hashes the password, and saves the new user if valid.
+     *
+     * @param users the list of existing users to check for duplicates
+     */
     private void signUp(ArrayList<User> users) {
         String username = scene.getUsernameField().getText();
         String password = scene.getPasswordField().getText();
@@ -47,6 +69,13 @@ public class SignUp {
         }
     }
 
+    /**
+     * Searches the user list for a matching username.
+     *
+     * @param users the list of users to search
+     * @return the found user if present
+     * @throws UserNotFoundException if the user is not in the list
+     */
     private User getUserWith(ArrayList<User> users) throws UserNotFoundException {
         String username = scene.getUsernameField().getText();
 

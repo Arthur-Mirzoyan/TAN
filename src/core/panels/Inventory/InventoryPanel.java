@@ -10,6 +10,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * The {@code InventoryPanel} class displays the contents of a player's inventory
+ * within the game's GUI. It updates dynamically based on the inventory state.
+ */
 public class InventoryPanel extends JPanel {
     private final User user;
 

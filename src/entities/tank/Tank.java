@@ -14,6 +14,10 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Represents a tank in the game, combining a hull and cannon with player controls.
+ * The tank handles rendering, movement, shooting, and interactions with map elements.
+ */
 public class Tank extends Collider {
     public enum Controls {
         UP, DOWN, LEFT, RIGHT;
@@ -42,6 +46,9 @@ public class Tank extends Collider {
     private int angle = 0;
     private int lastAngle = -1;
 
+    /**
+     * Constructs a tank with specific components, map, and owner.
+     */
     public Tank(Point position, TankHull hull, TankCannon cannon, Map map, UserData owner) {
         super(position);
 
@@ -54,6 +61,9 @@ public class Tank extends Collider {
         this.prepareTank();
     }
 
+    /**
+     * Copy constructor to create a new tank instance from another.
+     */
     public Tank(Tank tank) {
         super(tank.getPosition());
 
@@ -66,6 +76,9 @@ public class Tank extends Collider {
         this.prepareTank();
     }
 
+    /**
+     * Used when only the components are provided, not the full state.
+     */
     public Tank(TankHull hull, TankCannon cannon) {
         super(new Point());
 
@@ -76,6 +89,9 @@ public class Tank extends Collider {
         this.prepareTank();
     }
 
+    /**
+     * Constructs a tank from a JSON object.
+     */
     public Tank(JSONObject json) {
         super(new Point());
 
@@ -149,6 +165,9 @@ public class Tank extends Collider {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) shoot(users);
     }
 
+    /**
+     * Updates the tank's position and angle based on input keys.
+     */
     public void updateTankPosition() {
         int newAngle = angle;
         int newX = position.getX();
@@ -183,6 +202,9 @@ public class Tank extends Collider {
         }
     }
 
+    /**
+     * Returns the tank configuration in JSON format.
+     */
     public JSONObject toJSON(boolean withHealth) {
         JSONObject json = new JSONObject();
 
@@ -231,6 +253,9 @@ public class Tank extends Collider {
         updateRotatedTankImage();
     }
 
+    /**
+     * Triggers the tank to fire a bullet, if possible.
+     */
     private void shoot(CopyOnWriteArrayList<UserData> users) {
         Point[] corners = getCorners();
         Point topRightCorner = corners[1];
@@ -245,6 +270,9 @@ public class Tank extends Collider {
                 });
     }
 
+    /**
+     * Applies damage to the tank, factoring in its armor.
+     */
     public void hit(int damage) {
         hull.setHealth((int) (hull.getHealth() - damage * (1 - hull.getArmorStrength())));
     }

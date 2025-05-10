@@ -4,7 +4,16 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * The {@code Values} class provides static constants used for UI styling,
+ * including custom fonts and color palettes. It attempts to load a custom
+ * pixel-style font, falling back to a default system font if needed.
+ * <p>
+ * This class is intended for consistent theme and style management.
+ */
 public abstract class Values {
+
+    /** The custom game font loaded from a TTF file. */
     public static Font CUSTOM_FONT;
 
     static {

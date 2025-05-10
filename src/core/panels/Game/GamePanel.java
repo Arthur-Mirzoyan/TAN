@@ -18,6 +18,10 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * The {@code GamePanel} class is responsible for drawing game elements
+ * and managing the display of the game during an active session.
+ */
 public class GamePanel extends JPanel implements KeyListener {
     private final CopyOnWriteArrayList<UserData> users;
     private final Tank userTank;

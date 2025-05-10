@@ -10,9 +10,17 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Iterator;
 
+/**
+ * Utility class to load, scale, and rotate images.
+ */
 public class ImageDrawer {
     private Image image;
 
+    /**
+     * Constructs an {@code ImageDrawer} by loading an image from the specified path.
+     *
+     * @param path the relative path to the image file
+     */
     public ImageDrawer(String path) {
         loadImage(path);
     }
@@ -45,15 +53,33 @@ public class ImageDrawer {
         }
     }
 
+    /**
+     * Returns the loaded image.
+     *
+     * @return the {@code Image}, or {@code null} if not loaded
+     */
     public Image getImage() {
         return image;
     }
 
+    /**
+     * Returns the image scaled to the specified width and height.
+     *
+     * @param width  desired width
+     * @param height desired height
+     * @return scaled {@code Image}, or {@code null} if image is not loaded
+     */
     public Image getScaledImage(int width, int height) {
         if (image == null) return null;
         return image.getScaledInstance(width, height, Image.SCALE_SMOOTH);
     }
 
+    /**
+     * Returns the image scaled by the given scale factor.
+     *
+     * @param scale the scaling factor (e.g., 0.5 for half size)
+     * @return scaled {@code Image}, or {@code null} if image is not loaded
+     */
     public Image getScaledImage(double scale) {
         if (image == null) return null;
         return image.getScaledInstance(
@@ -62,6 +88,13 @@ public class ImageDrawer {
                 Image.SCALE_SMOOTH);
     }
 
+    /**
+     * Rotates the given image by the specified degrees clockwise.
+     *
+     * @param image   the image to rotate
+     * @param degrees rotation angle in degrees (clockwise)
+     * @return a new rotated {@code BufferedImage}
+     */
     public static BufferedImage rotateImage(Image image, double degrees) {
         BufferedImage bufferedImage = new BufferedImage(
                 image.getWidth(null),

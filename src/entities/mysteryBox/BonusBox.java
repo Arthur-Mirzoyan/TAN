@@ -8,7 +8,18 @@ import utils.Point;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The {@code BonusBox} class is a type of {@link MysteryBox} that applies
+ * beneficial effects to the tank, such as health restoration or stat boosts.
+ */
 public class BonusBox extends MysteryBox {
+
+    /**
+     * Constructs a {@code BonusBox} at a specified location and size.
+     *
+     * @param point     the location of the box
+     * @param dimension the dimensions of the box
+     */
     public BonusBox(Point point, Dimension dimension) {
         super(point, dimension);
     }
@@ -41,6 +52,11 @@ public class BonusBox extends MysteryBox {
         timer.start();
     }
 
+    /**
+     * Triggers a random positive effect on the provided tank.
+     *
+     * @param tank the tank to be affected
+     */
     @Override
     public void action(Tank tank) {
         Runnable[] effects = new Runnable[]{

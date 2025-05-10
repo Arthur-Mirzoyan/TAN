@@ -6,6 +6,10 @@ import utils.Panels;
 
 import javax.swing.*;
 
+/**
+ * The {@code Inventory} class represents a collection of items owned by the player.
+ * It supports adding and removing items as part of gameplay.
+ */
 public class Inventory {
     InventoryPanel scene;
 

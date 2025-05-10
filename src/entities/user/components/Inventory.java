@@ -9,12 +9,18 @@ import utils.JSONHelper;
 
 import java.util.ArrayList;
 
+/**
+ * Manages the items and components a user owns: cannons, hulls, tanks, and currency.
+ */
 public class Inventory {
     private int money;
     private ArrayList<TankCannon> cannons;
     private ArrayList<TankHull> hulls;
     private ArrayList<Tank> tanks;
 
+    /**
+     * Initializes an empty inventory with 0 money.
+     */
     public Inventory() {
         this.money = 0;
         this.cannons = new ArrayList<>();
@@ -22,6 +28,9 @@ public class Inventory {
         this.tanks = new ArrayList<>();
     }
 
+    /**
+     * Copy constructor that duplicates another inventory, cloning tanks.
+     */
     public Inventory(Inventory inventory) {
         this.money = inventory.money;
         this.cannons = inventory.cannons;
@@ -33,6 +42,9 @@ public class Inventory {
         }
     }
 
+    /**
+     * Loads an inventory from a JSON object.
+     */
     public Inventory(JSONObject json) {
         this.money = JSONHelper.getValue(json, "money", 1000000);
         this.cannons = new ArrayList<>();
@@ -84,6 +96,11 @@ public class Inventory {
         this.hulls.add(hull);
     }
 
+    /**
+     * Serializes the inventory to JSON format.
+     *
+     * @return JSON representation of the inventory
+     */
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
         JSONArray cannons = new JSONArray();

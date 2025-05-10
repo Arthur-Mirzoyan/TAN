@@ -5,7 +5,18 @@ package utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * Utility class for performing hashing operations.
+ */
 public class HashUtil {
+
+    /**
+     * Converts the given input string to its MD5 hash in hexadecimal format.
+     *
+     * @param input the input string to hash
+     * @return the MD5 hash as a hexadecimal string
+     * @throws RuntimeException if MD5 algorithm is not available
+     */
     public static String toMD5(String input) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");

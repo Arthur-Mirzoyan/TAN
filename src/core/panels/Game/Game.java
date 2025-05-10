@@ -13,6 +13,10 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * The {@code Game} class contains the core logic and state of the game session.
+ * It manages gameplay data, progression, and reset operations.
+ */
 public class Game {
     private GamePanel scene;
     private ArrayList<Tank> tanks;

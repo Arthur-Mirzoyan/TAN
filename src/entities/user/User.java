@@ -4,17 +4,27 @@ import entities.tank.Tank;
 import entities.user.components.Inventory;
 import org.json.JSONObject;
 
+/**
+ * Represents a registered player in the game, holding account credentials,
+ * inventory, and the currently selected tank.
+ */
 public class User {
     private String username;
     private String password;
     private Tank currentTank;
     private Inventory inventory;
 
+    /**
+     * Creates a new user with a username and password.
+     */
     public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
 
+    /**
+     * Copy constructor that duplicates user data including tank and inventory.
+     */
     public User(User user) {
         this.username = user.username;
         this.password = user.password;
@@ -22,6 +32,9 @@ public class User {
         this.currentTank = new Tank(user.currentTank);
     }
 
+    /**
+     * Constructs a user from a JSON object.
+     */
     public User(JSONObject json) {
         this(json.getString("username"), json.getString("password"));
 
@@ -53,6 +66,11 @@ public class User {
         return inventory;
     }
 
+    /**
+     * Serializes this user to a JSON object.
+     *
+     * @return JSON representation of the user
+     */
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
 

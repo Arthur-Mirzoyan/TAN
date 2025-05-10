@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
+/**
+ * Represents a tank cannon with damage, firing range, ammo, and bullet behavior.
+ */
 public class TankCannon implements Cloneable {
     private final int id;
     private final String name;
@@ -86,7 +89,9 @@ public class TankCannon implements Cloneable {
         return bullets;
     }
 
-
+    /**
+     * Fires a bullet from the cannon, reducing ammo and applying damage if a tank is hit.
+     */
     public void shoot(Map map, CopyOnWriteArrayList<UserData> users, Point bulletInitialPosition, int angle, Consumer<UserData> onTankPenetration) {
         if (ammo <= 0) return;
 
@@ -100,6 +105,9 @@ public class TankCannon implements Cloneable {
     public void upgrade() {
     }
 
+    /**
+     * Returns the JSON representation of the cannon's data.
+     */
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
         json.put("id", id);

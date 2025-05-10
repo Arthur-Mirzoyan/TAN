@@ -8,10 +8,19 @@ import utils.PanelListener;
 
 import javax.swing.*;
 
-
+/**
+ * The {@code Shop} class serves as the logic controller for the shop UI.
+ * It allows users to purchase {@link TankHull} and {@link TankCannon} components if they have enough currency.
+ */
 public class Shop {
     ShopPanel scene;
 
+    /**
+     * Constructs the shop interface and sets up event handling for purchasing items.
+     *
+     * @param listener panel listener for navigation
+     * @param user     the current user interacting with the shop
+     */
     public Shop(PanelListener listener, User user) {
         scene = new ShopPanel(user, obj -> buy(user, obj));
 
@@ -19,10 +28,21 @@ public class Shop {
         scene.getCannonSelectButton().addActionListener(e -> scene.switchToCannon(obj -> buy(user, obj)));
     }
 
+    /**
+     * Returns the UI panel for the shop.
+     *
+     * @return the shop panel
+     */
     public JPanel getPanel() {
         return scene;
     }
 
+    /**
+     * Attempts to purchase a {@code TankCannon} or {@code TankHull}, checking for duplicates and available funds.
+     *
+     * @param user the current user
+     * @param obj  the item to purchase
+     */
     private void buy(User user, Object obj) {
         if (obj instanceof TankCannon) {
             TankCannon tankCannon = (TankCannon) obj;

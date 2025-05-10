@@ -10,6 +10,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * The {@code LobbyPanel} class defines the GUI for the multiplayer lobby screen.
+ * It allows users to either create a new game session or join an existing one
+ * using a world code. It also displays connected players in the lobby.
+ */
 public class LobbyPanel extends JPanel {
     private JPanel viewBox;
     private GridBagConstraints gbc;
@@ -22,6 +27,9 @@ public class LobbyPanel extends JPanel {
 
     private Server server;
 
+    /**
+     * Constructs the lobby panel and sets up the interface with "Join" and "Create" options.
+     */
     public LobbyPanel() {
         setOpaque(false);
         setLayout(new BorderLayout());
@@ -55,6 +63,11 @@ public class LobbyPanel extends JPanel {
         add(box, BorderLayout.CENTER);
     }
 
+    /**
+     * Sets the server associated with this lobby.
+     *
+     * @param server the server instance
+     */
     public void setServer(Server server) {
         this.server = server;
     }
@@ -79,6 +92,11 @@ public class LobbyPanel extends JPanel {
         return createWorldButton;
     }
 
+    /**
+     * Switches the view to the "Create Game" state and displays the connected users and world code.
+     *
+     * @param code the world code generated from server IP
+     */
     public void switchToCreate(String code) {
         createButton.setBackground(Values.SECONDARY_COLOR);
         createButton.setForeground(Values.PRIMARY_COLOR);
@@ -91,6 +109,9 @@ public class LobbyPanel extends JPanel {
         });
     }
 
+    /**
+     * Switches the view to the "Join Game" state, allowing the user to input a world code.
+     */
     public void switchToJoin() {
         createButton.setBackground(Values.PRIMARY_COLOR);
         createButton.setForeground(Values.TERTIARY_COLOR);
@@ -100,6 +121,11 @@ public class LobbyPanel extends JPanel {
         repaintViewBox(generateWorldJoinBox());
     }
 
+    /**
+     * Replaces the current center view with a new panel.
+     *
+     * @param newViewBox the new panel to display
+     */
     private void repaintViewBox(JPanel newViewBox) {
         JPanel parent = (JPanel) viewBox.getParent();
         parent.remove(viewBox);
@@ -109,6 +135,12 @@ public class LobbyPanel extends JPanel {
         parent.repaint();
     }
 
+    /**
+     * Generates the panel shown when creating a world, displaying the world code and connected users.
+     *
+     * @param code the world code for the session
+     * @return the creation panel
+     */
     private JPanel generateWorldCreationBox(String code) {
         JPanel box = new JPanel();
 
@@ -141,6 +173,11 @@ public class LobbyPanel extends JPanel {
         return box;
     }
 
+    /**
+     * Generates the input panel for joining a world using an IP code.
+     *
+     * @return the join input panel
+     */
     private JPanel generateWorldJoinBox() {
         JPanel box = new JPanel();
 
@@ -158,6 +195,11 @@ public class LobbyPanel extends JPanel {
         return box;
     }
 
+    /**
+     * Creates a scrollable panel displaying all users currently connected to the lobby.
+     *
+     * @return a panel containing usernames and a "Start" button
+     */
     private JPanel createConnectedUsersPanel() {
         JPanel box = new JPanel(new GridBagLayout());
         CopyOnWriteArrayList<UserData> users = server.getConnectedUsers();

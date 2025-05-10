@@ -12,6 +12,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * The <code>Server</code> class handles socket connections from clients.
+ * It manages client handlers, broadcasts messages, and tracks active users.
+ */
 public class Server {
     public static final int PORT = 5000;
     public static final int THREAD_POOL_SIZE = 10;
@@ -21,6 +25,9 @@ public class Server {
     private ConcurrentHashMap<String, UserData> connectedUsers;
     private CopyOnWriteArrayList<UserData> users;
 
+    /**
+     * Initializes the server with host IP and internal data structures.
+     */
     public Server() {
         try {
             InetAddress localHost = InetAddress.getLocalHost();
@@ -37,6 +44,13 @@ public class Server {
         return ip;
     }
 
+    /**
+     * Starts the server and listens for client connections.
+     * Each client is handled in a separate thread.
+     *
+     * @throws ServerCreationException if I/O fails during server start
+     * @throws ServerBindingException  if port is already in use
+     */
     public void run() throws ServerCreationException, ServerBindingException {
         ExecutorService pool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
@@ -61,20 +75,37 @@ public class Server {
         }
     }
 
+    /**
+     * Broadcasts a message to all connected clients except the sender.
+     *
+     * @param message the message to send
+     * @param sender  the client handler who sent the message
+     */
     public void broadcast(String message, ClientHandler sender) {
         for (ClientHandler client : clients)
             if (client != sender)  // Avoid sending the message back to the sender
                 client.sendMessage(message);
     }
 
+    /**
+     * Removes a disconnected client from the list.
+     *
+     * @param clientHandler the client to remove
+     */
     public void removeClient(ClientHandler clientHandler) {
         clients.remove(clientHandler);
     }
 
+    /**
+     * Returns the list of currently connected users.
+     */
     public CopyOnWriteArrayList<UserData> getConnectedUsers() {
         return users;
     }
 
+    /**
+     * Returns the user associated with a given client connection.
+     */
     public UserData getClientUser(Client client) {
         return connectedUsers.get(client.getUserData().getIp());
     }

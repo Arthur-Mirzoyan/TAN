@@ -2,6 +2,13 @@ package utils;
 
 import java.awt.*;
 
+/**
+ * The {@code Collider} class represents a rectangular entity in 2D space that can detect
+ * collisions with other {@code Collider} objects. It handles position, dimension, rotation,
+ * and collision detection based on the separating axis theorem (SAT).
+ * <p>
+ * Each collider is defined by a midpoint, dimension, and a set of rotated corner points.
+ */
 public abstract class Collider {
     protected Dimension dimension;
     protected Point position; // midpoint
@@ -9,6 +16,12 @@ public abstract class Collider {
     private Point[] corners;
     private double rotation;
 
+    /**
+     * Constructs a new {@code Collider} with a specified position and dimension.
+     *
+     * @param position  the midpoint position of the collider
+     * @param dimension the width and height of the collider
+     */
     public Collider(Point position, Dimension dimension) {
         this.position = position;
         this.dimension = dimension;
@@ -28,10 +41,20 @@ public abstract class Collider {
         updateCorners();
     }
 
+    /**
+     * Constructs a collider with only position; uses a default dimension.
+     *
+     * @param position the midpoint position
+     */
     public Collider(Point position) {
         this(position, new Dimension());
     }
 
+    /**
+     * Constructs a deep copy of another {@code Collider}.
+     *
+     * @param other the collider to copy
+     */
     protected Collider(Collider other) {
         if (other == null) {
             System.out.println("Collider other cannot be null");
@@ -46,25 +69,46 @@ public abstract class Collider {
             corners[i] = new Point(other.corners[i]);
     }
 
+    /**
+     * Sets the new midpoint position of this collider.
+     *
+     * @param position the new position
+     */
     public void setPosition(Point position) {
         this.position = position;
         updateCorners();
     }
 
+    /**
+     * Sets the rotation of this collider in degrees.
+     *
+     * @param rotation the angle in degrees
+     */
     protected void setRotation(double rotation) {
         this.rotation = -Math.toRadians(rotation);
         updateCorners();
     }
 
+    /**
+     * Sets a new dimension for this collider.
+     *
+     * @param dimension the new width and height
+     */
     protected void setDimension(Dimension dimension) {
         this.dimension = dimension;
         updateCorners();
     }
 
+    /**
+     * Returns a copy of the collider's midpoint position.
+     */
     public Point getPosition() {
         return new Point(position);
     }
 
+    /**
+     * Returns a copy of this collider's four corners in rotated screen coordinates.
+     */
     protected Point[] getCorners() {
         Point[] res = new Point[4];
 
@@ -73,6 +117,13 @@ public abstract class Collider {
         return res;
     }
 
+    /**
+     * Checks whether this collider intersects with another.
+     * Uses a simplified version of the Separating Axis Theorem.
+     *
+     * @param other another collider to test against
+     * @return true if the colliders overlap; false otherwise
+     */
     public boolean collidesWith(Collider other) {
         Point A = corners[3];
         Point B = corners[2];
@@ -121,6 +172,12 @@ public abstract class Collider {
         return false;
     }
 
+    /**
+     * Checks whether this collider fits within the bounds of the map and does not intersect any walls.
+     *
+     * @param map the game map
+     * @return true if the collider is in a free space; false otherwise
+     */
     public boolean isFreeOfCollisions(Map map) {
         int x = position.getX();
         int y = position.getY();
@@ -143,6 +200,9 @@ public abstract class Collider {
         return true;
     }
 
+    /**
+     * Recalculates the corner positions based on current position, rotation, and dimensions.
+     */
     protected void updateCorners() {
         int centerX = position.getX();
         int centerY = position.getY();

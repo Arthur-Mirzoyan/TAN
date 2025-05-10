@@ -5,17 +5,27 @@ import entities.user.User;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Lightweight representation of a user during gameplay or networking.
+ * Includes username, IP, current tank, and score.
+ */
 public class UserData {
     private String username;
     private String ip;
     private Tank tank;
     private int score;
 
+    /**
+     * Constructs UserData from a {@link User} object.
+     */
     public UserData(User user) {
         this.username = user.getUsername();
         this.tank = user.getCurrentTank();
     }
 
+    /**
+     * Loads UserData from JSON, including tank state.
+     */
     public UserData(JSONObject json) throws JSONException {
         this.username = json.getString("username");
         this.tank = new Tank(json.getJSONObject("tank"));
@@ -46,6 +56,9 @@ public class UserData {
         return tank;
     }
 
+    /**
+     * Returns this user data as a JSON object.
+     */
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
 
@@ -56,6 +69,12 @@ public class UserData {
         return json;
     }
 
+    /**
+     * Updates the current tank's position, health, and score.
+     *
+     * @param tank updated tank state
+     * @param score new score value
+     */
     public void updateTankScore(Tank tank, int score) {
         this.tank.setPosition(tank.getPosition());
         this.tank.getHull().setHealth(tank.getHull().getHealth());

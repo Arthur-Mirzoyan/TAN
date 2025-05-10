@@ -13,6 +13,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 
+/**
+ * The {@code ShopPanel} class provides the graphical user interface for the in-game shop.
+ * It allows users to browse and purchase {@link TankHull} and {@link TankCannon} components.
+ */
 public class ShopPanel extends JPanel {
     private final User user;
 
@@ -29,6 +33,12 @@ public class ShopPanel extends JPanel {
         add(generateCenterPanel(action), BorderLayout.CENTER);
     }
 
+    /**
+     * Generates the central UI containing category selection buttons and the scrollable view.
+     *
+     * @param action the action to perform when an item is selected
+     * @return a panel containing category buttons and the item view
+     */
     private JPanel generateCenterPanel(Consumer<Object> action) {
         JPanel box = new JPanel();
 
@@ -62,6 +72,12 @@ public class ShopPanel extends JPanel {
         return box;
     }
 
+    /**
+     * Creates a scrollable panel displaying all available tank hulls for purchase.
+     *
+     * @param action the purchase action for each item
+     * @return a scroll pane with hull cards
+     */
     private JScrollPane generateHullScroll(Consumer<Object> action) {
         JPanel cardPanel = new JPanel();
         cardPanel.setOpaque(false);
@@ -88,6 +104,12 @@ public class ShopPanel extends JPanel {
         return scrollPane;
     }
 
+    /**
+     * Creates a scrollable panel displaying all available tank cannons for purchase.
+     *
+     * @param action the purchase action for each item
+     * @return a scroll pane with cannon cards
+     */
     private JScrollPane generateCannonScroll(Consumer<Object> action) {
         JPanel cardPanel = new JPanel();
         cardPanel.setOpaque(false);
@@ -114,6 +136,11 @@ public class ShopPanel extends JPanel {
         return scrollPane;
     }
 
+    /**
+     * Switches the item view to show cannon cards.
+     *
+     * @param action the purchase action for cannons
+     */
     public void switchToCannon(Consumer<Object> action) {
         cannonSelectButton.setBackground(Values.SECONDARY_COLOR);
         cannonSelectButton.setForeground(Values.PRIMARY_COLOR);
@@ -128,6 +155,11 @@ public class ShopPanel extends JPanel {
         parent.repaint();
     }
 
+    /**
+     * Switches the item view to show hull cards.
+     *
+     * @param action the purchase action for hulls
+     */
     public void switchToHull(Consumer<Object> action) {
         cannonSelectButton.setBackground(Values.PRIMARY_COLOR);
         cannonSelectButton.setForeground(Values.TERTIARY_COLOR);
@@ -142,10 +174,20 @@ public class ShopPanel extends JPanel {
         parent.repaint();
     }
 
+    /**
+     * Gets the button for switching to hull view.
+     *
+     * @return the hull select button
+     */
     public JButton getHullSelectButton() {
         return hullSelectButton;
     }
 
+    /**
+     * Gets the button for switching to cannon view.
+     *
+     * @return the cannon select button
+     */
     public JButton getCannonSelectButton() {
         return cannonSelectButton;
     }

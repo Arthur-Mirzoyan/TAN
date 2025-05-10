@@ -8,6 +8,10 @@ import utils.Values;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A UI component representing a visual card for a tank, cannon, or hull.
+ * Includes stats and a button to select or purchase.
+ */
 public class TankCard extends JPanel {
     private JButton button;
 

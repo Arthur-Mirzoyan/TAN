@@ -12,6 +12,10 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Represents the game map composed of a grid layout, tanks, bullets, and mystery boxes.
+ * Handles rendering and dimension management based on layout configuration.
+ */
 public class Map {
     public static final byte PATH = 0;
     public static final byte WALL = 1;
@@ -27,6 +31,12 @@ public class Map {
 
     private int cellSize;
 
+    /**
+     * Constructs a new map using a byte matrix layout and a list of spawn points.
+     *
+     * @param layout      2D byte array indicating path and wall tiles
+     * @param spawnPoints list of spawn locations for tanks
+     */
     public Map(byte[][] layout, ArrayList<Point> spawnPoints) {
         this.layout = layout;
         this.dimension = new Dimension();
@@ -62,6 +72,11 @@ public class Map {
         };
     }
 
+    /**
+     * Constructs a map using JSON data describing layout and spawn points.
+     *
+     * @param json JSONObject with keys "layout" and "spawnPoints"
+     */
     public Map(JSONObject json) {
         JSONArray layout = json.getJSONArray("layout");
         JSONArray points = json.getJSONArray("spawnPoints");
@@ -142,6 +157,9 @@ public class Map {
         return mysteryBoxesToDraw;
     }
 
+    /**
+     * Draws all tanks and their bullets on the panel.
+     */
     private void drawTanks(Graphics g) {
         if (tanksToDraw == null) return;
 
@@ -169,6 +187,9 @@ public class Map {
         }
     }
 
+    /**
+     * Draws all visible mystery boxes on the map.
+     */
     private void drawMysteryBoxes(Graphics g) {
         if (mysteryBoxesToDraw != null) {
             int imageWidthHalf = mysteryBoxImage.getWidth(null) / 2;

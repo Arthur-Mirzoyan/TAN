@@ -18,6 +18,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * The {@code MainWindow} class represents the primary GUI window for the application.
+ * It sets up and manages the various components of the interface.
+ */
 public class MainWindow implements PanelListener {
     private JFrame window;
     private JPanel background;
@@ -25,6 +29,9 @@ public class MainWindow implements PanelListener {
 
     private ArrayList<User> users;
 
+    /**
+     * Constructs the main window and initializes all GUI components.
+     */
     public MainWindow() {
         initialize();
         addBackground();
@@ -64,6 +71,9 @@ public class MainWindow implements PanelListener {
         return menuBar;
     }
 
+    /**
+     * Displays the window by making it visible.
+     */
     public void show() {
         window.setVisible(true);
     }

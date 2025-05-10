@@ -3,6 +3,9 @@ package entities.tank.components;
 import org.json.JSONObject;
 import utils.JSONHelper;
 
+/**
+ * Represents the hull (base) of a tank, defining armor, speed, and health.
+ */
 public class TankHull implements Cloneable {
     private final int id;
     private final String name;
@@ -66,6 +69,9 @@ public class TankHull implements Cloneable {
         this.speed = speed;
     }
 
+    /**
+     * Returns the hull data in JSON format.
+     */
     public JSONObject toJSON(boolean withHealth) {
         JSONObject json = new JSONObject();
 

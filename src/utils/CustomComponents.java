@@ -7,10 +7,19 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * {@code CustomComponents} provides factory methods to create customized Swing UI components
+ * with consistent styling, input validation, and interaction behavior across the application.
+ */
 public abstract class CustomComponents {
     public static final Cursor HAND_CURSOR = new Cursor(Cursor.HAND_CURSOR);
     public static final Cursor DEFAULT_CURSOR = new Cursor(Cursor.DEFAULT_CURSOR);
 
+    /**
+     * Creates a standard styled text input field that blocks space characters.
+     *
+     * @return a customized {@code JTextField}
+     */
     public static JTextField inputBox() {
         JTextField input = new JTextField();
 
@@ -27,6 +36,11 @@ public abstract class CustomComponents {
         return input;
     }
 
+    /**
+     * Creates a styled password input field that masks characters and blocks space characters.
+     *
+     * @return a customized {@code JPasswordField}
+     */
     public static JPasswordField passwordInputBox() {
         JPasswordField input = new JPasswordField();
 
@@ -44,8 +58,11 @@ public abstract class CustomComponents {
         return input;
     }
 
-    // Accepts only digits
-    // The total value can have a length of at most 3
+    /**
+     * Creates a numeric-only input box with a maximum length of 3 digits.
+     *
+     * @return a customized {@code JTextField} for numeric input
+     */
     public static JTextField numericInputBox() {
         JTextField input = inputBox();
 
@@ -63,6 +80,12 @@ public abstract class CustomComponents {
         return input;
     }
 
+    /**
+     * Creates a styled button with consistent colors and cursor behavior.
+     *
+     * @param name the label to display on the button
+     * @return a customized {@code JButton}
+     */
     public static JButton button(String name) {
         JButton button = new JButton(name);
 
@@ -87,6 +110,12 @@ public abstract class CustomComponents {
         return button;
     }
 
+    /**
+     * Creates a styled label with standard font and color.
+     *
+     * @param name the text to display in the label
+     * @return a customized {@code JLabel}
+     */
     public static JLabel label(String name) {
         JLabel label = new JLabel(name);
         label.setFont(Values.MEDIUM_FONT);
@@ -95,6 +124,14 @@ public abstract class CustomComponents {
         return label;
     }
 
+    /**
+     * Creates a modal loading dialog with a message and a progress bar.
+     * Includes a cancel button that closes the dialog and invokes the given action.
+     *
+     * @param message  the message to display
+     * @param onClose  the action to perform when the dialog is closed
+     * @return a configured {@code JDialog}
+     */
     public static JDialog loadingDialog(String message, Runnable onClose) {
         JDialog dialog = new JDialog((Frame) null, "Please Wait...", true);
         dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);

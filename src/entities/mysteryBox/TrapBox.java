@@ -8,7 +8,18 @@ import utils.Point;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The {@code TrapBox} class is a type of {@link MysteryBox} that applies
+ * negative effects to a tank, such as reducing stats or applying delays.
+ */
 public class TrapBox extends MysteryBox {
+
+    /**
+     * Constructs a {@code TrapBox} at the specified location with a given size.
+     *
+     * @param point     the location of the box
+     * @param dimension the dimensions of the box
+     */
     public TrapBox(Point point, Dimension dimension) {
         super(point, dimension);
     }
@@ -46,6 +57,11 @@ public class TrapBox extends MysteryBox {
         timer.start();
     }
 
+    /**
+     * Triggers a random negative effect on the provided tank.
+     *
+     * @param tank the tank to be negatively affected
+     */
     @Override
     public void action(Tank tank) {
         Runnable[] effects = new Runnable[]{

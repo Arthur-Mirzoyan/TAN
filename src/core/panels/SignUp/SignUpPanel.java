@@ -6,6 +6,10 @@ import utils.Values;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The {@code SignUpPanel} class builds the user interface for new account creation.
+ * It includes input fields for username and password, and buttons for account submission or switching to login.
+ */
 public class SignUpPanel {
     private JPanel panel;
     private JTextField usernameField;
@@ -13,6 +17,9 @@ public class SignUpPanel {
     private JButton logInButton;
     private JButton signUpButton;
 
+    /**
+     * Constructs the sign-up panel and initializes the form layout.
+     */
     public SignUpPanel() {
         panel = new JPanel();
 
@@ -21,6 +28,11 @@ public class SignUpPanel {
         panel.add(generateLoginBox(), BorderLayout.CENTER);
     }
 
+    /**
+     * Returns the root panel of the sign-up view.
+     *
+     * @return the main {@code JPanel}
+     */
     public JPanel getPanel() {
         return panel;
     }
@@ -41,6 +53,11 @@ public class SignUpPanel {
         return signUpButton;
     }
 
+    /**
+     * Builds and returns the form box UI containing fields and buttons.
+     *
+     * @return the constructed login box
+     */
     private JPanel generateLoginBox() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);

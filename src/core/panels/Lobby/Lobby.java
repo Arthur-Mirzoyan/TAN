@@ -13,12 +13,22 @@ import utils.PanelListener;
 import javax.swing.*;
 import java.io.IOException;
 
+/**
+ * The {@code Lobby} class handles the logic for creating and joining multiplayer sessions.
+ * It manages client-server connections and controls the interaction between the user and the lobby interface.
+ */
 public class Lobby {
     private LobbyPanel scene;
     private Server server;
     private Client client;
     private User user;
 
+    /**
+     * Constructs a new lobby controller, handling the multiplayer game session UI and logic.
+     *
+     * @param listener panel listener to manage navigation
+     * @param user     the current user
+     */
     public Lobby(PanelListener listener, User user) {
         this.scene = new LobbyPanel();
         this.user = user;
@@ -55,10 +65,20 @@ public class Lobby {
         });
     }
 
+    /**
+     * Returns the lobby panel for UI display.
+     *
+     * @return the panel representing the lobby
+     */
     public JPanel getPanel() {
         return scene;
     }
 
+    /**
+     * Handles joining an existing world using a provided world code.
+     *
+     * @param worldCode the last octet of the host's IP address
+     */
     private void joinGame(String worldCode) {
         try {
             String ip = IPHelper.getLocalIP();

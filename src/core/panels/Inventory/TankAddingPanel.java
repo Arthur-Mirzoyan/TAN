@@ -13,6 +13,10 @@ import java.util.ArrayList;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+/**
+ * The {@code TankAddingPanel} class provides a graphical interface for
+ * selecting a tank hull and cannon, allowing the user to build and add tanks.
+ */
 public class TankAddingPanel extends JPanel {
     private final User user;
 
@@ -23,6 +27,12 @@ public class TankAddingPanel extends JPanel {
     private TankHull bufferHull;
     private TankCannon bufferCannon;
 
+    /**
+     * Constructs the panel with scrollable lists of available hulls and cannons.
+     *
+     * @param user   the user whose inventory provides hull and cannon data
+     * @param action the callback to execute when a tank is added
+     */
     public TankAddingPanel(User user, BiConsumer<TankHull, TankCannon> action) {
         this.user = user;
         setOpaque(false);
@@ -144,6 +154,11 @@ public class TankAddingPanel extends JPanel {
         return scrollPane;
     }
 
+    /**
+     * Returns the "Add" button component.
+     *
+     * @return the add button
+     */
     public JButton getAddButton() {
         return addButton;
     }

@@ -14,6 +14,9 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 
+/**
+ * Represents a bullet shot by a tank, with speed, range, and collision logic.
+ */
 public class Bullet extends Collider {
     public static final int SIZE = 6;
     public static final Color COLOR = Values.ACCENT_COLOR;
@@ -41,6 +44,14 @@ public class Bullet extends Collider {
         this.owner = owner;
     }
 
+    /**
+     * Starts animating the bullet through the map, checking for tank hits or wall collisions.
+     *
+     * @param map the map containing layout and walls
+     * @param users all players to check for collisions
+     * @param onCompletion callback on bullet completion
+     * @param onTankPenetration callback on hitting a tank
+     */
     public void fire(Map map, CopyOnWriteArrayList<UserData> users, Runnable onCompletion, Consumer<UserData> onTankPenetration) {
         if (isFiring) return;
 

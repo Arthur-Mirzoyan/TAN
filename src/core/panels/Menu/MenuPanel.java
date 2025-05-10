@@ -7,6 +7,10 @@ import utils.Values;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * The {@code MenuPanel} class displays the main menu interface of the application.
+ * It provides navigation buttons for gameplay, inventory access, and shop entry.
+ */
 public class MenuPanel extends JPanel {
     User user;
 
@@ -14,6 +18,11 @@ public class MenuPanel extends JPanel {
     private JButton inventoryButton;
     private JButton shopButton;
 
+    /**
+     * Constructs a {@code MenuPanel} initialized for a specific user.
+     *
+     * @param user the currently logged-in user
+     */
     public MenuPanel(User user) {
         this.user = user;
 
@@ -22,18 +31,38 @@ public class MenuPanel extends JPanel {
         add(generateButtonBox(), BorderLayout.CENTER);
     }
 
+    /**
+     * Returns the "Play" button component.
+     *
+     * @return the play button
+     */
     public JButton getPlayButton() {
         return playButton;
     }
 
+    /**
+     * Returns the "Inventory" button component.
+     *
+     * @return the inventory button
+     */
     public JButton getInventoryButton() {
         return inventoryButton;
     }
 
+    /**
+     * Returns the "Shop" button component.
+     *
+     * @return the shop button
+     */
     public JButton getShopButton() {
         return shopButton;
     }
 
+    /**
+     * Creates and returns the panel containing all menu buttons (Play, Inventory, Shop).
+     *
+     * @return the button container panel
+     */
     private JPanel generateButtonBox() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);

@@ -8,9 +8,19 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * The {@code Menu} class manages the main menu screen of the application.
+ * It enables navigation to gameplay, inventory, shop, and volume settings.
+ */
 public class Menu {
     MenuPanel scene;
 
+    /**
+     * Constructs a {@code Menu} controller for the main menu screen.
+     *
+     * @param listener the panel listener to manage view navigation
+     * @param user     the currently logged-in user
+     */
     public Menu(PanelListener listener, User user) {
         scene = new MenuPanel(user);
 
@@ -25,6 +35,11 @@ public class Menu {
         });
     }
 
+    /**
+     * Returns the main menu panel.
+     *
+     * @return the menu panel as a {@code JPanel}
+     */
     public JPanel getPanel() {
         return scene;
     }
