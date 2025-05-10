@@ -43,6 +43,15 @@ public class Point {
         return x * p.x + y * p.y;
     }
 
+    public JSONObject toJSON() {
+        JSONObject json = new JSONObject();
+
+        json.put("x", x);
+        json.put("y", y);
+
+        return json;
+    }
+
     @Override
     public String toString() {
         return "Point{" +

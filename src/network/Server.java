@@ -3,6 +3,7 @@ package network;
 import core.exceptions.ServerBindingException;
 import core.exceptions.ServerCreationException;
 import entities.user.components.UserData;
+import org.json.JSONArray;
 
 import java.io.IOException;
 import java.net.*;
@@ -110,5 +111,13 @@ public class Server {
         } catch (IOException e) {
             System.out.println("Error closing server socket: " + e.getMessage());
         }
+    }
+
+    public void sendJSON() {
+        JSONArray json = new JSONArray();
+
+        users.forEach(user -> json.put(user.toJSON()));
+
+        broadcast(json.toString(), null);
     }
 }

@@ -38,7 +38,7 @@ class ClientHandler implements Runnable {
             while ((message = input.readLine()) != null) {
                 try {
                     UserData userData = new UserData(new JSONObject(message));
-                    clientIp = socket.getInetAddress().getHostAddress() + userData.getUsername();
+                    clientIp = socket.getInetAddress().getHostAddress();
 
                     userData.setIp(clientIp);
                     connectedUsers.put(clientIp, userData);
@@ -51,8 +51,9 @@ class ClientHandler implements Runnable {
 
                         for (int i = 0; i < array.length(); i++) {
                             UserData userData = new UserData((JSONObject) array.get(i));
-                            connectedUsers.put(clientIp, userData);
+                            connectedUsers.put(userData.getIp(), userData);
 
+                            System.out.println("Updating users");
                             for (UserData user : users)
                                 if (user.getIp().equals(userData.getIp()))
                                     user.updateTankScore(userData.getTank(), user.getScore());

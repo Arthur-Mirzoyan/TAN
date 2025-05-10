@@ -20,6 +20,7 @@ public class UserData {
         this.username = json.getString("username");
         this.tank = new Tank(json.getJSONObject("tank"));
         this.score = json.getInt("score");
+        this.ip = json.getString("ip");
     }
 
     public void setIp(String ip) {
@@ -50,8 +51,9 @@ public class UserData {
         JSONObject json = new JSONObject();
 
         json.put("username", username);
-        json.put("tank", tank.toJSON(true));
+        json.put("tank", tank.toJSON(true, true));
         json.put("score", score);
+        json.put("ip", ip);
 
         return json;
     }
@@ -62,13 +64,13 @@ public class UserData {
         this.score = score;
     }
 
-    @Override
-    public String toString() {
-        return "UserData{" +
-                "username='" + username + '\'' +
-                ", ip='" + ip + '\'' +
-                ", tank=" + tank +
-                ", score=" + score +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "UserData{" +
+//                "username='" + username + '\'' +
+//                ", ip='" + ip + '\'' +
+//                ", tank=" + tank +
+//                ", score=" + score +
+//                '}';
+//    }
 }

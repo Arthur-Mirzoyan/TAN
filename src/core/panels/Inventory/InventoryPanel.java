@@ -4,6 +4,7 @@ import entities.tank.Tank;
 import entities.tank.components.TankCard;
 import entities.user.User;
 import utils.CustomComponents;
+import utils.JSONHelper;
 import utils.Values;
 
 import javax.swing.*;
@@ -64,6 +65,11 @@ public class InventoryPanel extends JPanel {
         for (Tank tank : tanks) {
             JPanel cannonCard = new TankCard(tank, 200, 200, 120, 200, () -> {
                 user.setCurrentTank(tank);
+                JSONHelper.update("src/data/users.json",
+                        "users",
+                        "username",
+                        user.getUsername(),
+                        user.toJSON());
             });
             cannonCard.setMaximumSize(new Dimension(200, 405));
             cardPanel.add(cannonCard);

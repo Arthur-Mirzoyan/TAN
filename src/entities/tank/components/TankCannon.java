@@ -1,6 +1,8 @@
 package entities.tank.components;
 
 import entities.user.components.UserData;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import utils.JSONHelper;
 import utils.Map;
@@ -40,6 +42,18 @@ public class TankCannon implements Cloneable {
         this.ammo = JSONHelper.getValue(json, "ammo", 1);
         this.firingRange = JSONHelper.getValue(json, "firingRange", 1);
         this.damage = JSONHelper.getValue(json, "damage", 1);
+
+        try {
+            ArrayList<Bullet> bullets = new ArrayList<>();
+            JSONArray b = new JSONArray();
+
+            for (int i = 0; i < b.length(); i++) {
+                bullets.add(new Bullet((JSONObject) b.get(i)));
+            }
+
+            this.bullets = bullets;
+        } catch (JSONException e) {
+        }
     }
 
     public void setAmmo(int ammo) {
@@ -97,9 +111,6 @@ public class TankCannon implements Cloneable {
         bullet.fire(map, users, () -> bullets.remove(bullet), user -> onTankPenetration.accept(user));
     }
 
-    public void upgrade() {
-    }
-
     public JSONObject toJSON() {
         JSONObject json = new JSONObject();
         json.put("id", id);
@@ -108,6 +119,13 @@ public class TankCannon implements Cloneable {
         json.put("bulletSpeed", bulletSpeed);
         json.put("firingRange", firingRange);
         json.put("ammo", ammo);
+
+        JSONArray bullets = new JSONArray();
+
+        for (Bullet bullet : this.bullets)
+            bullets.put(bullet.toJSON());
+
+        json.put("bullets", bullets);
 
         return json;
     }

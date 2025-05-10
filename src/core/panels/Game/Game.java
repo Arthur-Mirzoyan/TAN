@@ -5,10 +5,7 @@ import entities.user.User;
 import entities.user.components.UserData;
 import network.Client;
 import network.Server;
-import utils.JSONHelper;
-import utils.Map;
-import utils.PanelListener;
-import utils.Panels;
+import utils.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -16,15 +13,34 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Game {
     private GamePanel scene;
-    private ArrayList<Tank> tanks;
 
     public Game(PanelListener listener, User user, UserData currentUserData, Client client, CopyOnWriteArrayList<UserData> connectedUsers, Server server) {
         Map map = JSONHelper.parse("src/objects/maps.json", "maps", json -> new Map(json)).get(1);
 
-        scene = new GamePanel(currentUserData, connectedUsers, map, () -> client.sendJSON(connectedUsers));
+        if (server != null) {
+            ArrayList<Point> spawnPoints = map.getSpawnPoints();
+            int k = 0;
+
+            for (UserData userData : connectedUsers) {
+                if (k >= spawnPoints.size()) break;
+
+                userData.getTank().setPosition(spawnPoints.get(k));
+                ++k;
+            }
+
+            server.sendJSON();
+        }
+
+        scene = new GamePanel(currentUserData, connectedUsers, map, () -> client.listenForServerMessages(), () -> {
+            System.out.println("Client: " + client.getUserData());
+            System.out.println("UserDa: " + currentUserData);
+            //            client.sendJSON();
+        });
 
         scene.getExitButton().addActionListener(e -> {
-            if (server != null) server.kill();
+            if (server != null) {
+                server.kill();
+            }
             listener.goTo(Panels.MENU, user);
         });
     }

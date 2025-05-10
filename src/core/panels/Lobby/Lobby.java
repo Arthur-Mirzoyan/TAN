@@ -61,6 +61,7 @@ public class Lobby {
 
     private void createGame() {
         server.broadcast("START", null);
+        server.sendJSON();
         client.sendJSON(server.getConnectedUsers());
         panelListener.goToGame(user, server.getClientUser(client), client, server.getConnectedUsers(), server);
     }
@@ -72,19 +73,21 @@ public class Lobby {
 
             client = new Client(user, ip, Server.PORT);
 
-            JDialog loadingDialog = CustomComponents.loadingDialog("Waiting for the host to start the game.", () -> {
-                client.kill();
-            });
-            loadingDialog.setVisible(true);
-
             CustomThread clientListener = new CustomThread(500);
             new Thread(() -> {
                 client.listenForServerMessages();
             }).start();
 
+            JDialog loadingDialog = CustomComponents.loadingDialog("Waiting for the host to start the game.", () -> {
+                client.kill();
+            });
+
+            new Thread(() -> {
+                loadingDialog.setVisible(true);
+            }).start();
+
             clientListener.run(() -> {
                 if (client.getIsReady()) {
-                    System.out.println("GAME!!!");
                     loadingDialog.dispose();
                     panelListener.goToGame(user, client.getUserData(), client, client.getConnectedUsers(), server);
                     clientListener.stop();

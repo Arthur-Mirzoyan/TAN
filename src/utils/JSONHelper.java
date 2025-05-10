@@ -82,7 +82,6 @@ public class JSONHelper {
 
             for (int i = 0; i < arrayJSON.length(); i++) {
                 JSONObject obj = arrayJSON.getJSONObject(i);
-                System.out.println(obj.getString(key).equals(keyName));
                 if (obj.getString(key).equals(keyName)) {
                     arrayJSON.put(i, json);
                     break;

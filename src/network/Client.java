@@ -20,8 +20,8 @@ public class Client {
     private final UserData userData;
     private final ClientResources resources;
 
-    private ConcurrentHashMap<String, UserData> connectedUsers;
-    private CopyOnWriteArrayList<UserData> users;
+    private ConcurrentHashMap<String, UserData> connectedUsers = new ConcurrentHashMap<>();
+    private CopyOnWriteArrayList<UserData> users = new CopyOnWriteArrayList<>();
     private boolean isReady;
 
     public Client(User user, String host, int port) throws IOException {
@@ -29,7 +29,7 @@ public class Client {
         this.resources = this.connectToServer(host, port);
 
         try {
-            userData.setIp(IPHelper.getLocalIP() + user.getUsername());
+            userData.setIp(IPHelper.getLocalIP());
         } catch (IPNotFoundException e) {
             System.out.println("Client IP not found!");
         } finally {
@@ -78,6 +78,10 @@ public class Client {
         clientWriter.println(json);
     }
 
+    public void sendJSON() {
+        sendJSON(users);
+    }
+
     public void listenForServerMessages() {
         BufferedReader socketReader = resources.getSocketReader();
 
@@ -95,9 +99,15 @@ public class Client {
                             UserData userData = new UserData((JSONObject) array.get(i));
                             connectedUsers.put(userData.getIp(), userData);
 
+                            boolean isFound = false;
+
                             for (UserData user : users)
-                                if (user.getIp().equals(userData.getIp()))
+                                if (user.getIp().equals(userData.getIp())) {
                                     user.updateTankScore(userData.getTank(), user.getScore());
+                                    isFound = true;
+                                }
+
+                            if (!isFound) users.add(userData);
                         }
                     } catch (JSONException ex) {
                         System.out.println("Error: Message couldn't be parsed.");
@@ -112,7 +122,7 @@ public class Client {
         return users;
     }
 
-    public UserData getClientUser(Client client) {
-        return connectedUsers.get(client.getUserData().getIp());
+    public UserData getClientUser() {
+        return connectedUsers.get(getUserData().getIp());
     }
 }

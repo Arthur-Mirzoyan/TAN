@@ -4,6 +4,7 @@ import entities.mysteryBox.MysteryBox;
 import entities.tank.components.TankCannon;
 import entities.tank.components.TankHull;
 import entities.user.components.UserData;
+import org.json.JSONException;
 import org.json.JSONObject;
 import utils.Point;
 import utils.*;
@@ -36,6 +37,7 @@ public class Tank extends Collider {
     private final TankCannon cannon;
     private final HashMap<Controls, Boolean> keysPressed = new HashMap<>();
 
+    private Runnable onTankMove;
     private Image image;
     private BufferedImage rotatedImage;
     private Map map;
@@ -83,6 +85,11 @@ public class Tank extends Collider {
         this.hull = new TankHull(JSONHelper.getValue(json, "hull", new JSONObject()));
         this.cannon = new TankCannon(JSONHelper.getValue(json, "cannon", new JSONObject()));
 
+        try {
+            this.position = new Point((JSONObject) json.get("position"));
+        } catch (JSONException e) {
+        }
+
         this.prepareTank();
     }
 
@@ -113,8 +120,8 @@ public class Tank extends Collider {
         this.cannon.setOwner(user);
     }
 
-    public int getSpeed() {
-        return hull.getSpeed();
+    public void setOnTankMove(Runnable action) {
+        this.onTankMove = action;
     }
 
     public String getId() {
@@ -180,21 +187,29 @@ public class Tank extends Collider {
                     }
                 }
             }
+
+            onTankMove.run();
         }
     }
 
-    public JSONObject toJSON(boolean withHealth) {
+    public JSONObject toJSON(boolean withHealth, boolean withPosition) {
         JSONObject json = new JSONObject();
 
         json.put("id", id);
         json.put("hull", hull.toJSON(withHealth));
         json.put("cannon", cannon.toJSON());
 
+        if (withPosition) json.put("position", position.toJSON());
+
         return json;
     }
 
+    public JSONObject toJSON(boolean withHealth) {
+        return toJSON(withHealth, false);
+    }
+
     public JSONObject toJSON() {
-        return toJSON(false);
+        return toJSON(false, false);
     }
 
     private void prepareTank() {
@@ -240,9 +255,7 @@ public class Tank extends Collider {
                 users,
                 new Point((topRightCorner.getX() + bottomRightCorner.getX()) / 2, (topRightCorner.getY() + bottomRightCorner.getY()) / 2),
                 angle,
-                user -> {
-                    // TODO: Send to server
-                });
+                user -> user.setScore(user.getScore() + 10));
     }
 
     public void hit(int damage) {
@@ -261,13 +274,7 @@ public class Tank extends Collider {
     public String toString() {
         return "Tank{" +
                 "id='" + id + '\'' +
-                ", cannon=" + cannon +
-                ", keysPressed=" + keysPressed +
-                ", image=" + image +
-                ", rotatedImage=" + rotatedImage +
-                ", map=" + map +
-                ", angle=" + angle +
-                ", lastAngle=" + lastAngle +
+                ", position=" + position +
                 '}';
     }
 }
